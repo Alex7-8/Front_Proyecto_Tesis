@@ -1,0 +1,113 @@
+import { Injectable } from '@angular/core';
+import jwt_decode from 'jwt-decode';
+
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DatosService {
+  private dirIP: string = '';
+  private uniqueID: string = '';
+
+  constructor() {
+    this.initData();
+
+  }
+
+  private initData(): void {
+    
+    this.getLocalIPAddress((ipAddress) => {
+     /// console.log('Local IP Address:', ipAddress);
+      this.dirIP = ipAddress || '';
+    });
+
+  }
+
+  private UniqueID(): string {
+    const deviceId = this.generateBrowserFingerprint();
+ //   console.log('Device ID:', deviceId);
+
+    const localStorageKey = 'token_dispositivo';
+    const localStorageKeys  = 'uniqueID';
+    let uniqueID = '' + localStorage.getItem(localStorageKey);
+
+
+    if (uniqueID) {
+      const tokenDispositivo = localStorage.getItem('token_dispositivo');
+      if (tokenDispositivo) {
+        uniqueID = this.decodeToken(tokenDispositivo);
+        // console.log('Linea 36')
+        // console.log('Token Dispositivo:', uniqueID);
+        this.uniqueID = uniqueID;
+      }
+    }
+      if (uniqueID.search('-') === -1 ) {
+    //  console.log('Linea 37')
+      
+      uniqueID = this.generateUniqueID();
+      localStorage.setItem(localStorageKeys, uniqueID);
+      this.uniqueID = uniqueID;
+//console.log('UniqueID:', uniqueID);
+    }
+    return uniqueID;
+  }
+
+  private getLocalIPAddress(callback: (ipAddress: string | undefined) => void): void {
+    // Código para obtener la IP local
+    // Ejemplo utilizando una API de terceros
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => callback(data.ip))
+      .catch(error => {
+        console.error('Error al obtener la IP local:', error);
+        callback(undefined);
+      });
+  }
+
+  private generateBrowserFingerprint(): string {
+    // Código para generar el fingerprint del navegador
+    const fingerprint = [
+      navigator.userAgent,
+      screen.width,
+      screen.height,
+      screen.colorDepth,
+    ].join('|');
+
+    return fingerprint;
+  }
+
+  private generateUniqueID(): string {
+    // Código para generar el uniqueID
+    const uniqueID = `${screen.width}-${screen.height}-${screen.colorDepth}`;
+
+    return uniqueID;
+  }
+
+  private decodeToken(token: string): string {
+    try {
+      const decodedToken: any = jwt_decode(token);
+      const idDispositivo: string = decodedToken.IdDispositivo;
+      return idDispositivo;
+    } catch (error) {
+      console.error('Error al decodificar el token:', error);
+      return '';
+    }
+  }
+
+  getDirIP(): string {
+    
+    return this.dirIP;
+
+
+
+  }
+
+  getUniqueID(): string {
+    this.uniqueID = this.UniqueID();
+
+    return this.uniqueID;
+  }
+
+}
+
