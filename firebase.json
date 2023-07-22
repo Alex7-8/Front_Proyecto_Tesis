@@ -1,7 +1,17 @@
 {
   "hosting": {
-    "site": "srvcentral.com",
-    "public": "public"
+    "site": "jcservices",
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   }
-  
 }
