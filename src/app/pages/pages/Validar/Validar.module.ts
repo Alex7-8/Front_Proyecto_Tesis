@@ -6,6 +6,8 @@ import { ValidarComponent } from './Validar.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar'; // Asegúrate de importar MatSnackBarModule
+
 
 
 @NgModule({
@@ -13,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     CommonModule,
     Validar,
-
+    MatSnackBarModule,
     MatButtonModule,
     MatInputModule,
     MatIconModule

@@ -1,39 +1,18 @@
-<div @fadeInUp class="card shadow-xl text-center w-full max-w-sm overflow-hidden">
-  <div class="p-6 flex flex-col items-center">
+<div @fadeInUp class="card shadow-xl text-center max-w-lg overflow-hidden p-6 my-4 bg-gradient-to-br from-blue-200 to-indigo-600 rounded-lg">
+  <div class="flex flex-col items-center">
     <img class="w-16" src="assets/img/demo/logo.svg">
-  </div>
-
-  <h1 class="display-1 font-medium m-0">COMING SOON</h1>
-  <h3 class="title mt-3 mb-0">Our website is under construction.</h3>
-
-  <div class="my-6 flex items-center justify-center gap-3">
-    <a class="cursor-pointer">
-      <mat-icon class="icon-sm" svgIcon="fa:facebook"></mat-icon>
-    </a>
-    <a class="cursor-pointer">
-      <mat-icon class="icon-sm" svgIcon="fa:twitter"></mat-icon>
-    </a>
-    <a class="cursor-pointer">
-      <mat-icon class="icon-sm" svgIcon="fa:instagram"></mat-icon>
-    </a>
-    <a class="cursor-pointer">
-      <mat-icon class="icon-sm" svgIcon="fa:pinterest"></mat-icon>
-    </a>
-    <a class="cursor-pointer">
-      <mat-icon class="icon-sm" svgIcon="fa:github"></mat-icon>
-    </a>
-  </div>
-
-  <div class="bg-app-bar p-6 flex flex-col">
-    <p class="mt-0 mb-4 font-medium">If you would like to get notified as soon as we launch, subscribe below and follow
-      us on socials!</p>
-
-    <mat-form-field>
-      <mat-label>E-Mail</mat-label>
-      <input matInput>
-      <mat-icon matSuffix svgIcon="mat:mail"></mat-icon>
-    </mat-form-field>
-
-    <button color="primary" mat-raised-button type="button">Subscribe</button>
+    <h2 class="text-2xl md:text-4xl font-bold mt-4">¡Activa tu Dispositivo de Forma Segura!</h2>
+    <h3 class="text-lg md:text-xl font-medium text-gray-200 mt-2 text-justify">Para garantizar la seguridad de tus credenciales te recomendamos lo siguiente:</h3>
+    <div class="bg-app-bar p-6 rounded-lg">
+      <ul class="list-disc list-inside mt-2 text-gray-500 text-left">
+        <li class="mb-2">No compartir tus credenciales con nadie, ni siquiera con personal de soporte.</li>
+        <li class="mb-2">No proporcionar tus correos electrónicos o contraseñas por correo, mensajes de texto o llamadas telefónicas no solicitadas.</li>
+        <li class="mb-2">Usar solamente dispositivos de confianza y evitar el uso de dispositivos públicos o compartidos.</li>
+        <li class="mb-2">Utilizar contraseñas seguras, combinando letras, números y caracteres especiales, y cambiarlas regularmente.</li>
+        <li class="mb-2">Revisar regularmente la actividad de tu cuenta y notificar cualquier actividad sospechosa.</li>
+      </ul>
+      
+      <button color="primary" class="mt-4 py-2 px-6 bg-blue-500 hover:bg-blue-600 text-white rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400" (click)="send()" mat-raised-button type="button">Click aquí para activar dispositivo</button>
+    </div>
   </div>
 </div>

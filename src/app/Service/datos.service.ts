@@ -9,6 +9,7 @@ import jwt_decode from 'jwt-decode';
 export class DatosService {
   private dirIP: string = '';
   private uniqueID: string = '';
+  private c_Tipo_Dispositivo: string = '';
 
   constructor() {
     this.initData();
@@ -23,10 +24,24 @@ export class DatosService {
     });
 
   }
+  private TipoDispositivo() {
+    const c_Tipo_Dispositivo = navigator.userAgent;
+    const regex = /\((.*?)\)/; // Expresión regular para obtener el contenido entre paréntesis
+    const match = c_Tipo_Dispositivo.match(regex);
+    if (match && match.length >= 2) {
+      // Remover ;, / y espacios y agregar guiones -
+      return match[1].replace(/[;]/g, '-').replace(/[\/\s]/g, '-');
+    } else {
+      return ''; // Si no se encuentra ninguna coincidencia, devuelve una cadena vacía o un mensaje de error.
+    }
+  }
+  
+
 
   private UniqueID(): string {
     const deviceId = this.generateBrowserFingerprint();
- //   console.log('Device ID:', deviceId);
+    
+   
 
     const localStorageKey = 'token_dispositivo';
     const localStorageKeys  = 'uniqueID';
@@ -107,6 +122,13 @@ export class DatosService {
     this.uniqueID = this.UniqueID();
 
     return this.uniqueID;
+  }
+
+  
+  getTipoDispositivo(): string {
+    this.c_Tipo_Dispositivo = this.TipoDispositivo();
+
+    return this.c_Tipo_Dispositivo;
   }
 
 }

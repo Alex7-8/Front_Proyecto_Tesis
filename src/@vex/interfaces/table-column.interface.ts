@@ -3,5 +3,8 @@ export interface TableColumn<T> {
   property: string;
   type: 'text' | 'image' | 'badge' | 'progress' | 'checkbox' | 'button';
   visible?: boolean;
+  icon?: string;
   cssClasses?: string[];
+
 }
+

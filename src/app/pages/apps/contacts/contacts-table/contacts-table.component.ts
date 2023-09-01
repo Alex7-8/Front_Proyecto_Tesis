@@ -9,6 +9,7 @@ import { stagger40ms } from '../../../../../@vex/animations/stagger.animation';
 import { MatDialog } from '@angular/material/dialog';
 import { ContactsEditComponent } from '../components/contacts-edit/contacts-edit.component';
 import { Contact } from '../interfaces/contact.interface';
+import { getEventListeners } from 'events';
 
 @Component({
   selector: 'vex-contacts-table',
@@ -87,18 +88,25 @@ export class ContactsTableComponent implements OnInit {
   }
 
   openContact(id?: Contact['id']) {
+    console.log(id);
     this.dialog.open(ContactsEditComponent, {
       data: id || null,
       width: '600px'
     });
+
+   
   }
 
   toggleStar(id: Contact['id']) {
+
+
     const contact = this.tableData.find(c => c.id === id);
+   
 
     if (contact) {
       contact.starred = !contact.starred;
     }
+
   }
 
   setData(data: Contact[]) {

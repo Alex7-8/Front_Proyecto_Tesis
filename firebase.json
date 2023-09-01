@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "jcservices",
+    "site": "front-8ca8f",
     "public": "public",
     "ignore": [
       "firebase.json",

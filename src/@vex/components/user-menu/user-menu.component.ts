@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverRef } from '../popover/popover-ref';
 
+
 @Component({
   selector: 'vex-user-menu',
   templateUrl: './user-menu.component.html',
@@ -8,7 +9,9 @@ import { PopoverRef } from '../popover/popover-ref';
 })
 export class UserMenuComponent implements OnInit {
 
-  constructor(private readonly popoverRef: PopoverRef) { }
+  constructor(
+   
+    private readonly popoverRef: PopoverRef) { }
 
   ngOnInit(): void {
   }
@@ -16,5 +19,6 @@ export class UserMenuComponent implements OnInit {
   close(): void {
     /** Wait for animation to complete and then close */
     setTimeout(() => this.popoverRef.close(), 250);
+    
   }
 }

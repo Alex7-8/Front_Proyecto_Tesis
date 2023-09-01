@@ -1,0 +1,80 @@
+/* Agrega estos estilos a tu archivo CSS o componente si estás usando estilos en línea */
+
+.card {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+  }
+  
+  .form-fields-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-field-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+ 
+  /* Estilos para el snackbar de éxito */
+.success-snackbar {
+  background-color: #4caf50; /* Color de fondo verde */
+  color: #fff; /* Color del texto en blanco */
+}
+
+/* Estilos para el snackbar de error */
+.error-snackbar {
+  background-color: #f44336; /* Color de fondo rojo */
+  color: #fff; /* Color del texto en blanco */
+}
+.image-upload-container {
+  width: 150px;
+  height: auto;
+  border: 2px solid black;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  .selected-image-container {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    .selected-image-wrapper {
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+
+  .button-container {
+    text-align: center;
+    margin-top: 10px;
+
+    .custom-file-upload {
+      cursor: pointer;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #e0e0e0;
+      }
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+  }
+}

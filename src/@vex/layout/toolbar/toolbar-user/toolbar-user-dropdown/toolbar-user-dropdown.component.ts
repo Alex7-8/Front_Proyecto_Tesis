@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { MenuItem } from '../interfaces/menu-item.interface';
 import { trackById } from '../../../../utils/track-by';
 import { PopoverRef } from '../../../../components/popover/popover-ref';
+import { LoginService } from 'src/app/Service/Login.service';
 
 export interface OnlineStatus {
   id: 'online' | 'away' | 'dnd' | 'offline';
@@ -84,7 +85,9 @@ export class ToolbarUserDropdownComponent implements OnInit {
 
   trackById = trackById;
 
-  constructor(private cd: ChangeDetectorRef,
+  constructor(
+              private loginService: LoginService,
+              private cd: ChangeDetectorRef,
               private popoverRef: PopoverRef<ToolbarUserDropdownComponent>) { }
 
   ngOnInit() {
@@ -97,5 +100,6 @@ export class ToolbarUserDropdownComponent implements OnInit {
 
   close() {
     this.popoverRef.close();
+    this.loginService.logout();
   }
 }

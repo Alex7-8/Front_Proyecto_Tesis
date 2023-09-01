@@ -248,6 +248,39 @@ export class AppComponent {
             ]
           },
           {
+            type: 'dropdown',
+            label: 'Modulo de Empleados',
+            icon: 'mat:contacts',
+            children: [
+              {
+                type: 'link',
+                label: 'List - Grid',
+                route: '/apps/contacts/grid',
+              },
+              {
+                type: 'link',
+                label: 'Empleados',
+                route: '/apps/empleado/table',
+              }
+            ]
+          },{
+            type: 'dropdown',
+            label: 'Registrar Clientes y Proveedores',
+            icon: 'mat:contacts',
+            children: [
+              {
+                type: 'link',
+                label: 'List - Grid',
+                route: '/apps/contacts/grid',
+              },
+              {
+                type: 'link',
+                label: 'Clientes y Proveedores',
+                route: '/apps/persona/table',
+              }
+            ]
+          },
+          {
             type: 'link',
             label: 'Scrumboard',
             route: '/apps/scrumboard',
@@ -291,6 +324,18 @@ export class AppComponent {
             label: 'Coming Soon',
             icon: 'mat:watch_later',
             route: '/coming-soon'
+          },
+          {
+            type: 'link',
+            label: 'Registrar Empleados',
+            icon: 'mat:watch_later',
+            route: '/pages/CrearUsuarios'
+          },
+          {
+            type: 'link',
+            label: 'Actualizar Empleados',
+            icon: 'mat:watch_later',
+            route: '/pages/ActualizarUsuarios'
           },
           {
             type: 'dropdown',

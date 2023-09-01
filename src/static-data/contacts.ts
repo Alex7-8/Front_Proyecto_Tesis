@@ -2,7 +2,7 @@ import { Contact } from '../app/pages/apps/contacts/interfaces/contact.interface
 
 export const contactsData: Contact[] = [
   {
-    id: 1,
+    id: 1086,
     imageSrc: 'assets/img/avatars/1.jpg',
     name: 'Guerrero Morales',
     phone: '+21 (988) 504-2559',
@@ -11,6 +11,8 @@ export const contactsData: Contact[] = [
     selected: false,
     starred: false
   },
+
+  
   {
     id: 2,
     imageSrc: 'assets/img/avatars/2.jpg',

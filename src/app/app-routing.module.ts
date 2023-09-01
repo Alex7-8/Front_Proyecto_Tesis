@@ -3,19 +3,41 @@ import { RouterModule } from '@angular/router';
 import { CustomLayoutComponent } from './custom-layout/custom-layout.component';
 import { VexRoutes } from '../@vex/interfaces/vex-route.interface';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
+import { AuthGuard } from '../../src/app/guards/auth.guard';
+import { DashboardAnalyticsComponent } from './dashboards/dashboard-analytics.component';
 
 const routes: VexRoutes = [
   {
+  path: '',
+  component: CustomLayoutComponent,
+  children: [
+    {
+      path: '',
+      redirectTo: '/login',
+      pathMatch: 'full'
+    },
+    {
+      path: 'dashboards/analytics',
+      redirectTo: '/', // Revisa esta redirección, ¿es correcta?
+      pathMatch: 'full',
+      //canActivate: [AuthGuard] // Agrega el AuthGuard aquí
+    },
+  ]
+  
+  },
+
+
+  {
     path: 'login',
-    loadChildren: () => import('./pages/auth/login/login.module').then(m => m.LoginModule),
+    loadChildren: () => import('./auth/login/login.module').then(m => m.LoginModule),
   },
   {
     path: 'register',
-    loadChildren: () => import('./pages/auth/register/register.module').then(m => m.RegisterModule),
+    loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterModule),
   },
   {
     path: 'forgot-password',
-    loadChildren: () => import('./pages/auth/forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule),
+    loadChildren: () => import('./auth/forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule),
   },
   {
     path: 'coming-soon',
@@ -29,18 +51,20 @@ const routes: VexRoutes = [
     path: '',
     component: CustomLayoutComponent,
     children: [
+
       {
-        path: 'dashboards/analytics',
+        path: 'dashboards',
         redirectTo: '/',
         pathMatch: 'full'
       },
       {
-        path: '',
-        loadChildren: () => import('./pages/dashboards/dashboard-analytics/dashboard-analytics.module').then(m => m.DashboardAnalyticsModule),
+        path: 'analytics',
+        loadChildren: () => import('./dashboards/dashboard-analytics.module').then(m => m.DashboardAnalyticsModule),
       },
       {
         path: 'apps',
         children: [
+          
           {
             path: 'chat',
             loadChildren: () => import('./pages/apps/chat/chat.module').then(m => m.ChatModule),
@@ -48,6 +72,7 @@ const routes: VexRoutes = [
               toolbarShadowEnabled: true
             }
           },
+        
           {
             path: 'mail',
             loadChildren: () => import('./pages/apps/mail/mail.module').then(m => m.MailModule),
@@ -64,6 +89,14 @@ const routes: VexRoutes = [
           {
             path: 'contacts',
             loadChildren: () => import('./pages/apps/contacts/contacts.module').then(m => m.ContactsModule)
+          },
+          {
+            path: 'empleado',
+            loadChildren: () => import('./pages/apps/empleado/listar_empleado.module').then(m => m.ListarEmpleadoModule)
+          },
+          {
+            path: 'persona',
+            loadChildren: () => import('./pages/apps/persona/persona.module').then(m => m.PersonaModule)
           },
           {
             path: 'calendar',
@@ -93,6 +126,14 @@ const routes: VexRoutes = [
       {
         path: 'pages',
         children: [
+          {
+            path: 'CrearUsuarios',
+            loadChildren: () => import('./pages/apps/form_crear_usuarios/form_crear_usuarios.module').then(m => m.FormCrearUsuariosModule)
+          },
+          {
+            path: 'ActualizarUsuarios',
+            loadChildren: () => import('./pages/apps/form_actualizar_usuarios/form_actualizar_usuarios.module').then(m => m.FormActualizarUsuariosModule)
+          },
           {
             path: 'pricing',
             loadChildren: () => import('./pages/pages/pricing/pricing.module').then(m => m.PricingModule)

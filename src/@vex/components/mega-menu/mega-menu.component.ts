@@ -40,6 +40,16 @@ export class MegaMenuComponent implements OnInit {
       route: '/apps/contacts/grid'
     },
     {
+      icon: 'mat:contacts',
+      label: 'Modulo de Empleados',
+      route: '/apps/contacts/grid'
+    },
+    {
+      icon: 'mat:contacts',
+      label: 'Registrar Clientes y Proveedores',
+      route: '/apps/contacts/grid'
+    },
+    {
       icon: 'mat:assessment',
       label: 'Scrumboard',
       route: '/apps/scrumboard/1'
@@ -48,10 +58,21 @@ export class MegaMenuComponent implements OnInit {
       icon: 'mat:book',
       label: 'Documentation',
       route: '/documentation'
-    }
+    },
+  
   ];
 
   pages: MegaMenuPage[] = [
+    {
+      
+      label: 'Registrar Empleados',
+      route: '/apps/RegistrarUsuarios'
+    },
+    {
+      
+      label: 'Actualizar Empleados',
+      route: '/apps/ActualizarUsuarios'
+    },
     {
       label: 'All-In-One Table',
       route: '/apps/aio-table'
