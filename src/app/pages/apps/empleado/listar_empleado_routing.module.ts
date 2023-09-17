@@ -10,7 +10,7 @@ const routes: VexRoutes = [
     children: [
       {
         path: 'grid',
-        loadChildren: () => import('./contacts-grid/contacts-grid.module').then(m => m.ContactsGridModule)
+        loadChildren: () => import('./empleado-grid/empleado-grid.module').then(m => m.EmpleadoGridModule)
       },
       {
         path: 'table',

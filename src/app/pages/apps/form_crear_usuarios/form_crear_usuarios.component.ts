@@ -304,6 +304,7 @@ export class FormCrearUsuariosComponent implements OnInit {
     const C_SNumero_Telefono = this.usuarioForm.get("c_SNumero_Telefono").value;
     const C_Correo = this.usuarioForm.get("c_Correo").value;
     const C_Img_Base = this.usuarioForm.get("c_Img_Base").value;
+    const C_Descripcion = "";
     const C_Fecha_Nacimiento = this.usuarioForm.get("c_Fecha_Nacimiento").value;
     const C_Usuario_Creacion = this.usuarioForm.get("c_Usuario_Creacion").value;
 
@@ -328,6 +329,7 @@ export class FormCrearUsuariosComponent implements OnInit {
       C_SNumero_Telefono,
       C_Correo,
       C_Img_Base,
+      C_Descripcion,
       C_Fecha_Nacimiento,
       C_Usuario_Creacion
       ).subscribe(

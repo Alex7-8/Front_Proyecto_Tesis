@@ -1,114 +1,222 @@
-<div class="mt-6 flex flex-col md:flex-row md:items-start">
+<div class="mt-7 flex flex-col md:flex-row md:items-start">
   <div class="flex-auto">
     <div class="card">
       <div class="px-gutter py-4 border-b">
-        <h2 class="title m-0">About</h2>
+        <div class="ltr:ml-1 rtl:mr-1 flex-none hidden sm:inline-block">
+          <label style="margin-right: 0.3rem;"  for="gridViewToggle">Editar Datos Personales</label>
+          <mat-slide-toggle
+            id="gridViewToggle"
+            color="primary"
+            [checked]="false"
+            (change)="onToggleChange($event)"
+          ></mat-slide-toggle>
+        </div>
+        <!-- <h2 class="title m-0">Datos Personales</h2> -->
       </div>
-
+      <form  (ngSubmit)="openConfirmDialog()" [formGroup]="form" >
       <div class="px-gutter py-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="py-3 flex items-center">
-          <div @scaleIn
-               class="w-10 h-10 rounded-full bg-primary/10 text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
-            <mat-icon class="icon-sm" svgIcon="mat:phone"></mat-icon>
-          </div>
 
-          <div @fadeInRight>
-            <p class="m-0 body-1">+1 (930) 502-3182</p>
-            <p class="m-0 caption text-hint">Business</p>
-          </div>
+        <div class="py-3 flex items-center">
+            <mat-form-field class="flex-auto">
+              <mat-label>Primer Nombre</mat-label>
+              <input cdkFocusInitial formControlName="Primer_Nombre" matInput>
+              <mat-icon matPrefix svgIcon="mat:person"></mat-icon>
+              <mat-error *ngIf="form.get('Primer_Nombre').hasError('required')">Este campo es requerido.</mat-error>
+              <mat-error *ngIf="form.get('Primer_Nombre').hasError('pattern')">Solo se permiten letras.</mat-error>
+            </mat-form-field>
         </div>
 
         <div class="py-3 flex items-center">
-          <div @scaleIn
-               class="w-10 h-10 rounded-full bg-primary/10 text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
-            <mat-icon class="icon-sm" svgIcon="mat:work"></mat-icon>
-          </div>
-
-          <div @fadeInRight>
-            <p class="m-0 body-1">Web Developer at IceCube</p>
-            <p class="m-0 caption text-hint">Previously Designer at HotStuff</p>
-          </div>
+            <mat-form-field class="flex-auto">
+              <mat-label>Segundo Nombre</mat-label>
+              <input cdkFocusInitial formControlName="Segundo_Nombre" matInput>
+              <mat-icon matPrefix svgIcon="mat:person"></mat-icon>
+              <mat-error *ngIf="form.get('Segundo_Nombre').hasError('required')">Este campo es requerido.</mat-error>
+              <mat-error *ngIf="form.get('Segundo_Nombre').hasError('pattern')">Solo se permiten letras.</mat-error>
+            </mat-form-field>
         </div>
 
         <div class="py-3 flex items-center">
-          <div @scaleIn
-               class="w-10 h-10 rounded-full bg-primary/10 text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
-            <mat-icon class="icon-sm" svgIcon="mat:mail"></mat-icon>
-          </div>
-
-          <div @fadeInRight>
-            <p class="m-0 body-1">david.smith@example.com</p>
-            <p class="m-0 caption text-hint">Business inquiries only</p>
-          </div>
+            <mat-form-field class="flex-auto">
+              <mat-label>Tercer Nombre</mat-label>
+              <input cdkFocusInitial formControlName="Tercer_Nombre" matInput>
+              <mat-icon matPrefix svgIcon="mat:person"></mat-icon>
+              <mat-error *ngIf="form.get('Tercer_Nombre').hasError('pattern')">Solo se permiten letras.</mat-error>
+            </mat-form-field>
         </div>
 
         <div class="py-3 flex items-center">
-          <div @scaleIn
-               class="w-10 h-10 rounded-full bg-primary/10 text-primary ltr:mr-3 rtl:ml-3 flex items-center justify-center">
-            <mat-icon class="icon-sm" svgIcon="mat:access_time"></mat-icon>
-          </div>
-
-          <div @fadeInRight>
-            <p class="m-0 body-1">Usually available 9am-5pm</p>
-            <p class="m-0 caption text-hint">Call +1 (930) 242-5186 for important things</p>
-          </div>
+          <mat-form-field class="flex-auto">
+            <mat-label>Primer Apellido</mat-label>
+            <input cdkFocusInitial formControlName="Primer_Apellido" matInput>
+            <mat-icon matPrefix svgIcon="mat:person"></mat-icon>
+            <mat-error *ngIf="form.get('Primer_Apellido').hasError('required')">Este campo es requerido.</mat-error>
+            <mat-error *ngIf="form.get('Primer_Apellido').hasError('pattern')">Solo se permiten letras.</mat-error>
+          </mat-form-field>
         </div>
 
         <div class="py-3 flex items-center">
-          <div @scaleIn
-               class="w-10 h-10 rounded-full bg-gray/10 text-dark ltr:mr-3 rtl:ml-3 cursor-pointer flex items-center justify-center">
-            <mat-icon class="icon-sm" svgIcon="mat:add"></mat-icon>
-          </div>
-
-          <p @fadeInRight class="m-0 body-1 cursor-pointer">Add an address</p>
+          <mat-form-field class="flex-auto">
+            <mat-label>Segundo Apellido</mat-label>
+            <input cdkFocusInitial formControlName="Segundo_Apellido" matInput>
+            <mat-icon matPrefix svgIcon="mat:person"></mat-icon>
+            <mat-error *ngIf="form.get('Segundo_Apellido').hasError('required')">Este campo es requerido.</mat-error>
+            <mat-error *ngIf="form.get('Segundo_Apellido').hasError('pattern')">Solo se permiten letras.</mat-error>
+          </mat-form-field>
         </div>
 
         <div class="py-3 flex items-center">
-          <div @scaleIn
-               class="w-10 h-10 rounded-full bg-gray/10 text-dark ltr:mr-3 rtl:ml-3 cursor-pointer flex items-center justify-center">
-            <mat-icon class="icon-sm" svgIcon="mat:whatshot"></mat-icon>
-          </div>
-
-          <p @fadeInRight class="m-0 body-1 cursor-pointer">Add social profiles</p>
+          <mat-form-field class="flex-auto" *ngIf="form.get('c_Id_Genero').value === 1">
+            <mat-label>Apellido de Casada</mat-label>
+            <input cdkFocusInitial formControlName="Apellido_Casada" matInput>
+            <mat-icon matPrefix svgIcon="mat:person"></mat-icon>
+            <mat-error *ngIf="form.get('Apellido_Casada').hasError('pattern')">Solo se permiten letras.</mat-error>
+          </mat-form-field>
         </div>
+
+
+
+        <div class="py-3 flex items-center">
+         
+          <mat-form-field class="flex-1 sm:w-1/4" style="margin-right: 8px;">
+            <mat-label>Fecha de Nacimiento</mat-label>
+            <input [matDatepicker]="datepickerRef" formControlName="Fecha_Nacimiento" matInput>
+            <mat-datepicker-toggle [for]="datepickerRef" class="block" matPrefix></mat-datepicker-toggle>
+            <mat-datepicker #datepickerRef></mat-datepicker>
+            <mat-error *ngIf="form.get('Fecha_Nacimiento').hasError('required')">Este campo es requerido.</mat-error>
+          </mat-form-field> 
+          <mat-form-field class="flex-1 sm:w-1/4" style="margin-left: 8px;">
+            <mat-label>Genero</mat-label>
+            <mat-select formControlName="c_Id_Genero">
+              <mat-option *ngFor="let genero of generos" [value]="genero.c_Id_Genero">{{ genero.c_Descripcion }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('c_Id_Genero').hasError('required')">Este campo es requerido.</mat-error>
+          </mat-form-field>
+          
+        </div>
+
+        <div class="py-3 flex items-center">
+          <mat-form-field class="flex-1 sm:w-1/4" style="margin-right: 8px;">
+            <mat-label>Departamento</mat-label>
+            <mat-select  formControlName="c_Id_Departamento"  placeholder="Departamento" >
+              <mat-option *ngFor="let state of filteredDepartamento$ | async"  [value]="state.Id">
+                <div class="option-container">
+                  <img [src]="state.flag" class="align-middle mr-4 shadow-lg" style="width: 50%; height: 50%;">
+                  <span class="body-1">{{ state.name }}</span>
+                </div>
+              </mat-option>
+            </mat-select>
+           <mat-error *ngIf="form.get('c_Id_Departamento').hasError('required')">Este campo es requerido.</mat-error>
+          </mat-form-field>
+    
+          <mat-form-field class="flex-1 sm:w-1/4" style="margin-left: 8px;">
+            <mat-label>Municipio</mat-label>
+            <mat-select formControlName="c_Id_Municipio" placeholder="Municipio">
+              <mat-option *ngFor="let Mun of filteredMunicipio$ | async" [value]="Mun.Id">
+                <div class="option-container">
+                  <img [src]="Mun.flag" class="align-middle mr-5 shadow-lg" style="width: 12%; height: 12%;">
+                  <span class="body-2">{{ Mun.name }}</span>
+                </div>
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('c_Id_Municipio').hasError('required')">Este campo es requerido.</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="py-3 flex items-center">
+          <mat-form-field class="flex-auto">
+            <mat-label>DPI</mat-label>
+            <input cdkFocusInitial formControlName="DPI" matInput>
+            <mat-icon matPrefix svgIcon="mat:assignment_ind"></mat-icon>
+            <mat-error *ngIf="form.get('DPI').hasError('required')">Este campo es requerido.</mat-error>
+            <mat-error *ngIf="form.get('DPI').hasError('pattern')">Solo se permiten numeros.</mat-error>
+            <mat-error *ngIf="form.get('DPI').hasError('minlength')">Debe tener 13 caracteres.</mat-error>
+            <mat-error *ngIf="form.get('DPI').hasError('maxlength')">No puede exceder de los 13 caracteres.</mat-error>
+            
+          </mat-form-field>
+        </div>
+
+        <div class="py-3 flex items-center">
+          <mat-form-field class="flex-auto">
+            <mat-label>NIT</mat-label>
+            <input cdkFocusInitial formControlName="NIT" matInput>
+            <mat-icon matPrefix svgIcon="mat:ballot"></mat-icon>
+            <mat-error *ngIf="form.get('NIT').hasError('pattern')">Solo se permiten numeros.</mat-error>
+            <mat-error *ngIf="form.get('NIT').hasError('minlength')">Debe tener 10 caracteres.</mat-error>
+            <mat-error *ngIf="form.get('NIT').hasError('maxlength')">No puede exceder de los 10 caracteres.</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="py-3 flex items-center">
+          <mat-form-field class="flex-auto">
+            <mat-label>Direccion</mat-label>
+            <input cdkFocusInitial formControlName="Direccion" matInput>
+            <mat-icon matPrefix svgIcon="mat:home"></mat-icon>
+            <mat-error *ngIf="form.get('Direccion').hasError('required')">Este campo es requerido.</mat-error>
+            <mat-error *ngIf="form.get('Direccion').hasError('pattern')">Solo se permiten letras, numeros, guiones y comas.</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="py-3 flex items-center">
+          <mat-form-field class="flex-auto">
+            <mat-label>Correo</mat-label>
+            <input formControlName="Correo" matInput>
+            <mat-icon matPrefix svgIcon="mat:email"></mat-icon>
+            <mat-error *ngIf="form.get('Correo').hasError('required')">Este campo es requerido.</mat-error>
+          </mat-form-field>
+        </div>
+
+
+
+        <div class="py-3 flex items-center">
+          <mat-form-field class="flex-auto">
+            <mat-label>Contraseña Anterior</mat-label>
+             <input [type]="inputType" formControlName="c_ContraseniaA" matInput required>
+             <button (click)="toggleVisibilityA()" mat-icon-button matSuffix matTooltip="Toggle Visibility" type="button">
+             <mat-icon *ngIf="visibleA" svgIcon="mat:visibility"></mat-icon>
+             <mat-icon *ngIf="!visibleA" svgIcon="mat:visibility_off"></mat-icon>
+          </button>
+            <mat-error *ngIf="form.get('c_ContraseniaA').hasError('required')">Este campo es requerido.</mat-error>
+            <mat-error *ngIf="form.get('c_ContraseniaA').hasError('minlength')">Debe tener al menos 8 caracteres.</mat-error>
+          </mat-form-field>
+          
       </div>
-    </div>
 
-    <div class="card mt-6">
-      <div class="px-gutter py-4 border-b">
-        <h2 class="title m-0">Latest Photos</h2>
+      
+      <div class="py-3 flex items-center">
+        <mat-form-field class="flex-auto" >
+          <mat-label>Contraseña Nueva</mat-label>
+             <input [type]="inputType" formControlName="c_ContraseniaN" matInput required>
+             <button (click)="toggleVisibilityN()" mat-icon-button matSuffix matTooltip="Toggle Visibility" type="button">
+             <mat-icon *ngIf="visibleN" svgIcon="mat:visibility"></mat-icon>
+             <mat-icon *ngIf="!visibleN" svgIcon="mat:visibility_off"></mat-icon>
+            </button>
+          <mat-error *ngIf="form.get('c_ContraseniaN').hasError('required')">Este campo es requerido.</mat-error>
+          <mat-error *ngIf="form.get('c_ContraseniaN').hasError('minlength')">Debe tener al menos 8 caracteres.</mat-error>
+          <mat-error *ngIf="form.get('c_ContraseniaN').hasError('pattern')">Debe de ingresar al menos una letra mayuscula(A), minuscula(a), caracter especial(@,!,#,$,%...) y un numero(0-9).</mat-error>
+
+        </mat-form-field>
       </div>
 
-      <div @stagger
-           class="px-gutter py-4 grid grid-cols-2 sm:grid-cols-5 gap-6">
-        <img *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]"
-             @scaleIn
-             class="rounded w-full"
-             src="assets/img/avatars/{{ i }}.jpg"/>
+      <div class="py-3 flex items-center">
+       
       </div>
-    </div>
-  </div>
 
-  <div class="card max-w-unset md:max-w-xs w-full flex-none md:ltr:ml-6 md:rtl:mr-6 mt-6 md:mt-0">
-    <div class="px-6 py-4 border-b">
-      <h2 class="title m-0">Friend Suggestions</h2>
-    </div>
 
-    <div @stagger class="px-6 py-4 flex flex-col gap-4">
-      <div *ngFor="let friend of suggestions; trackBy: trackByName" class="flex items-center">
-        <img @scaleIn [src]="friend.imageSrc" alt="Profile Picture" class="avatar ltr:mr-3 rtl:ml-3 flex-none"/>
-        <div @fadeInRight class="flex-auto">
-          <h4 class="body-2 m-0 leading-snug">{{ friend.name }}</h4>
-          <h5 class="text-secondary m-0 caption leading-none">{{ friend.friends }} mutual friends</h5>
-        </div>
-        <button (click)="addFriend(friend)" *ngIf="!friend.added" color="primary" mat-icon-button type="button">
-          <mat-icon svgIcon="mat:person_add"></mat-icon>
+
+      <mat-dialog-actions align="end">
+       
+        <button  color="primary" mat-flat-button type="submit" [disabled]="!form.valid" >
+          Actualizar Datos
         </button>
-
-        <button (click)="removeFriend(friend)" *ngIf="friend.added" color="primary" mat-icon-button type="button">
-          <mat-icon svgIcon="mat:check"></mat-icon>
-        </button>
+      </mat-dialog-actions>
       </div>
+
+     
+      <!-- <pre>{{ form.value | json }}</pre> -->
+      </form>
     </div>
+
+   
   </div>
 </div>

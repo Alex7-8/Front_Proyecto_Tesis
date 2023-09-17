@@ -9,6 +9,7 @@ import { Observable, of } from 'rxjs';
 import { UserMenuComponent } from '../../components/user-menu/user-menu.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchModalComponent } from '../../components/search-modal/search-modal.component';
+import jwt_decode from "jwt-decode";
 
 @Component({
   selector: 'vex-sidenav',
@@ -28,6 +29,11 @@ export class SidenavComponent implements OnInit {
   userMenuOpen$: Observable<boolean> = of(false);
 
   items = this.navigationService.items;
+  Id_Usuario: string = "";
+  Id_Sucursal: string = "";
+  roles = [];
+  foto: string = "";
+  Nombre: string = "";
 
   constructor(private navigationService: NavigationService,
               private layoutService: LayoutService,
@@ -36,6 +42,33 @@ export class SidenavComponent implements OnInit {
               private readonly dialog: MatDialog) { }
 
   ngOnInit() {
+    const token = localStorage.getItem("token"); // Reemplaza 'nombreDelToken' con el nombre real de tu token en el localStorage
+
+    const decodedToken: any = jwt_decode(token);
+  
+    const idUsuario = decodedToken.IdUsuario;
+    const idSucursal = decodedToken.IdSucursal;
+    const nombre = decodedToken.Nombre;
+    const correo = decodedToken.Correo;
+    const rol = decodedToken.role;
+    const foto = decodedToken.FotoEmpleado;
+    
+  
+    this.Id_Usuario = idUsuario;
+    this.Id_Sucursal = idSucursal;
+   // this.roles = rol;
+    this.foto = foto;
+    this.Nombre = nombre;
+
+    if (rol) {
+      if (Array.isArray(rol)) {
+        this.roles = rol;
+      } else {
+        this.roles = [rol];
+      }
+    }
+
+    
   }
 
   collapseOpenSidenav() {

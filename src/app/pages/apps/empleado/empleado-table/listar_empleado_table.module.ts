@@ -13,20 +13,21 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ScrollbarModule } from '../../../../../@vex/components/scrollbar/scrollbar.module';
 import { ListarEmpleadoTableComponent } from './listar_empleado_table.component';
-import { ListarEmpleadosDataTableComponent } from './contacts-data-table/listar_empleados_data_table.component';
-import { ContactsEditModule } from '../components/contacts-edit/contacts-edit.module';
+import { ListarEmpleadosDataTableComponent } from './empleado-data-table/listar_empleados_data_table.component';
+import { EmpleadoEditModule } from '../components/empleado-edit/empleado-edit.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ListarEmpleadoTableMenuComponent } from './contacts-table-menu/listar_empleado_menu.component';
+import { ListarEmpleadoTableMenuComponent } from './empleado-table-menu/listar_empleado_menu.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { ComponentsSlideToggleModule } from '../../../../../app/pages/ui/components/components-slide-toggle/components-slide-toggle.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [ListarEmpleadoTableComponent, ListarEmpleadosDataTableComponent, ListarEmpleadoTableMenuComponent],
   imports: [
     CommonModule,
     ContactsTableRoutingModule,
-
+    ComponentsSlideToggleModule,
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
@@ -37,10 +38,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatRippleModule,
     MatDialogModule,
     ScrollbarModule,
-    ContactsEditModule,
+    EmpleadoEditModule,
     ReactiveFormsModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatSlideToggleModule
 
   ]
 })

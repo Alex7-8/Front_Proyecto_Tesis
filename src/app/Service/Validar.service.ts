@@ -21,7 +21,7 @@ export class ValidarService {
       Authorization: `Bearer ${token}` // Agrega el token al encabezado Authorization
     });
 
-    return this.http.post<any>(this._url + 'setActivarDispositivo', JSON.stringify(body), { headers })
+    return this.http.post<any>(this._url + 'SetActivarDispositivo', JSON.stringify(body), { headers })
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.error(error);

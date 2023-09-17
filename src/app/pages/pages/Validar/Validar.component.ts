@@ -75,8 +75,8 @@ export class ValidarComponent implements OnInit {
             duration: 5000
           });
           // Redirige a la página principal
-          console.clear();
-           this.router.navigate(['/login']);
+       //   console.clear();
+          // this.router.navigate(['/login']);
         } else {
           // Si la solicitud no fue exitosa, muestra el mensaje de error personalizado
           const estado = "20";
@@ -85,8 +85,8 @@ export class ValidarComponent implements OnInit {
           this.snackbar.open(`Error: ${estado}, Mensaje: ${mensaje}`, 'OK', {
             duration: 5000
           });
-          console.clear();
-          this.router.navigate(['/login']);
+         // console.clear();
+         // this.router.navigate(['/login']);
         }
       },
       error => {
@@ -97,8 +97,8 @@ export class ValidarComponent implements OnInit {
         this.snackbar.open(`Error: ${estado}, Mensaje: ${mensaje}`, 'OK', {
           duration: 5000
         });
-        console.clear();
-        this.router.navigate(['/login']);
+        //console.clear();
+       // this.router.navigate(['/login']);
        // console.error(error);
       }
     );

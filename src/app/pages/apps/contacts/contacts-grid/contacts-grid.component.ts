@@ -67,13 +67,16 @@ export class ContactsGridComponent implements OnInit {
   constructor(private dialog: MatDialog,
               private route: ActivatedRoute) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log()
+  }
 
   openContact(id?: Contact['id']) {
     this.dialog.open(ContactsEditComponent, {
       data: id || null,
       width: '600px'
     });
+    console.log(id);
   }
 
   toggleStar(id: Contact['id']) {

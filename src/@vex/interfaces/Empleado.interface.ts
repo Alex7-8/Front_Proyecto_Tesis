@@ -21,5 +21,7 @@ export interface Empleado {
     c_Correo: string;
     c_Fecha_Nacimiento: any;
     c_Img_Base: string;
+    c_Id_Cuenta: string;
+    c_Empresa: string;
   
   }

@@ -19,8 +19,10 @@ import axios from 'axios';
   })
   export class CrearUsuariosService {
     private _url: string = `${environment.API_URL}/Persona/`; // URL de la API
+    estado: number = 1;
   
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,
+      private tokenService: TokenService) { }
   
     setEmpleado(c_Id_Usuario: string,
                 C_ID_ROL: number[], 
@@ -42,6 +44,7 @@ import axios from 'axios';
                 c_SNumero_Telefono: string,
                 c_Correo: string,
                 c_Img_Base: string,
+                c_Descripcion: string,
                 c_Fecha_Nacimiento: string,
                 c_Usuario_Creacion: string,
 
@@ -69,13 +72,13 @@ import axios from 'axios';
         c_SNumero_Telefono,
         c_Correo,
         c_Img_Base,
+        c_Descripcion,
         c_Fecha_Nacimiento,
         c_Usuario_Creacion,
 
       };
-      console.log(JSON.stringify(body));
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      return this.http.post<any>(this._url + 'setEmpleadosA', JSON.stringify(body),{ headers } )
+      return this.http.post<any>(this._url + 'SetEmpleadosA', JSON.stringify(body),{ headers } )
         .pipe(
           catchError((error: HttpErrorResponse) => {
             console.error(error);
@@ -90,6 +93,7 @@ import axios from 'axios';
 
     setPersona(
       c_ID_Rol_Persona: number,
+      c_Empresa: string,
       c_Id_Tipo_Cuenta: string,
       c_Id_Sucursal: number,
       c_Id_Genero: number,
@@ -116,6 +120,7 @@ import axios from 'axios';
 
 const body = {
 c_ID_Rol_Persona,
+c_Empresa,
 c_Id_Tipo_Cuenta,
 c_Id_Sucursal,
 c_Id_Genero,
@@ -138,9 +143,8 @@ c_Fecha_Nacimiento,
 c_Usuario_Creacion,
 
 };
-console.log(JSON.stringify(body));
 const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-return this.http.post<any>(this._url + 'setPersona', JSON.stringify(body),{ headers } )
+return this.http.post<any>(this._url + 'SetPersona', JSON.stringify(body),{ headers } )
 .pipe(
 catchError((error: HttpErrorResponse) => {
   console.error(error);
@@ -152,9 +156,10 @@ catchError((error: HttpErrorResponse) => {
 );
 }
 
-putActualizarPersona(
+putPersona(
   c_Id_Persona: number,
   c_ID_Rol_Persona: number,
+  c_Id_Tipo_Cuenta: string,
   c_Id_Sucursal: number,
   c_Id_Genero: number,
   c_Id_Municipio: number,
@@ -180,6 +185,7 @@ putActualizarPersona(
 const body = {
 c_Id_Persona,
 c_ID_Rol_Persona,
+c_Id_Tipo_Cuenta,
 c_Id_Sucursal,
 c_Id_Genero,
 c_Id_Municipio,
@@ -201,9 +207,9 @@ c_Fecha_Nacimiento,
 c_Usuario_Modificacion,
 
 };
-console.log(JSON.stringify(body));
+
 const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-return this.http.post<any>(this._url + 'putActualizarPersona', JSON.stringify(body),{ headers } )
+return this.http.post<any>(this._url + 'PutPersona', JSON.stringify(body),{ headers } )
 .pipe(
 catchError((error: HttpErrorResponse) => {
 console.error(error);
@@ -217,19 +223,21 @@ return throwError({ ok: false, estado, mensaje });
 
 CambiarEstadoPersona(
   c_Id_Persona: number,
-  c_Usuario_Modificacion: string
+  c_Usuario_Modificacion: string,
+   c_Descripcion: string
   ):  Observable<any> {
   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  const url = `${this._url}CambiarEstadoPersona?IdP=${c_Id_Persona}&IdUM=${c_Usuario_Modificacion}`;
+  const url = `${this._url}CambiarEstadoPersona?IdP=${c_Id_Persona}&IdUM=${c_Usuario_Modificacion}&razon=${c_Descripcion}`;
   return this.http.post<any>(url,headers);
 
 }
 
-    putActualizarEmpleado(
+putEmpleado(
       c_Id_Persona: number,
       c_Id_Usuario: string,
       C_ID_ROL: number[], 
       c_ID_Rol_Persona: number,
+      c_Id_Tipo_Cuenta: string,
       c_Id_Sucursal: number,
       c_Id_Genero: number,
       c_Id_Municipio: number,
@@ -246,6 +254,7 @@ CambiarEstadoPersona(
       c_SNumero_Telefono: string,
       c_Correo: string,
       c_Img_Base: string,
+      c_Descripcion: string,
       c_Fecha_Nacimiento: string,
       c_Usuario_Modificacion: string,
 
@@ -257,6 +266,7 @@ c_Id_Persona,
 c_Id_Usuario,
 c_ID_ROL,
 c_ID_Rol_Persona,
+c_Id_Tipo_Cuenta,
 c_Id_Sucursal,
 c_Id_Genero,
 c_Id_Municipio,
@@ -273,13 +283,13 @@ c_PNumero_Telefono,
 c_SNumero_Telefono,
 c_Correo,
 c_Img_Base,
+c_Descripcion,
 c_Fecha_Nacimiento,
 c_Usuario_Modificacion,
 
 };
-console.log(JSON.stringify(body));
 const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-return this.http.post<any>(this._url + 'putActualizarEmpleadosA', JSON.stringify(body),{ headers } )
+return this.http.post<any>(this._url + 'PutEmpleadosA', JSON.stringify(body),{ headers } )
 .pipe(
 catchError((error: HttpErrorResponse) => {
   console.error(error);
@@ -291,20 +301,93 @@ catchError((error: HttpErrorResponse) => {
 );
 }
 
+putEmpleadoByIdUsuario(
+  c_Id_Persona: number,
+  c_Id_Usuario: string,
+  c_ContraseniaA: string,
+  c_ContraseniaN: string,
+  c_Id_Genero: number,
+  c_Id_Municipio: number,
+  c_Primer_Nombre: string,
+  c_Segundo_Nombre: string,
+  c_Tercer_Nombre: string,
+  c_Primer_Apellido: string,
+  c_Segundo_Apellido: string,
+  c_Apellido_Casada: string,
+  c_DPI: string,
+  c_NIT: string,
+  c_Direccion: string,
+  c_PNumero_Telefono: string,
+  c_SNumero_Telefono: string,
+  c_Correo: string,
+  c_Img_Base: string,
+  c_Descripcion: string,
+  c_Fecha_Nacimiento: string,
+  c_Usuario_Modificacion: string,
+
+    ): Observable<any> {
+      
+
+const body = {
+c_Id_Persona,
+c_Id_Usuario,
+c_ContraseniaA,
+c_ContraseniaN,
+c_Id_Genero,
+c_Id_Municipio,
+c_Primer_Nombre,
+c_Segundo_Nombre,
+c_Tercer_Nombre,
+c_Primer_Apellido,
+c_Segundo_Apellido,
+c_Apellido_Casada,
+c_DPI,
+c_NIT,
+c_Direccion,
+c_PNumero_Telefono,
+c_SNumero_Telefono,
+c_Correo,
+c_Img_Base,
+c_Descripcion,
+c_Fecha_Nacimiento,
+c_Usuario_Modificacion
+};
+const headers = new HttpHeaders({ 'Content-Type': 'application/json'});
+
+console.log(body)
+return this.http.post<any>(this._url + 'PutEmpleadosByIdUsuario', JSON.stringify(body),{ headers } )
+.pipe(tap((response) => {
+  if (response.ok === true) {
+    this.tokenService.deleteTokenUnico()
+    this.tokenService.saveToken(response.token);
+  }if (response.ok === false) {
+    catchError((error: HttpErrorResponse) => {
+      console.error(error);
+      const estado = "401";
+      const mensaje = "Sin Autorizacion";
+    
+      return throwError({ ok: false, estado, mensaje });
+    })
+  }
+ 
+}));
+}
+
 
 CambiarEstadoEmpleado(
   c_Id_Persona: number,
   c_Id_Usuario: string,
-  c_Usuario_Modificacion: string
+  c_Usuario_Modificacion: string,
+ c_Descripcion: string
   ):  Observable<any> {
   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  const url = `${this._url}CambiarEstadoEmpleado?IdP=${c_Id_Persona}&IdU=${c_Id_Usuario}&IdUM=${c_Usuario_Modificacion}`;
+  const url = `${this._url}CambiarEstadoEmpleado?IdP=${c_Id_Persona}&IdU=${c_Id_Usuario}&IdUM=${c_Usuario_Modificacion}&razon=${c_Descripcion}`;
   return this.http.post<any>(url,headers);
 
 }
 
 
-    getEmpleadoActivo(searchTerm: string): Observable<any> {
+    getEmpleado(searchTerm: string): Observable<any> {
  
 
       const params = { searchTerm };
@@ -324,56 +407,14 @@ CambiarEstadoEmpleado(
 
 
 
-    getEmpleadoXId(IdPersona: number): Observable<Empleado[]> {
-  
-      return this.http.get<any>(`${this._url}GetEmpleadoXIdUA`, {
-        
-        params: {
-          IdPersona: IdPersona.toString(),
-        }
-      }).pipe(
-        map(response => {
-          if (response.ok && Array.isArray(response.response)) {
-            
-            return response.response.map(item => ({
-              c_Id_Persona: item.c_Id_Persona,
-              c_Id_Sucursal: item.c_Id_Sucursal,
-              c_Id_Genero: item.c_Id_Genero,
-              c_Id_Departamento: item.c_Id_Departamento,
-              c_Id_Municipio: item.c_Id_Municipio,
-              c_Id_Rol_Persona: item.c_Id_Rol_Persona,
-              c_ID_ROL: item.c_ID_ROL,  
-              c_Primer_Nombre: item.c_Primer_Nombre,
-              c_Segundo_Nombre: item.c_Segundo_Nombre,
-              c_Tercer_Nombre: item.c_Tercer_Nombre,
-              c_Primer_Apellido: item.c_Primer_Apellido,
-              c_Segundo_Apellido: item.c_Segundo_Apellido,
-              c_Apellido_Casada: item.c_Apellido_Casada,
-              c_DPI: item.c_DPI,
-              c_NIT: item.c_NIT,
-              c_Direccion: item.c_Direccion,
-              c_PNumero_Telefono: item.c_PNumero_Telefono,
-              c_SNumero_Telefono: item.c_SNumero_Telefono,
-              c_Correo: item.c_Correo,
-              c_Fecha_Nacimiento: item.c_Fecha_Nacimiento,
-              c_Img_Base: item.c_Img_Base ,
-             
-            }));
-          } else {
-            console.log(response.response)
-          }
-        }),
-        catchError(error => {
-          console.error(error);
-          return [];
-      })
-  );
+getEmpleadoById(IdPersona: number): Observable<Empleado> {
+  const url = `${this._url}GetEmpleadoByIdUA?IdPersona=${IdPersona}`;
+  return this.http.get<Empleado>(url);
+
 }
 
-
-
-getEmpleadoById(IdPersona: number): Observable<Empleado> {
-  const url = `${this._url}GetEmpleadoXIdUA?IdPersona=${IdPersona}`;
+getEmpleadoByIdUsuario(IdUsuario: string): Observable<Empleado> {
+  const url = `${this._url}GetEmpleadoByIdUsuario?IdUsuario=${IdUsuario}`;
   return this.http.get<Empleado>(url);
 
 }

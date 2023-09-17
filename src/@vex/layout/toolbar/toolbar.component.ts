@@ -6,7 +6,7 @@ import { NavigationService } from '../../services/navigation.service';
 import { PopoverService } from '../../components/popover/popover.service';
 import { MegaMenuComponent } from '../../components/mega-menu/mega-menu.component';
 import { Observable, of } from 'rxjs';
-
+import jwt_decode from "jwt-decode";
 @Component({
   selector: 'vex-toolbar',
   templateUrl: './toolbar.component.html',
@@ -14,12 +14,14 @@ import { Observable, of } from 'rxjs';
 })
 export class ToolbarComponent {
 
+
   @Input() mobileQuery: boolean;
 
   @Input()
   @HostBinding('class.shadow-b')
   hasShadow: boolean;
-
+imgSucursal: string;
+NombreSucursal:string;
   navigationItems = this.navigationService.items;
 
   isHorizontalLayout$: Observable<boolean> = this.configService.config$.pipe(map(config => config.layout === 'horizontal'));
@@ -33,7 +35,24 @@ export class ToolbarComponent {
   constructor(private layoutService: LayoutService,
               private configService: ConfigService,
               private navigationService: NavigationService,
-              private popoverService: PopoverService) { }
+              private popoverService: PopoverService) {
+                const token = localStorage.getItem("token"); // Reemplaza 'nombreDelToken' con el nombre real de tu token en el localStorage
+
+                const decodedToken: any = jwt_decode(token);
+              
+                const Nombre = decodedToken.NombreSucursal;
+                const idSucursal = decodedToken.IdSucursal;
+            
+               this.imgSucursal = decodedToken.LogoSucursal;
+                this.NombreSucursal = Nombre;
+
+                console.log(this.NombreSucursal);
+            
+               
+               // [class.hidden]="!mobileQuery"
+               }
+
+
 
   openQuickpanel(): void {
     this.layoutService.openQuickpanel();

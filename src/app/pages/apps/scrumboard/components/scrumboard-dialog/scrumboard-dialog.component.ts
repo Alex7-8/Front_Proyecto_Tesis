@@ -94,7 +94,7 @@ export class ScrumboardDialogComponent implements OnInit {
     const comments = this.form.get('comments') as UntypedFormArray;
     comments.push(new UntypedFormControl({
       from: {
-        name: 'David Smith',
+        name: 'Alex Chacon',
         imageSrc: 'assets/img/avatars/1.jpg'
       },
       message: this.commentCtrl.value,

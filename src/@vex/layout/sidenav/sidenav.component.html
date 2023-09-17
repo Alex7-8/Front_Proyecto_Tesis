@@ -55,10 +55,17 @@
          class="vex-sidenav-user flex items-center"
          matRipple
          matRippleColor="var(--sidenav-item-ripple-color)">
-      <img alt="User Avatar" class="vex-sidenav-user__image flex-none" src="assets/img/avatars/1.jpg"/>
+      <img alt="User Avatar" class="vex-sidenav-user__image flex-none" [src]="foto"/>
       <div class="vex-sidenav-user__content flex-auto">
-        <div class="vex-sidenav-user__title">David Smith</div>
-        <div class="vex-sidenav-user__subtitle">Product Manager</div>
+        <div class="vex-sidenav-user__title">{{ Nombre }}</div>
+        <div class="vex-sidenav-user__subtitle" style="white-space: pre-line;">
+          <ng-container *ngIf="roles.length === 1; else multipleRoles">
+            {{ roles[0] }}
+          </ng-container>
+          <ng-template #multipleRoles>
+            <div *ngFor="let rol of roles; let last = last">{{ rol }}<br *ngIf="!last" /></div>
+          </ng-template>
+        </div>
       </div>
       <mat-icon class="vex-sidenav-user__dropdown-icon flex-none" svgIcon="mat:arrow_drop_down"></mat-icon>
     </div>

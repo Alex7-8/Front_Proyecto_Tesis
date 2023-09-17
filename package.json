@@ -7,7 +7,10 @@
     "build": "NODE_ENV=production node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng build --configuration production",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "deploy:production": "ng build --configuration=production --aot --optimization=true --build-optimizer=true --output-path=public && npm run deploy",
+    "deploy": "node deploy-script.js" 
+
   },
   "private": true,
   "dependencies": {

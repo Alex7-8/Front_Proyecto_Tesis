@@ -40,7 +40,7 @@ export class LoginService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.post<Auth>(this.apiUrl + 'LogIn/setLogIn', JSON.stringify(body), { headers })
+    return this.http.post<Auth>(this.apiUrl + 'LogIn/SetLogIn', JSON.stringify(body), { headers })
       .pipe(tap((response) => {
         if (response.ok === true) {
           localStorage.setItem('remember', remember === true ? '1': '0');

@@ -1,25 +1,22 @@
-import { Component,EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component,EventEmitter, Input, OnInit, Output,HostListener,Renderer2 } from '@angular/core';
 import { scaleIn400ms } from '../../../../../@vex/animations/scale-in.animation';
 import { fadeInRight400ms } from '../../../../../@vex/animations/fade-in-right.animation';
 import { UntypedFormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { stagger40ms } from '../../../../../@vex/animations/stagger.animation';
 import { MatDialog } from '@angular/material/dialog';
-import { ContactsEditComponent } from '../components/contacts-edit/contacts-edit.component';
+import { EmpleadoEditComponent } from '../components/empleado-edit/empleado-edit.component';
 import { EmpleadoData } from '../interfaces/listar_empleado.interface';
 import { he, th } from 'date-fns/locale';
 import { style } from '@angular/animations';
 import { EmpleadoTableColumn } from 'src/@vex/interfaces/empleado_table_column.interface';
 import { CrearUsuariosService } from 'src/app/Service/CrearUsuarios.service';
-import { contactsData } from '../../../../../static-data/contacts';
-import { TableColumn } from '../../../../../@vex/interfaces/table-column.interface';
-import { Contact } from '../../contacts/interfaces/contact.interface';
 import { BehaviorSubject } from 'rxjs';
 import jwt_decode from "jwt-decode";
 import { ConfirmDialogComponent } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from "@angular/material/snack-bar";
-
-
+import { Router } from '@angular/router';
+import { UntypedFormBuilder,FormControl,FormGroup, Validators } from '@angular/forms';
 export interface ContactsTableMenu {
   type: 'link' | 'subheading';
   id?: 'Activo' | 'Inactivo' | 'all' | 'family' | 'friends' | 'colleagues' | 'business';
@@ -29,37 +26,6 @@ export interface ContactsTableMenu {
     icon?: string;
   };
 }
-
-
-
-
-
-
-
-export interface EmpleadoModal {
-
-  c_Id_Persona: number;
-  c_Id_Sucursal: number;
-  c_Id_Genero: number;
-  c_Id_Municipio: number;
-  c_Primer_Nombre: string;
-  c_Segundo_Nombre: string;
-  c_Tercer_Nombre: string;
-  c_Primer_Apellido: string;
-  c_Segundo_Apellido: string;
-  c_Apellido_Casada: string;
-  c_DPI: string;
-  c_NIT: string;
-  c_Direccion: string;
-  c_PNumero_Telefono: string;
-  c_SNumero_Telefono: string;
-  c_Correo: string;
-  c_Fecha_Nacimiento: any;
-  c_Img_Base: string;
-
-}
-
-
 
 @Component({
   selector: 'vex-contacts-table',
@@ -81,22 +47,24 @@ export class ListarEmpleadoTableComponent implements OnInit {
   private tablaDataSubject = new BehaviorSubject<any[]>([]);
   tablaData$ = this.tablaDataSubject.asObservable();
 
-  searchCtrl = new UntypedFormControl();
+ searchCtrl = new UntypedFormControl();
 
-  searchStr$ = this.searchCtrl.valueChanges.pipe(
-    debounceTime(10)
-   
-  );
+
   c_Id_Usuario: string;
   c_Id_UsuarioModificacion: string;
   titulo: string;
-  estado: number = 1;
+  estado: number = this.CrearUsuariosService.estado;
   Color: string[] = ['font-medium'];
   empleado: EmpleadoData[] = [];
   menuOpen = false;
-
+  form: FormGroup; 
+  razon: string;
  
+  
+  searchStr$ = this.searchCtrl.valueChanges.pipe(
+    debounceTime(10)
 
+  );
 
 
 
@@ -180,46 +148,16 @@ export class ListarEmpleadoTableComponent implements OnInit {
   ];
   
 
-  @Output() filterChange = new EventEmitter<EmpleadoData[]>();
-  @Output() openAddNew = new EventEmitter<void>();
-  @Input() items: ContactsTableMenu[] = [
-    
-    {
-      type: 'link',
-      id: 'Activo',
-      icon: 'mat:label',
-      label: 'Empleados Activos',
-      classes: {
-        icon: 'text-green'
-      }
-    },
-    {
-      type: 'link',
-      id: 'Inactivo',
-      icon: 'mat:label',
-      label: 'Empleados Inactivos',
-      classes: {
-        icon: 'text-gray'
-      }
-    },
-  ];
-
-
-
   constructor(private dialog: MatDialog,
     private CrearUsuariosService:CrearUsuariosService,
     private snackBar: MatSnackBar,
+    private router: Router, private renderer: Renderer2,
+    private fb: UntypedFormBuilder,
 
    ) { }
 
   ngOnInit() {
-
-
-
      this.obtenerTablaData()
-
-
-
   }
 
 
@@ -230,11 +168,13 @@ export class ListarEmpleadoTableComponent implements OnInit {
     if (category === 'Activo') {
       this.Color = ['text-green'];
       this.tableData = this.empleado.filter(c => c.c_Estado === 1);
+      this.estado = 1;
       this.Color = ['text-green'];
       console.log(this.Color)
     }
    if (category === 'Inactivo') {
     this.tableData = this.empleado.filter(c => c.c_Estado === 2);
+    this.estado = 2;
     this.Color = ['text-red'];
    }
  }
@@ -245,7 +185,7 @@ export class ListarEmpleadoTableComponent implements OnInit {
 
 
   obtenerTablaData() {
-    this.CrearUsuariosService.getEmpleadoActivo("").subscribe((response: any) => {
+    this.CrearUsuariosService.getEmpleado("").subscribe((response: any) => {
       this.empleado = response.response;
       this.tableData = this.empleado.filter(c => c.c_Estado === this.estado);
     });
@@ -253,7 +193,7 @@ export class ListarEmpleadoTableComponent implements OnInit {
   }
 
   openContact(c_Id_Persona?: EmpleadoData['c_Id_Persona']) {
-    this.dialog.open(ContactsEditComponent, {
+    this.dialog.open(EmpleadoEditComponent, {
       data: c_Id_Persona || null,
       width: '70rem'
 
@@ -271,24 +211,26 @@ export class ListarEmpleadoTableComponent implements OnInit {
 
     if(this.activeCategory == 'Activo'){
       this.titulo = "¿Estás seguro que deseas desactivar el empleado?";
+      this.razon = "Razon por la cual se desactiva el registro";
       this.estado = 1;
           
     }else{
       this.titulo = '¿Estás seguro de que deseas activar el empleado?';
+      this.razon = "Razon por la cual se activa el registro";
       this.estado = 2;
     }
 
 
     console.log(this.titulo,this.activeCategory);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      height: '15rem',
-      width: '25rem', 
-      data: { title: this.titulo }
+      height: '20rem',
+      width: '28rem', 
+      data: { title: this.titulo,textAreaValue: '', razon: this.razon,valido: true }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.CrearUsuariosService.CambiarEstadoEmpleado(c_Id_Persona,contact.c_Id_Usuario,this.c_Id_UsuarioModificacion).subscribe((response) => {
+        this.CrearUsuariosService.CambiarEstadoEmpleado(c_Id_Persona,contact.c_Id_Usuario,this.c_Id_UsuarioModificacion,result).subscribe((response) => {
           console.log(response);
           if(response.ok){
             this.snackBar.open(response.transaccion_Mensaje, "Cerrar", {
@@ -297,8 +239,8 @@ export class ListarEmpleadoTableComponent implements OnInit {
             });
             this.obtenerTablaData();
           }else{
-            this.snackBar.open("No se ha cambiado el estado del empleado", "Cerrar", {
-              duration: 4000,
+            this.snackBar.open("Codigo de Error: "+response.transaccion_Estado+" "+ "Mensje: "+response.transaccion_Mensaje, "Cerrar", {
+              duration: 10000,
               panelClass: ["red-snackbar"]
             });
           }
@@ -319,4 +261,16 @@ export class ListarEmpleadoTableComponent implements OnInit {
   openMenu() {
     this.menuOpen = true;
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize() {
+    if (window.innerWidth < 768) {
+      this.router.navigate(['/apps/empleado/grid/activos']); 
+    }
+  }
+
 }

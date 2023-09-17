@@ -69,8 +69,6 @@ export class DatosService {
   }
 
   private getLocalIPAddress(callback: (ipAddress: string | undefined) => void): void {
-    // Código para obtener la IP local
-    // Ejemplo utilizando una API de terceros
     fetch('https://api.ipify.org?format=json')
       .then(response => response.json())
       .then(data => callback(data.ip))
@@ -81,7 +79,7 @@ export class DatosService {
   }
 
   private generateBrowserFingerprint(): string {
-    // Código para generar el fingerprint del navegador
+
     const fingerprint = [
       navigator.userAgent,
       screen.width,

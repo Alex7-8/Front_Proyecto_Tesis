@@ -1,13 +1,13 @@
-import { EmpleadoData } from '../app/pages/apps/empleado/interfaces/listar_empleado.interface';
+import { PersonaData } from '../app/pages/apps/persona/interfaces/persona.interface';
 
 
 
-export const EmpleadoDatas: EmpleadoData[] = [
+export const EmpleadoDatas: PersonaData[] = [
 
 
   {
-    c_Id_Usuario: "Alex",
     c_Id_Persona: 17,
+    c_Id_Rol_Persona: 3,
     c_Sucursal: "Cafe Internet Normita",
     c_Genero: "MASCULINO",
     c_Departamento: "Zacapa",
@@ -18,12 +18,11 @@ export const EmpleadoDatas: EmpleadoData[] = [
     c_Usuario_Modificacion: "",
     c_Fecha_Creacion: "15/08/2023 00:08:49",
     c_Fecha_Modificacion: "",
-    c_ID_ROL: [
-      "ADMINISTRADOR",
-      "GERENTE"
-    ],
-   c_Estado: 1
-
-
+   c_Estado: 1,
+    c_Tipo: "Cliente",
+    c_Empresa: "Cafe Internet Normita",
+    c_Cuenta: "111-111-1111",
+    c_Descripcion: "Cliente de Cafe Internet Normita"
   }
+
 ];

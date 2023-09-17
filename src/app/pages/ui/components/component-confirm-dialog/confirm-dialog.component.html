@@ -1,9 +1,23 @@
 <div class="dialog-container" style="margin-top: 2rem;">
   <h2 class="dialog-title">{{ data.title }}</h2>
-    <div class="button-container flex justify-center gap-4">
-      <button mat-raised-button type="button" class="btn secondary" (click)="dialogRef.close(false)">Cancelar</button>
-      <button mat-button  type="button"  class="btn primary" color="primary" (click)="dialogRef.close(true)">Aceptar</button>
-    </div>
+  <div class="flex flex-col sm:flex-row sm:gap-5">
+   
+    <ng-container *ngIf="this.data.valido">
+      <mat-form-field class="flex-auto" style="margin-left: 10px; margin-right: 10px;">
+        <mat-label>{{ data.razon }}</mat-label>
+        <textarea [(ngModel)]="data.textAreaValue" matInput></textarea>
+        <mat-error *ngIf="form.get('textAreaValue').hasError('pattern')">Solo se permiten letras, comas y puntos.</mat-error> 
+      </mat-form-field>
+    </ng-container>
+    
+   
   </div>
+  <!-- <textarea [(ngModel)]="data.textAreaValue" class="text-area"></textarea> -->
+  <div class="button-container flex justify-center gap-4">
+    <button mat-raised-button type="button" class="btn secondary" (click)="Close()">Cancelar</button>
+    <button mat-button type="button" class="btn primary" color="primary" (click)="onAcceptClick()">Aceptar</button>
+  </div>
+</div>
+
   
 

@@ -37,7 +37,7 @@ export interface Departamento {
     constructor(private http: HttpClient) { }
   
     getDepartamentos(searchTerm: string): Observable<Departamento[]> {
-      return this.http.get<any>(`${this._url}getDepartamento`, {
+      return this.http.get<any>(`${this._url}GetDepartamento`, {
       }).pipe(
         map(response => {
           if (response.ok && Array.isArray(response.response)) {
@@ -64,7 +64,7 @@ export interface Departamento {
 
     getMunicipioXDepartamentos(IdDepartamento: string, searchTerm: string): Observable<Municipio[]> {
   
-        return this.http.get<any>(`${this._url}getMunicipioXDepartamento`, {
+        return this.http.get<any>(`${this._url}GetMunicipioXDepartamento`, {
           
           params: {
             IdDepartamento: IdDepartamento.toString(),
@@ -97,7 +97,7 @@ export interface Departamento {
 
  getRolPersona(searchTerm: string): Observable<any> {
   const params = { searchTerm };
-  return this.http.get<any>(`${this._url}getRolPersona`, { params });
+  return this.http.get<any>(`${this._url}GetRolPersona`, { params });
 }
 
 getRolUsuario(searchTerm: string): Observable<any> {
@@ -105,7 +105,7 @@ getRolUsuario(searchTerm: string): Observable<any> {
 
   const params = { searchTerm };
 
-  return this.http.get<any>(`${this._url}getRolUsuario`, { params });
+  return this.http.get<any>(`${this._url}GetRolUsuario`, { params });
 }
 
 
@@ -114,22 +114,22 @@ getGenero(searchTerm: string): Observable<any> {
  
   const params = { searchTerm };
 
-  return this.http.get<any>(`${this._url}getGenero`, { params });
+  return this.http.get<any>(`${this._url}GetGenero`, { params });
 }
 getTipoCuenta(searchTerm: string): Observable<any> {
  
   const params = { searchTerm };
 
-  return this.http.get<any>(`${this._url}getTipoCuenta`, { params });
+  return this.http.get<any>(`${this._url}GetTipoCuenta`, { params });
 }
 
 
 getSucursal(searchTerm: string): Observable<Sucursal[]> {
-  return this.http.get<any>(`${this._url}getSucursal`, {
+  return this.http.get<any>(`${this._url}GetSucursal`, {
   }).pipe(
     map(response => {
       if (response.ok && Array.isArray(response.response)) {
-        console.log(response.response)
+       // console.log(response.response)
         return response.response.map(item => ({
           name: item.c_Nombre,
           Id: item.c_Id_Sucursal,

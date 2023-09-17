@@ -17,4 +17,8 @@ export class TokenService {
     localStorage.removeItem('remember');
     localStorage.removeItem('token');
   }
+
+  deleteTokenUnico() {
+    localStorage.removeItem('token');
+  }
 }

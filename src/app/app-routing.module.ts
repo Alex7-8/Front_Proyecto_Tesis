@@ -5,6 +5,8 @@ import { VexRoutes } from '../@vex/interfaces/vex-route.interface';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 import { AuthGuard } from '../../src/app/guards/auth.guard';
 import { DashboardAnalyticsComponent } from './dashboards/dashboard-analytics.component';
+import {PersonaGridComponent} from './pages/apps/persona/persona-grid/persona-grid.component';
+import { PersonaTableComponent } from './pages/apps/persona/persona-table/persona_table.component';
 
 const routes: VexRoutes = [
   {
@@ -14,35 +16,41 @@ const routes: VexRoutes = [
     {
       path: '',
       redirectTo: '/login',
-      pathMatch: 'full'
+      pathMatch: 'full',
+      
     },
     {
       path: 'dashboards/analytics',
-      redirectTo: '/', // Revisa esta redirección, ¿es correcta?
+      redirectTo: '/analytics', // Revisa esta redirección, ¿es correcta?
       pathMatch: 'full',
-      //canActivate: [AuthGuard] // Agrega el AuthGuard aquí
+      
     },
   ]
   
   },
+  { path: 'table', component: PersonaTableComponent },
+  { path: 'cards', component: PersonaGridComponent },
+  { path: '', redirectTo: '/table', pathMatch: 'full' },
 
 
   {
     path: 'login',
     loadChildren: () => import('./auth/login/login.module').then(m => m.LoginModule),
-  },
-  {
-    path: 'register',
-    loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterModule),
-  },
-  {
-    path: 'forgot-password',
-    loadChildren: () => import('./auth/forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule),
-  },
-  {
-    path: 'coming-soon',
-    loadChildren: () => import('./pages/pages/coming-soon/coming-soon.module').then(m => m.ComingSoonModule),
-  },
+  }
+  ,
+  // {
+  //   path: 'register',
+  //   loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterModule),
+  // },
+  // {
+  //   path: 'forgot-password',
+  //   loadChildren: () => import('./auth/forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule),
+  // },
+  // {
+  //   path: 'coming-soon',
+  //   loadChildren: () => import('./pages/pages/coming-soon/coming-soon.module').then(m => m.ComingSoonModule),
+  // },
+
   {
     path: 'Validar',
     loadChildren: () => import('./pages/pages/Validar/Validar.module').then(m => m.ValidarModule)
@@ -50,16 +58,19 @@ const routes: VexRoutes = [
   {
     path: '',
     component: CustomLayoutComponent,
+    canActivate: [AuthGuard] ,
     children: [
 
       {
         path: 'dashboards',
-        redirectTo: '/',
-        pathMatch: 'full'
+        redirectTo: '/analytics',
+        pathMatch: 'full',
+        
       },
       {
         path: 'analytics',
         loadChildren: () => import('./dashboards/dashboard-analytics.module').then(m => m.DashboardAnalyticsModule),
+       // canActivate: [AuthGuard] 
       },
       {
         path: 'apps',
@@ -192,10 +203,10 @@ const routes: VexRoutes = [
           },
         ]
       },
-      {
-        path: 'documentation',
-        loadChildren: () => import('./pages/documentation/documentation.module').then(m => m.DocumentationModule),
-      },
+      // {
+      //   path: 'documentation',
+      //   loadChildren: () => import('./pages/documentation/documentation.module').then(m => m.DocumentationModule),
+      // },
       {
         path: '**',
         loadChildren: () => import('./pages/pages/errors/error-404/error-404.module').then(m => m.Error404Module)

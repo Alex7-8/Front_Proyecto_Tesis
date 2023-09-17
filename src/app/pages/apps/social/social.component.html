@@ -10,16 +10,28 @@
 
     <div class="z-10 relative -mt-16 px-gutter flex items-center">
 
-      <img @scaleIn
+      <!-- <img @scaleIn
            class="avatar h-24 w-24 flex-none align-start hidden sm:block border-2 border-white"
-           src="assets/img/avatars/1.jpg">
+           [src]="foto"> -->
+
+           <div style="text-align: center;">
+            <label for="image-upload" class="custom-file-upload">
+
+              <img @scaleIn class="avatar h-24 w-24 flex-none align-start hidden sm:block border-2 border-white"
+
+                [src]="selectedImageURL" alt="Imagen seleccionada">
+              <input id="image-upload" type="file"  (change)="onFileSelected($event)" accept="image/*">
+            </label>
+
+          </div>
+
 
       <div class="max-w-full flex-auto sm:ltr:ml-6 sm:rtl:mr-6">
         <div class="h-16 flex items-end">
-          <h1 @fadeInRight class="headline text-contrast-white pb-2 m-0">David Smith</h1>
+         
         </div>
 
-        <nav class="border-0" mat-tab-nav-bar>
+        <!-- <nav class="border-0" mat-tab-nav-bar>
           <a #rla="routerLinkActive"
              *ngFor="let link of links"
              [active]="rla.isActive"
@@ -31,7 +43,7 @@
              routerLinkActive>
             {{ link.label }}
           </a>
-        </nav>
+        </nav> -->
       </div>
     </div>
   </div>

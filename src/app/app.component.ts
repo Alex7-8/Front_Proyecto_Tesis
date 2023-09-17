@@ -126,7 +126,7 @@ export class AppComponent {
           {
             type: 'link',
             label: 'Analytics',
-            route: '/',
+            route: '/analytics',
             icon: 'mat:insights',
             routerLinkActiveOptions: { exact: true }
           },
@@ -143,7 +143,7 @@ export class AppComponent {
       },
       {
         type: 'subheading',
-        label: 'Apps',
+        label: 'Aplicaciones',
         children: [
           {
             type: 'link',
@@ -207,24 +207,6 @@ export class AppComponent {
             icon: 'mat:mail',
           },
           {
-            type: 'dropdown',
-            label: 'Social',
-            icon: 'mat:person_outline',
-            children: [
-              {
-                type: 'link',
-                label: 'Profile',
-                route: '/apps/social',
-                routerLinkActiveOptions: { exact: true }
-              },
-              {
-                type: 'link',
-                label: 'Timeline',
-                route: '/apps/social/timeline'
-              },
-            ]
-          },
-          {
             type: 'link',
             label: 'WYSIWYG Editor',
             route: '/apps/editor',
@@ -249,37 +231,93 @@ export class AppComponent {
           },
           {
             type: 'dropdown',
-            label: 'Modulo de Empleados',
-            icon: 'mat:contacts',
+            label: 'Ventas y Compras',
+            icon: 'mat:payment',
             children: [
               {
                 type: 'link',
-                label: 'List - Grid',
+                label: 'Ventas',
                 route: '/apps/contacts/grid',
               },
               {
                 type: 'link',
-                label: 'Empleados',
-                route: '/apps/empleado/table',
+                label: 'Compras',
+                route: '/apps/contacts/table',
               }
             ]
-          },{
+          },
+          {
             type: 'dropdown',
-            label: 'Registrar Clientes y Proveedores',
-            icon: 'mat:contacts',
+            label: 'Administracion',
+            icon: 'mat:assignment',
             children: [
               {
                 type: 'link',
-                label: 'List - Grid',
-                route: '/apps/contacts/grid',
+                label: 'Empleados',
+                route: '/apps/empleado/table',
               },
               {
                 type: 'link',
                 label: 'Clientes y Proveedores',
                 route: '/apps/persona/table',
+              },
+              {
+                type: 'link',
+                label: 'Marcas',
+                route: '/apps/persona/table',
+              },
+              {
+                type: 'link',
+                label: 'Productos',
+                route: '/apps/persona/table',
+              },
+              {
+                type: 'link',
+                label: 'Servicios',
+                route: '/apps/persona/table',
+              },
+              {
+                type: 'link',
+                label: 'Categorias',
+                route: '/apps/persona/table',
+              },
+              {
+                type: 'link',
+                label: 'Facturas',
+                route: '/apps/persona/table',
               }
+             
             ]
-          },
+          }
+          ,{
+            type: 'dropdown',
+            label: 'Reportes',
+            icon: 'mat:assessment',
+            children: [
+              {
+                type: 'link',
+                label: 'Reporte de Empleados',
+                route: '/apps/persona/grid',
+              },
+               {
+                type: 'link',
+                label: 'Reporte de Clientes',
+                route: '/apps/persona/grid',
+              },
+              {
+               type: 'link',
+               label: 'Reporte de Proveedores',
+               route: '/apps/persona/grid',
+             },
+             {
+              type: 'link',
+              label: 'Reporte de Facturas',
+              route: '/apps/persona/table',
+            }
+
+            ]
+          }
+          ,
           {
             type: 'link',
             label: 'Scrumboard',
@@ -596,114 +634,17 @@ export class AppComponent {
           },
         ]
       },
-      {
-        type: 'subheading',
-        label: 'Documentation',
-        children: [
-          {
-            type: 'link',
-            label: 'Changelog',
-            route: '/documentation/changelog',
-            icon: 'mat:update'
-          },
-          {
-            type: 'dropdown',
-            label: 'Getting Started',
-            icon: 'mat:book',
-            children: [
-              {
-                type: 'link',
-                label: 'Introduction',
-                route: '/documentation/introduction',
-                fragment: 'introduction',
-                routerLinkActiveOptions: { exact: true }
-              },
-              {
-                type: 'link',
-                label: 'Folder Structure',
-                route: '/documentation/folder-structure',
-                fragment: 'folder-structure',
-                routerLinkActiveOptions: { exact: true }
-              },
-              {
-                type: 'link',
-                label: 'Installation',
-                route: '/documentation/installation',
-                fragment: 'installation',
-                routerLinkActiveOptions: { exact: true }
-              },
-              {
-                type: 'link',
-                label: 'Development Server',
-                route: '/documentation/start-development-server',
-                fragment: 'start-development-server',
-                routerLinkActiveOptions: { exact: true }
-              },
-              {
-                type: 'link',
-                label: 'Build for Production',
-                route: '/documentation/build-for-production',
-                fragment: 'build-for-production',
-                routerLinkActiveOptions: { exact: true }
-              }
-            ]
-          },
-          {
-            type: 'dropdown',
-            label: 'Customization',
-            icon: 'mat:book',
-            children: [
-              {
-                type: 'link',
-                label: 'Configuration',
-                route: '/documentation/configuration',
-                fragment: 'configuration',
-                routerLinkActiveOptions: { exact: true }
-              },
-              {
-                type: 'link',
-                label: 'Changing Styling',
-                route: '/documentation/changing-styling-and-css-variables',
-                fragment: 'changing-styling-and-css-variables',
-                routerLinkActiveOptions: { exact: true }
-              },
-              {
-                type: 'link',
-                label: 'Using Custom Colors',
-                route: '/documentation/using-custom-colors-for-the-primarysecondarywarn-palettes',
-                fragment: 'using-custom-colors-for-the-primarysecondarywarn-palettes',
-                routerLinkActiveOptions: { exact: true }
-              },
-              {
-                type: 'link',
-                label: 'Adding Menu Items',
-                route: '/documentation/adding-menu-items',
-                fragment: 'adding-menu-items',
-                routerLinkActiveOptions: { exact: true }
-              },
-            ]
-          },
-          {
-            type: 'link',
-            label: 'Further Help',
-            icon: 'mat:book',
-            route: '/documentation/further-help',
-            fragment: 'further-help',
-            routerLinkActiveOptions: { exact: true }
-          },
-        ]
-      },
-      {
-        type: 'subheading',
-        label: 'Customize',
-        children: []
-      },
-      {
-        type: 'link',
-        label: 'Configuration',
-        route: () => this.layoutService.openConfigpanel(),
-        icon: 'mat:settings'
-      }
+      // {
+      //   type: 'subheading',
+      //   label: 'Customize',
+      //   children: []
+      // },
+      // {
+      //   type: 'link',
+      //   label: 'Configuration',
+      //   route: () => this.layoutService.openConfigpanel(),
+      //   icon: 'mat:settings'
+      // }
     ];
   }
 }

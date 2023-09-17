@@ -22,9 +22,10 @@ export class AuthGuard implements CanActivate {
     if (token ) { // Llama al método isAuthenticated() del servicio de autenticación
       return true;
     } else {
-      console.log('no token');
-      // Si el usuario no está autenticado, redirige a la ruta "/authentication/login" o la que necesites.
-      this.router.navigate(['/login']);
+      if (state.url !== '/login') {
+        console.log('no token');
+        this.router.navigate(['/login']);
+      }
       return false;
     }
   }

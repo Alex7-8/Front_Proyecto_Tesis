@@ -42,12 +42,12 @@ export class MegaMenuComponent implements OnInit {
     {
       icon: 'mat:contacts',
       label: 'Modulo de Empleados',
-      route: '/apps/contacts/grid'
+      route: '/apps/empleado/grid'
     },
     {
       icon: 'mat:contacts',
       label: 'Registrar Clientes y Proveedores',
-      route: '/apps/contacts/grid'
+      route: '/apps/persona/grid'
     },
     {
       icon: 'mat:assessment',
