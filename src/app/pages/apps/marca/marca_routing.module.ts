@@ -8,14 +8,13 @@ const routes: VexRoutes = [
   {
     path: '',
     children: [
-
-      {
-        path: 'table',
-        loadChildren: () => import('./persona-table/persona_table.module').then(m => m.PersonaTableModule)
-      },
       {
         path: 'grid',
-        loadChildren: () => import('./persona-grid/persona-grid.module').then(m => m.PersonaGridModule)
+        loadChildren: () => import('./marca-grid/marca-grid.module').then(m => m.MarcaGridModule)
+      },
+      {
+        path: 'table',
+        loadChildren: () => import('./marca-table/marca_table.module').then(m => m.MarcaTableModule)
       }
     ]
   }
@@ -25,5 +24,5 @@ const routes: VexRoutes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule, QuicklinkModule]
 })
-export class ListarEmpleadoRoutingModule {
+export class MarcaRoutingModule {
 }

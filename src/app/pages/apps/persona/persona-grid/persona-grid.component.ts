@@ -10,7 +10,7 @@ import { stagger40ms } from '../../../../../@vex/animations/stagger.animation';
 import { fadeInUp400ms } from '../../../../../@vex/animations/fade-in-up.animation';
 import { scaleFadeIn400ms } from '../../../../../@vex/animations/scale-fade-in.animation';
 import { ActivatedRoute } from '@angular/router';
-import { CrearUsuariosService } from 'src/app/Service/CrearUsuarios.service';
+import { CrearUsuariosService } from 'src/app/Service/GetPersona.service';
 import { Router } from '@angular/router';
 import {  of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';

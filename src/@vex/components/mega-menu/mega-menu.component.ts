@@ -49,6 +49,31 @@ export class MegaMenuComponent implements OnInit {
       label: 'Registrar Clientes y Proveedores',
       route: '/apps/persona/grid'
     },
+    // {
+    //   icon: 'mat:contacts',
+    //   label: 'Registrar Marcas',
+    //   route: '/apps/marca/grid'
+    // },
+    // {
+    //   icon: 'mat:contacts',
+    //   label: 'Registrar Productos',
+    //   route: '/apps/producto/grid'
+    // },
+    // {
+    //   icon: 'mat:contacts',
+    //   label: 'Registrar Servicios',
+    //   route: '/apps/servicio/grid'
+    // },
+    // {
+    //   icon: 'mat:contacts',
+    //   label: 'Registrar Categorias',
+    //   route: '/apps/categoria/grid'
+    // },
+    // {
+    //   icon: 'mat:contacts',
+    //   label: 'Registrar Facturas',
+    //   route: '/apps/factura/grid'
+    // },
     {
       icon: 'mat:assessment',
       label: 'Scrumboard',

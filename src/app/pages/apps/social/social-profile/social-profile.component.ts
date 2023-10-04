@@ -8,7 +8,7 @@ import { stagger40ms } from '../../../../../@vex/animations/stagger.animation';
 import jwt_decode from "jwt-decode";
 import { UntypedFormBuilder,FormControl,FormGroup, Validators,AbstractControl } from '@angular/forms';
 import { ConfirmDialogComponent } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.component';
-import { CrearUsuariosService } from 'src/app/Service/CrearUsuarios.service';
+import { CrearUsuariosService } from 'src/app/Service/GetPersona.service';
 import { CatalogoService } from "src/app/Service/Catalogo.service";
 import { MatDialog} from '@angular/material/dialog';
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -89,7 +89,7 @@ export class SocialProfileComponent implements OnInit {
                 }
 
   ngOnInit(): void {
-
+console.log("entro a social profile")
   const token = localStorage.getItem("token"); // Reemplaza 'nombreDelToken' con el nombre real de tu token en el localStorage
 
   const decodedToken: any = jwt_decode(token);
@@ -208,6 +208,7 @@ export class SocialProfileComponent implements OnInit {
   this.CrearUsuariosService.getEmpleadoByIdUsuario(this.Id_Usuario).subscribe(
     (data: any) => {
       this.empleado = data;
+      console.log("empleado",this.empleado)
     
       this.form.patchValue({
         Nombre: "Actualizar Empleado",

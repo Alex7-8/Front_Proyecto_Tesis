@@ -66,5 +66,8 @@ export class LoginService {
     localStorage.removeItem('remember');
     sessionStorage.clear();
     this.user.next(null!);
+
+    //setTimeout(() => location.reload(), 2);
+    
   }
 }

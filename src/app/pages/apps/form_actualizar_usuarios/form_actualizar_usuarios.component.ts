@@ -23,7 +23,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 
 import { Router } from "@angular/router";
 import { CatalogoService } from "../../../Service/Catalogo.service";
-import { CrearUsuariosService } from "../../../Service/CrearUsuarios.service";
+import { CrearUsuariosService } from "../../../Service/GetPersona.service";
 import { MatDialog} from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.component';
 import { ConfirmDialogModule } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.module';

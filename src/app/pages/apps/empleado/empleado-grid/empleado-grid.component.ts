@@ -11,7 +11,7 @@ import { fadeInUp400ms } from '../../../../../@vex/animations/fade-in-up.animati
 import { scaleFadeIn400ms } from '../../../../../@vex/animations/scale-fade-in.animation';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { CrearUsuariosService } from 'src/app/Service/CrearUsuarios.service';
+import { CrearUsuariosService } from 'src/app/Service/GetPersona.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import jwt_decode from "jwt-decode";

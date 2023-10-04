@@ -7,9 +7,9 @@
       <h2 class="display-1 font-bold m-0 flex items-center w-full max-w-3xs mr-6">
         <span @scaleIn
               class="w-12 h-12 rounded-full text-primary ltr:mr-4 rtl:ml-4 bg-primary/10 hidden sm:flex items-center justify-center">
-          <mat-icon svgIcon="mat:contacts"></mat-icon>
+          <mat-icon svgIcon="mat:table_chart"></mat-icon>
         </span>
-        <span @fadeInRight class="block">Clientes y Proveedores</span>
+        <span @fadeInRight class="block">Producto</span>
       </h2>
 
       <div class="hidden sm:flex items-center bg-foreground rounded-full overflow-hidden relative ltr:pl-5 rtl:pr-5 h-12 max-w-md w-full shadow-xl mx-auto">
@@ -32,7 +32,8 @@
       </mat-drawer>
       <mat-drawer-content class="p-gutter pt-0 flex-auto flex items-start">
         <div class="hidden sm:block ltr:mr-6 rtl:ml-6">
-          <vex-contacts-table-menu (filterChange)="setData($event)"
+          <vex-contacts-table-menu 
+          (filterChange)="setData($event)"
           (openAddNew)="openContact()"
           >
         </vex-contacts-table-menu> 
@@ -44,7 +45,7 @@
 
         <div class="card h-full overflow-hidden flex-auto">
 
-          <vex-contacts-data-table  
+          <vex-contacts-data-table   
                                      
                                        (openContact)="openContact($event)"
                                        (toggleStar)="toggleStar($event)"

@@ -27,6 +27,12 @@ export interface Departamento {
     flag: string;
   }
 
+  export interface Marca {
+    name: string;
+    Id: string;
+    flag: string;
+  }
+
 
   @Injectable({
     providedIn: 'root'
@@ -100,6 +106,8 @@ export interface Departamento {
   return this.http.get<any>(`${this._url}GetRolPersona`, { params });
 }
 
+
+
 getRolUsuario(searchTerm: string): Observable<any> {
  
 
@@ -134,6 +142,41 @@ getSucursal(searchTerm: string): Observable<Sucursal[]> {
           name: item.c_Nombre,
           Id: item.c_Id_Sucursal,
           flag: item.c_Url_Img
+        }));
+      } else {
+        return response.response.map(item => ({
+          name: item.c_Transaccion_Mensaje,
+          Id: item.c_Transaccion_Estado,
+          flag: ''
+        }));
+      }
+    }),
+    catchError(error => {
+      console.error(error);
+      return [];
+    })
+  );
+}
+
+
+
+getCategoria(searchTerm: string): Observable<any> {
+  const params = { searchTerm };
+  return this.http.get<any>(`${this._url}GetCategoria`, { params });
+}
+
+
+
+getMarca(searchTerm: string): Observable<Marca[]> {
+  return this.http.get<any>(`${this._url}GetMarca`, {
+  }).pipe(
+    map(response => {
+      if (response.ok && Array.isArray(response.response)) {
+       // console.log(response.response)
+        return response.response.map(item => ({
+          name: item.c_Nombre,
+          Id: item.c_Id_Marca,
+          flag: item.c_Url_IMG
         }));
       } else {
         return response.response.map(item => ({

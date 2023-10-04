@@ -8,7 +8,7 @@ import { CatalogoService } from "../../../../../Service/Catalogo.service";
 import { Observable, combineLatest, of } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { switchMap } from "rxjs/operators";
-import { CrearUsuariosService } from 'src/app/Service/CrearUsuarios.service';
+import { CrearUsuariosService } from 'src/app/Service/GetPersona.service';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ConfirmDialogComponent } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.component';
 import { MatDialog} from '@angular/material/dialog';
@@ -167,7 +167,7 @@ largo: string = "25rem";
       Direccion:  ["",Validators.compose([
         Validators.required,
         Validators.minLength(1),
-        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,-]*$/)
+        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
       ])],
       Telefono_Principal: ["", Validators.compose([
         Validators.required,
@@ -248,6 +248,8 @@ if(this.contactId != null){
           Id_Cuenta: data.response.c_Id_Cuenta,
           Razon: data.response.c_Descripcion,
         }
+
+        
 
           );
         this.selectedImageURL = data.response.c_Img_Base ? `${data.response.c_Img_Base}` : "https://img.srvcentral.com/Sistema/ImagenPorDefecto/Registro.png";

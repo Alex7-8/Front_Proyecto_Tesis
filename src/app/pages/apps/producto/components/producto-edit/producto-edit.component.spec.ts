@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { PersonaEditComponent } from './persona-edit.component';
+import { ProductoEditComponent } from './producto-edit.component';
 
-describe('ContactsEditComponent', () => {
-  let component: PersonaEditComponent;
-  let fixture: ComponentFixture<PersonaEditComponent>;
+describe('ServicioEditComponent', () => {
+  let component: ProductoEditComponent;
+  let fixture: ComponentFixture<ProductoEditComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [PersonaEditComponent]
+      declarations: [ProductoEditComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PersonaEditComponent);
+    fixture = TestBed.createComponent(ProductoEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

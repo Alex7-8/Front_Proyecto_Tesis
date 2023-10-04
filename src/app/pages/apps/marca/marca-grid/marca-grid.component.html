@@ -1,16 +1,13 @@
 <div class="h-full flex flex-col">
-  <div class="p-6 pb-0 bg-foreground shadow-xl flex-none border-b border-gray-200">
- 
+  <div class="p-6 pb-0 bg-foreground shadow-b flex-none border-b border-gray-200">
     <div class="container px-0">
-      
       <h1 class="display-1 font-bold mt-0 mb-4 flex items-center">
       <span @scaleIn
             class="w-12 h-12 rounded-full text-primary ltr:mr-4 rtl:ml-4 flex items-center justify-center bg-primary/10">
-      <mat-icon svgIcon="mat:contacts"></mat-icon>
+      <mat-icon svgIcon="mat:table_chart"></mat-icon>
       </span>
-        <span @fadeInRight class="block">Clientes y Proveedores</span>
+        <span @fadeInRight class="block">Marcas</span>
       </h1>
-
 
       <div class="sm:flexi tems-center bg-foreground rounded-full overflow-hidden relative ltr:pl-5 rtl:pr-5 h-12 max-w-md w-full shadow-xl mx-auto">
         <div class="search-icon">
@@ -24,15 +21,8 @@
           (input)="buscar()"
         />
       </div>
-      
-      
-      <!-- <div class="sm:flexi tems-center bg-foreground rounded-full overflow-hidden relative ltr:pl-5 rtl:pr-5 h-12 max-w-md w-full shadow-xl mx-auto" >
-        <input 
-               class="border-0 h-12 outline-none ltr:pl-4 rtl:pr-4 placeholder:text-secondary bg-foreground flex-auto"
-               placeholder="Buscar..."
-               type="text"/>
-      </div> -->
-      <div class="flex items-center"> 
+
+      <div class="flex items-center">
         <nav class="border-0 flex-auto" mat-tab-nav-bar>
           <a #rla="routerLinkActive"
              *ngFor="let link of links"
@@ -45,8 +35,6 @@
           </a>
         </nav>
 
-        
-
         <div class="ltr:ml-1 rtl:mr-1 flex-none hidden sm:inline-block">
           <label style="margin-right: 0.3rem;"  for="gridViewToggle">Vista de lista</label>
           <mat-slide-toggle
@@ -57,46 +45,42 @@
           ></mat-slide-toggle>
         </div>
         
-
-        <button (click)="OpenContact()"
+        <button (click)="openContact()"
                 class="ltr:ml-1 rtl:mr-1 flex-none sm:hidden"
                 color="primary"
                 mat-mini-fab
-                matTooltip="Registrar Cliente o Proveedor"
+                matTooltip="Registrar Marca"
                 type="button">
-          <mat-icon svgIcon="mat:person_add"></mat-icon>
+          <mat-icon svgIcon="mat:queue"></mat-icon>
         </button>
 
-        <button (click)="OpenContact()"
+        <button (click)="openContact()"
                 class="ltr:ml-4 rtl:mr-4 flex-none hidden sm:inline-block"
                 color="primary"
                 mat-flat-button
                 type="button">
           <mat-icon class="ltr:mr-2 rtl:ml-2 ltr:-ml-1 rtl:-mr-1 icon-sm"
                     svgIcon="mat:add"></mat-icon>
-          <span>Registrar Nuevo</span>
+          <span>Registrar Marca</span>
         </button>
-      </div> 
-
+      </div>
     </div>
-
-
   </div>
 
   <div *ngIf="(filteredContacts$ | async).length > 0"
        @stagger
        class="overflow-y-auto flex-auto">
     <div class="p-gutter grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 container">
-      <vex-contacts-card (OpenContact)="OpenContact($event)"
+      <vex-contacts-card (openContact)="openContact($event)"
                          (toggleStar)="toggleStar($event)"
                          *ngFor="let contact of filteredContacts$ | async; trackBy: trackById"
                          @fadeInUp
                          [contact]="contact"
                         ></vex-contacts-card>
     </div>
-  </div> 
+  </div>
 
-   <div *ngIf="(filteredContacts$ | async).length === 0"
+  <div *ngIf="(filteredContacts$ | async).length === 0"
        @scaleFadeIn
        class="flex-auto flex flex-col items-center justify-center">
     <img class="m-12 h-64" src="assets/img/illustrations/idea.svg"/>

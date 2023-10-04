@@ -13,7 +13,7 @@
       <ng-container *ngFor="let column of columns">
         <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
           <th *matHeaderCellDef mat-header-cell mat-sort-header> {{ column.label }}</th>
-          <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row[column.property] }}</td>
+          <td class="truncate-text" *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row[column.property] }}</td>
         </ng-container>
 
         <ng-container *ngIf="column.type === 'checkbox'" [matColumnDef]="column.property">
@@ -34,9 +34,9 @@
           <ng-container *ngIf="column.property === 'starred'">
             <th *matHeaderCellDef mat-header-cell mat-sort-header> {{ column.label }}</th>
             <td *matCellDef="let row" [ngClass]="column.cssClasses" class="w-10" mat-cell>
-              <button (click)="emitToggleStar($event, row.c_Id_Persona)" mat-icon-button type="button">
-                <mat-icon *ngIf="row[column.property]" class="text-amber" svgIcon="mat:remove_circle"></mat-icon>
-                <mat-icon *ngIf="!row[column.property]" svgIcon="mat:remove_circle_outline"></mat-icon>
+              <button (click)="emitToggleStar($event, row.c_Id_Marca)" mat-icon-button type="button">
+                <mat-icon *ngIf="row.c_Estado == 2"  svgIcon="mat:control_point"></mat-icon>
+                <mat-icon *ngIf="row.c_Estado == 1" svgIcon="mat:cancel"></mat-icon>
               </button>
             </td>
           </ng-container>
@@ -58,7 +58,7 @@
 
       <tr *matHeaderRowDef="visibleColumns; sticky: true" mat-header-row></tr>
       <!--suppress UnnecessaryLabelJS -->
-      <tr (click)="openContact.emit(row.c_Id_Persona)"
+      <tr (click)="openContact.emit(row.c_Id_Marca)"
           *matRowDef="let row; columns: visibleColumns;"
           @fadeInUp
           class="hover:bg-hover cursor-pointer"

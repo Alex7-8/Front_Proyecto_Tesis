@@ -6,13 +6,15 @@ import { TableColumn } from '../../../../../../@vex/interfaces/table-column.inte
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
 import { stagger20ms } from '../../../../../../@vex/animations/stagger.animation';
 import { fadeInUp400ms } from '../../../../../../@vex/animations/fade-in-up.animation';
-import { PersonaData } from '../../interfaces/persona.interface';
+import { MarcaData } from '../../interfaces/marca.interface';
 import { scaleFadeIn400ms } from '../../../../../../@vex/animations/scale-fade-in.animation';
+
+
 
 @Component({
   selector: 'vex-contacts-data-table',
-  templateUrl: './persona_data_table.component.html',
-  styleUrls: ['./persona_data_table.component.scss'],
+  templateUrl: './marca_data_table.component.html',
+  styleUrls: ['./marca_data_table.component.scss'],
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
@@ -27,7 +29,7 @@ import { scaleFadeIn400ms } from '../../../../../../@vex/animations/scale-fade-i
     scaleFadeIn400ms
   ]
 })
-export class PersonaDataTableComponent<T> implements OnInit, OnChanges, AfterViewInit {
+export class MarcaDataTableComponent<T> implements OnInit, OnChanges, AfterViewInit {
 
   @Input() data: T[];
   @Input() columns: TableColumn<T>[];
@@ -35,8 +37,8 @@ export class PersonaDataTableComponent<T> implements OnInit, OnChanges, AfterVie
   @Input() pageSizeOptions = [15, 20,50];
   @Input() searchStr: string;
 
-  @Output() toggleStar = new EventEmitter<PersonaData['c_Id_Persona']>();
-  @Output() openContact = new EventEmitter<PersonaData['c_Id_Persona']>();
+  @Output() toggleStar = new EventEmitter<MarcaData['c_Id_Marca']>();
+  @Output() openContact = new EventEmitter<MarcaData['c_Id_Marca']>();
 
   visibleColumns: Array<keyof T | string>;
   dataSource = new MatTableDataSource<T>();
@@ -59,10 +61,11 @@ export class PersonaDataTableComponent<T> implements OnInit, OnChanges, AfterVie
 
     if (changes.searchStr) {
       this.dataSource.filter = (this.searchStr || '').trim().toLowerCase();
+      //console.log(this.dataSource.filter);
     }
   }
 
-  emitToggleStar(event: Event, id: PersonaData['c_Id_Persona']) {
+  emitToggleStar(event: Event, id: MarcaData['c_Id_Marca']) {
     event.stopPropagation();
     this.toggleStar.emit(id);
   }

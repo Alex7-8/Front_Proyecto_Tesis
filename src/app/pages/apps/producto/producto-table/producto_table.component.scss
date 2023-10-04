@@ -24,20 +24,10 @@ table {
   }
   
 
-  /* Pantalla grande */
-@media (min-width: 768px) {
-  /* Estilos para pantallas grandes, como la vista en tabla */
-  /* Asegúrate de ocultar la vista en tarjetas */
-  .card-list {
-    display: none;
-  }
-}
 
-/* Pantalla pequeña */
-@media (max-width: 767px) {
-  /* Estilos para pantallas pequeñas, como la vista en tarjetas */
-  /* Asegúrate de ocultar la vista en tabla */
-  .table-list {
-    display: none;
+  .truncate-text {
+    white-space: nowrap;      
+    overflow: hidden;         
+    text-overflow: ellipsis; 
+    max-width: 20px;        
   }
-}

@@ -1,0 +1,35 @@
+/* Pantalla grande */
+@media (min-width: 768px) {
+    /* Estilos para pantallas grandes, como la vista en tabla */
+    /* Asegúrate de ocultar la vista en tarjetas */
+    .card-list {
+      display: none;
+    }
+  }
+  
+  /* Pantalla pequeña */
+  @media (max-width: 767px) {
+    /* Estilos para pantallas pequeñas, como la vista en tarjetas */
+    /* Asegúrate de ocultar la vista en tabla */
+    .table-list {
+      display: none;
+    }
+  }
+  
+
+  .sm-flexi {
+    position: relative;
+  }
+  
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px; /* Ajusta el valor según el espacio que desees entre el icono y el borde izquierdo del input */
+    transform: translateY(-50%);
+  }
+  
+  input {
+    padding-left: 30px; /* Ajusta el valor para que el texto no se solape con el icono */
+  }
+  
+  

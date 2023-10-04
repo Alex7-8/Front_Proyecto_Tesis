@@ -6,13 +6,15 @@ import { TableColumn } from '../../../../../../@vex/interfaces/table-column.inte
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
 import { stagger20ms } from '../../../../../../@vex/animations/stagger.animation';
 import { fadeInUp400ms } from '../../../../../../@vex/animations/fade-in-up.animation';
-import { PersonaData } from '../../interfaces/persona.interface';
+import { ProductoData } from '../../interfaces/producto.interface';
 import { scaleFadeIn400ms } from '../../../../../../@vex/animations/scale-fade-in.animation';
+
+
 
 @Component({
   selector: 'vex-contacts-data-table',
-  templateUrl: './persona_data_table.component.html',
-  styleUrls: ['./persona_data_table.component.scss'],
+  templateUrl: './producto_data_table.component.html',
+  styleUrls: ['./producto_data_table.component.scss'],
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
@@ -27,7 +29,7 @@ import { scaleFadeIn400ms } from '../../../../../../@vex/animations/scale-fade-i
     scaleFadeIn400ms
   ]
 })
-export class PersonaDataTableComponent<T> implements OnInit, OnChanges, AfterViewInit {
+export class ProductoDataTableComponent<T> implements OnInit, OnChanges, AfterViewInit {
 
   @Input() data: T[];
   @Input() columns: TableColumn<T>[];
@@ -35,8 +37,8 @@ export class PersonaDataTableComponent<T> implements OnInit, OnChanges, AfterVie
   @Input() pageSizeOptions = [15, 20,50];
   @Input() searchStr: string;
 
-  @Output() toggleStar = new EventEmitter<PersonaData['c_Id_Persona']>();
-  @Output() openContact = new EventEmitter<PersonaData['c_Id_Persona']>();
+  @Output() toggleStar = new EventEmitter<ProductoData['c_Id_Producto']>();
+  @Output() openContact = new EventEmitter<ProductoData['c_Id_Producto']>();
 
   visibleColumns: Array<keyof T | string>;
   dataSource = new MatTableDataSource<T>();
@@ -59,10 +61,11 @@ export class PersonaDataTableComponent<T> implements OnInit, OnChanges, AfterVie
 
     if (changes.searchStr) {
       this.dataSource.filter = (this.searchStr || '').trim().toLowerCase();
+      //console.log(this.dataSource.filter);
     }
   }
 
-  emitToggleStar(event: Event, id: PersonaData['c_Id_Persona']) {
+  emitToggleStar(event: Event, id: ProductoData['c_Id_Producto']) {
     event.stopPropagation();
     this.toggleStar.emit(id);
   }

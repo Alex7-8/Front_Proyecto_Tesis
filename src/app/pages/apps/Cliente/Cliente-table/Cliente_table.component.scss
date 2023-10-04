@@ -1,0 +1,43 @@
+/* Estilos generales de la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  /* Estilos para la celda de botón */
+  .cell {
+    /* Puedes ajustar estos estilos según tus necesidades */
+    cursor: pointer;
+    padding: 8px;
+    background-color: #f2f2f2;
+  }
+  
+  /* Cambiar el estilo al pasar el mouse por encima de la celda de botón */
+  .cell:hover {
+    background-color: #e0e0e0;
+  }
+  
+
+  /* Pantalla grande */
+@media (min-width: 768px) {
+  /* Estilos para pantallas grandes, como la vista en tabla */
+  /* Asegúrate de ocultar la vista en tarjetas */
+  .card-list {
+    display: none;
+  }
+}
+
+/* Pantalla pequeña */
+@media (max-width: 767px) {
+  /* Estilos para pantallas pequeñas, como la vista en tarjetas */
+  /* Asegúrate de ocultar la vista en tabla */
+  .table-list {
+    display: none;
+  }
+}

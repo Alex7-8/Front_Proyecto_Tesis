@@ -58,7 +58,7 @@ const routes: VexRoutes = [
   {
     path: '',
     component: CustomLayoutComponent,
-    canActivate: [AuthGuard] ,
+   canActivate: [AuthGuard] ,
     children: [
 
       {
@@ -108,6 +108,42 @@ const routes: VexRoutes = [
           {
             path: 'persona',
             loadChildren: () => import('./pages/apps/persona/persona.module').then(m => m.PersonaModule)
+          },
+          {
+            path: 'Proveedor',
+            loadChildren: () => import('./pages/apps/Proveedor/Proveedor.module').then(m => m.ProveedorModule)
+          },
+          {
+            path: 'Cliente',
+            loadChildren: () => import('./pages/apps/Cliente/Cliente.module').then(m => m.ClienteModule)
+          },
+          {
+            path: 'marca',
+            loadChildren: () => import('./pages/apps/marca/marca.module').then(m => m.MarcaModule)
+          },
+          {
+            path: 'producto',
+            loadChildren: () => import('./pages/apps/producto/producto.module').then(m => m.ProductoModule)
+          },
+          {
+            path: 'servicio',
+            loadChildren: () => import('./pages/apps/servicio/servicio.module').then(m => m.ServicioModule)
+          },
+          {
+            path: 'categoria',
+            loadChildren: () => import('./pages/apps/categoria/categoria.module').then(m => m.CategoriaModule)
+          },
+          {
+            path: 'factura',
+            loadChildren: () => import('./pages/apps/Factura/Factura.module').then(m => m.FacturaModule)
+          },
+          // {
+          //   path: 'factura',
+          //   loadChildren: () => import('./pages/apps/servicio/servicio.module').then(m => m.ServicioModule)
+          // },
+          {
+            path: 'venta',
+            loadChildren: () => import('./pages/apps/venta/venta.module').then(m => m.VentaModule)
           },
           {
             path: 'calendar',

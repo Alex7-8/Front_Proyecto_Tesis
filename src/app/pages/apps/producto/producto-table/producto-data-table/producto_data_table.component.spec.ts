@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { PersonaDataTableComponent } from './persona_data_table.component';
+import {ProductoDataTableComponent } from './producto_data_table.component';
 
-describe('ContactsTableComponent', () => {
-  let component:  PersonaDataTableComponent;
-  let fixture: ComponentFixture<PersonaDataTableComponent>;
+describe('ProductoTableComponent', () => {
+  let component: ProductoDataTableComponent;
+  let fixture: ComponentFixture<ProductoDataTableComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [PersonaDataTableComponent]
+      declarations: [ProductoDataTableComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PersonaDataTableComponent);
+    fixture = TestBed.createComponent(ProductoDataTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -10,7 +10,7 @@ import { EmpleadoData } from '../interfaces/listar_empleado.interface';
 import { he, th } from 'date-fns/locale';
 import { style } from '@angular/animations';
 import { EmpleadoTableColumn } from 'src/@vex/interfaces/empleado_table_column.interface';
-import { CrearUsuariosService } from 'src/app/Service/CrearUsuarios.service';
+import { CrearUsuariosService } from 'src/app/Service/GetPersona.service';
 import { BehaviorSubject } from 'rxjs';
 import jwt_decode from "jwt-decode";
 import { ConfirmDialogComponent } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.component';
@@ -157,7 +157,9 @@ export class ListarEmpleadoTableComponent implements OnInit {
    ) { }
 
   ngOnInit() {
-     this.obtenerTablaData()
+     this.obtenerTablaData();
+     this.checkScreenSize();
+
   }
 
 

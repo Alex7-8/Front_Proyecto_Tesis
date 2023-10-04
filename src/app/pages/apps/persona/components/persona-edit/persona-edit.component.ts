@@ -8,7 +8,7 @@ import { CatalogoService } from "../../../../../Service/Catalogo.service";
 import { Observable, combineLatest, of } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { switchMap } from "rxjs/operators";
-import { CrearUsuariosService } from 'src/app/Service/CrearUsuarios.service';
+import { CrearUsuariosService } from 'src/app/Service/GetPersona.service';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ConfirmDialogComponent } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.component';
 import { MatDialog} from '@angular/material/dialog';
@@ -161,7 +161,7 @@ largo: string = "25rem";
       Direccion:  ["",Validators.compose([
         Validators.required,
         Validators.minLength(1),
-        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,-]*$/)
+        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
       ])],
       Telefono_Principal: ["", Validators.compose([
         Validators.required,
@@ -182,7 +182,7 @@ largo: string = "25rem";
       Empresa:["", Validators.compose([
         Validators.required,
         Validators.minLength(1),
-        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,-]*$/)
+        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
       ])],
 
     });
@@ -261,11 +261,20 @@ if(this.contactId != null){
 
             
           );
+   if(data.response.c_Id_Rol_Persona != 3){
+            this.form.get('Empresa')?.reset();
+            this.form.get('Empresa')?.disable();
+      
+            //this.form.get('Empresa')?.setValue("N/A");
+          }
+          
         this.selectedImageURL = data.response.c_Img_Base ? `${data.response.c_Img_Base}` : "https://img.srvcentral.com/Sistema/ImagenPorDefecto/Registro.png";
         this.ngZone.run(() => {
           this.form.get('c_Img_Base')?.setValue(data.response.c_Img_Base);
         });
         this.cdr.detectChanges();
+
+        console.log(this.form)
 
       },
       (error) => {
@@ -448,6 +457,7 @@ if(this.contactId != null){
              const C_Img_Base = this.form.get("c_Img_Base").value;
              const C_Fecha_Nacimiento = this.form.get("Fecha_Nacimiento").value;
              
+             
              if(C_ID_Rol_Persona ==2){
                this.descripcion = "Registro de Nuevo Cliente"
              }else{
@@ -515,6 +525,7 @@ if(this.contactId != null){
                }
              );
            }else{
+            const C_Validar = "T";
              const C_Id_Persona = this.form.get("Id_Empleado").value;
              const C_ID_Rol_Persona = 1;
              const c_Id_Tipo_Cuenta = this.form.get("c_Tipo_Cuenta").value;
@@ -537,10 +548,12 @@ if(this.contactId != null){
              const C_Descripcion = result
              const C_Fecha_Nacimiento = this.form.get("Fecha_Nacimiento").value;
              const c_Usuario_Modificacion = this.form.get("c_Usuario_CoM").value;
+             const C_Empresa = this.form.get("Empresa").value;
          
           
             this.valido = true;
              this.CrearUsuariosService.putPersona(
+              C_Validar,
                C_Id_Persona,
                C_ID_Rol_Persona,
                c_Id_Tipo_Cuenta,
@@ -561,6 +574,7 @@ if(this.contactId != null){
                C_Correo,
                C_Img_Base,
                C_Descripcion,
+               C_Empresa,
                C_Fecha_Nacimiento,
                c_Usuario_Modificacion
                ).subscribe(

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { PersonaTableRoutingModule } from './persona_table.routing.module';
+import { ProductoTableRoutingModule } from './producto_table.routing.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -12,22 +12,22 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ScrollbarModule } from '../../../../../@vex/components/scrollbar/scrollbar.module';
-import { PersonaTableComponent } from './persona_table.component';
-import { PersonaDataTableComponent } from './persona-data-table/persona_data_table.component';
-import { PersonaEditModule } from '../components/persona-edit/persona-edit.module';
+import { ProductoTableComponent } from './producto_table.component';
+import { ProductoDataTableComponent } from './producto-data-table/producto_data_table.component';
+import { ProductoEditModule } from '../components/producto-edit/producto-edit.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { PersonaTableMenuComponent } from './persona-table-menu/persona_menu.component';
+import { ProductoTableMenuComponent } from './producto-table-menu/producto_menu.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ComponentsSlideToggleModule } from '../../../../../app/pages/ui/components/components-slide-toggle/components-slide-toggle.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
-  declarations: [PersonaTableComponent, PersonaDataTableComponent, PersonaTableMenuComponent],
+  declarations: [ProductoTableComponent, ProductoDataTableComponent, ProductoTableMenuComponent],
   imports: [
     CommonModule,
-    PersonaTableRoutingModule,
-
+    ProductoTableRoutingModule,
+    ComponentsSlideToggleModule,
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
@@ -38,14 +38,13 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatRippleModule,
     MatDialogModule,
     ScrollbarModule,
-    PersonaEditModule,
+    ProductoEditModule,
     ReactiveFormsModule,
     MatSidenavModule,
     MatSnackBarModule,
-    ComponentsSlideToggleModule,
     MatSlideToggleModule
 
   ]
 })
-export class PersonaTableModule {
+export class ProductoTableModule {
 }

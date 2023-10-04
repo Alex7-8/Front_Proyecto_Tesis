@@ -1,10 +1,10 @@
-<vex-secondary-toolbar current="Form Elements">
-  <vex-breadcrumbs [crumbs]="['Forms', 'Form Elements']" class="flex-auto"></vex-breadcrumbs>
+<!-- <vex-secondary-toolbar current="Formulario">
+  <vex-breadcrumbs [crumbs]="['Forms', 'Formuliario Factiracion']" class="flex-auto"></vex-breadcrumbs>
 
   <button class="ml-2" color="primary" mat-icon-button type="button">
     <mat-icon svgIcon="mat:more_vert"></mat-icon>
   </button>
-</vex-secondary-toolbar>
+</vex-secondary-toolbar> -->
 
 
 <div [@stagger]="true" class="p-gutter container">
@@ -12,12 +12,12 @@
   <div  [formGroup]="usuarioForm"   class="flex flex-col sm:flex-row gap-4">
     <div @fadeInUp class="card flex-auto">
       <div class="px-6 py-4 borde r-b flex items-center">
-        <h2 class="title m-0">Formulario para Registrar Empleados</h2>
+        <h2 class="title m-0">Formulario Facturacion</h2>
       </div>
 
       <div class="px-6 py-4 flex flex-col">
         
-      <div class="image-upload-container">
+      <!-- <div class="image-upload-container">
         <div class="selected-image-container">
           <div class="selected-image-wrapper">
             <img [src]="selectedImageURL" alt="Imagen seleccionada">
@@ -29,16 +29,16 @@
           </label>
           <input id="image-upload" type="file" (change)="onFileSelected($event)" accept="image/*">
         </div>
-      </div>
+      </div> -->
 
       
 
       </div>
 
       <div class="px-6 py-4 flex flex-col">
-        <div class="flex flex-col sm:flex-row sm:gap-5">
+        <div class="flex flex-col sm:flex-row sm:gap-4">
 
-          <mat-form-field class="flex-auto">
+          <!-- <mat-form-field class="flex-auto">
             <mat-label>Usuario</mat-label>
             <input formControlName="c_Id_Usuario" matInput>
             <mat-icon matSuffix svgIcon="mat:person_pin"></mat-icon>
@@ -46,44 +46,49 @@
             <mat-error *ngIf="usuarioForm.get('c_Id_Usuario').hasError('pattern')">Solo se permiten letras y números.</mat-error>
             <mat-error *ngIf="usuarioForm.get('c_Id_Usuario').hasError('minlength')">Debe tener al menos 4 caracteres.</mat-error>
             <mat-error *ngIf="usuarioForm.get('c_Id_Usuario').hasError('maxlength')">No debe exceder los 24 caracteres.</mat-error>
+          </mat-form-field> -->
+
+          <mat-form-field class="flex-auto">
+            <mat-label>Tipo</mat-label>
+            <mat-select>
+              <mat-option value="Apples">Servicio</mat-option>
+              <mat-option value="Peaches">Venta</mat-option>
+              <mat-option value="Bananas">Compra</mat-option>
+            </mat-select>
           </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Rol Empleado</mat-label>
-          <mat-select formControlName="c_ID_Rol_Persona">
-            <mat-option *ngFor="let rol of roles" [value]="rol.c_Id_Rol_Persona">{{ rol.c_Descripcion }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="usuarioForm.get('c_ID_Rol_Persona').hasError('required')">Este campo es requerido.</mat-error>
-        </mat-form-field>
+          <mat-form-field class="flex-auto">
+            <mat-label>Cliente</mat-label>
+            <mat-select>
+              <mat-option value="Apples">Alex Chacon</mat-option>
+              <mat-option value="Peaches">Jose Franco</mat-option>
+              <mat-option value="Bananas">Carlos Santos</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-      <mat-form-field>
-    <mat-label>Rol Sistema</mat-label>
-    <mat-select formControlName="c_ID_ROL" multiple>
-      <mat-option *ngFor="let Rol of rols" [value]="Rol.c_Id_Rol">{{ Rol.c_Nombre }}</mat-option>
-    </mat-select>
-    <mat-error *ngIf="usuarioForm.get('c_ID_ROL').hasError('required')">Este campo es requerido.</mat-error>
-  </mat-form-field>
+          <mat-form-field class="flex-auto">
+            <mat-label>Servicio</mat-label>
+            <mat-select>
+              <mat-option value="Apples">Levantado de Texto</mat-option>
+              <mat-option value="Peaches">Caja Rural Remesa</mat-option>
+              <mat-option value="Bananas">Impresion</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Genero</mat-label>
-          <mat-select formControlName="c_Id_Genero">
-            <mat-option *ngFor="let genero of generos" [value]="genero.c_Id_Genero">{{ genero.c_Descripcion }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="usuarioForm.get('c_Id_Genero').hasError('required')">Este campo es requerido.</mat-error>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Tipo de Cuenta</mat-label>
-          <mat-select formControlName="c_Tipo_Cuenta">
-            <mat-option *ngFor="let TipoC of TipoCuenta" [value]="TipoC.c_Id_Tipo_Cuenta">{{ TipoC.c_Descripcion }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="usuarioForm.get('c_Tipo_Cuenta').hasError('required')">Este campo es requerido.</mat-error>
-        </mat-form-field>
+          <div class="flex-auto">
+            <mat-form-field>
+              <mat-label>Fecha</mat-label>
+              <input formControlName="c_Fecha_Nacimiento" [matDatepicker]="datepickerRef" matInput>
+              <mat-datepicker-toggle [for]="datepickerRef" matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #datepickerRef></mat-datepicker>
+              <mat-error *ngIf="usuarioForm.get('c_Fecha_Nacimiento').hasError('required')">Este campo es requerido.</mat-error>
+            </mat-form-field>
+          </div>
 
         </div>
         <div class="flex flex-col sm:flex-row sm:gap-4">
           <mat-form-field class="flex-auto">
-            <mat-label>Primer Nombre</mat-label>
+            <mat-label>Nombre</mat-label>
             <input formControlName="c_Primer_Nombre" matInput required>
             <mat-icon matSuffix svgIcon="mat:person"></mat-icon>
             <mat-error *ngIf="usuarioForm.get('c_Primer_Nombre').hasError('required')">Este campo es requerido.</mat-error>
@@ -91,56 +96,11 @@
           </mat-form-field>
           
           <mat-form-field class="flex-auto">
-            <mat-label>Segundo Nombre</mat-label>
+            <mat-label>Direccion</mat-label>
             <input formControlName="c_Segundo_Nombre" matInput required>
             <mat-icon matSuffix svgIcon="mat:person"></mat-icon>
             <mat-error *ngIf="usuarioForm.get('c_Segundo_Nombre').hasError('required')">Este campo es requerido.</mat-error>
             <mat-error *ngIf="usuarioForm.get('c_Segundo_Nombre').hasError('pattern')">Solo se permiten letras.</mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="flex-auto">
-            <mat-label>Tercer Nombre</mat-label>
-            <input formControlName="c_Tercer_Nombre" matInput>
-            <mat-icon matSuffix svgIcon="mat:person"></mat-icon>
-          <mat-error *ngIf="usuarioForm.get('c_Tercer_Nombre').hasError('pattern')">Solo se permiten letras.</mat-error>
-          </mat-form-field>
-        </div>
-
-
-        <div class="flex flex-col sm:flex-row sm:gap-4">
-        <mat-form-field class="flex-auto">
-          <mat-label>Primer Apellido</mat-label>
-          <input formControlName="c_Primer_Apellido" matInput required>
-          <mat-icon matSuffix svgIcon="mat:person"></mat-icon>
-          <mat-error *ngIf="usuarioForm.get('c_Primer_Apellido').hasError('required')">Este campo es requerido.</mat-error>
-          <mat-error *ngIf="usuarioForm.get('c_Primer_Apellido').hasError('pattern')">Solo se permiten letras.</mat-error>
-        </mat-form-field>
-
-        <mat-form-field class="flex-auto">
-          <mat-label>Segundo Apellido</mat-label>
-          <mat-icon matSuffix svgIcon="mat:person"></mat-icon>
-          <input formControlName="c_Segundo_Apellido" matInput required>
-          <mat-error *ngIf="usuarioForm.get('c_Segundo_Apellido').hasError('required')">Este campo es requerido.</mat-error>
-          <mat-error *ngIf="usuarioForm.get('c_Segundo_Apellido').hasError('pattern')">Solo se permiten letras.</mat-error>
-        </mat-form-field>
-
-        <mat-form-field class="flex-auto" *ngIf="usuarioForm.get('c_Id_Genero').value === 1">
-          <mat-label>Apellido de Casada</mat-label>
-          <input formControlName="c_Apellido_Casada" matInput>
-          <mat-icon matSuffix svgIcon="mat:person"></mat-icon>
-          <mat-error *ngIf="usuarioForm.get('c_Apellido_Casada').hasError('pattern')">Solo se permiten letras.</mat-error>
-        </mat-form-field>
-        </div>
-
-
-        <div class="flex flex-col sm:flex-row sm:gap-4">
-          <mat-form-field class="flex-auto">
-            <mat-label>DPI</mat-label>
-            <input formControlName="c_DPI" matInput required>
-            <mat-error *ngIf="usuarioForm.get('c_DPI').hasError('required')">Este campo es requerido.</mat-error>
-            <mat-error *ngIf="usuarioForm.get('c_DPI').hasError('pattern')">Solo se permiten numeros.</mat-error>
-            <mat-error *ngIf="usuarioForm.get('c_DPI').hasError('minlength')">Debe tener 13 caracteres.</mat-error>
-            <mat-error *ngIf="usuarioForm.get('c_DPI').hasError('maxlength')">No puede exceder de los 13 caracteres.</mat-error>
           </mat-form-field>
 
           <mat-form-field class="flex-auto">
@@ -150,76 +110,50 @@
             <mat-error *ngIf="usuarioForm.get('c_NIT').hasError('minlength')">Debe tener 10 caracteres.</mat-error>
             <mat-error *ngIf="usuarioForm.get('c_NIT').hasError('maxlength')">No puede exceder de los 10 caracteres.</mat-error>
           </mat-form-field>
-        </div>
-
-        <div class="flex flex-col sm:flex-row sm:gap-4">
          
-        <mat-form-field>
-          <mat-label>Departamento</mat-label>
-          <mat-select  formControlName="c_Id_Departamento"  placeholder="Departamento" >
-            <mat-option *ngFor="let state of filteredDepartamento$ | async"  [value]="state.Id">
-              <img [src]="state.flag" class="align-middle mr-4 shadow-lg" height="25">
-              <span class="body-1">{{ state.name }}</span>
-            </mat-option>
-          </mat-select>
-         <mat-error *ngIf="usuarioForm.get('c_Id_Departamento').hasError('required')">Este campo es requerido.</mat-error>
-        </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Municipio</mat-label>
-          <mat-select formControlName="c_Id_Municipio" placeholder="Municipio">
-            <mat-option *ngFor="let Mun of filteredMunicipio$ | async" [value]="Mun.Id">
-              <img [src]="Mun.flag" class="align-middle mr-4 shadow-lg" style="width: 12%;">
-              <span class="body-2">{{ Mun.name }}</span>
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="usuarioForm.get('c_Id_Municipio').hasError('required')">Este campo es requerido.</mat-error>
-        </mat-form-field>
-        
         </div>
 
-        <mat-form-field class="flex-auto">
-          <mat-label>Direccion</mat-label>
-          <input formControlName="c_Direccion" matInput required>
-          <mat-icon matSuffix svgIcon="mat:location_on"></mat-icon>
-          <mat-error *ngIf="usuarioForm.get('c_Direccion').hasError('required')">Este campo es requerido.</mat-error>
-          <mat-error *ngIf="usuarioForm.get('c_Direccion').hasError('pattern')">Solo se permiten letras, numeros, guiones y comas.</mat-error>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Correo</mat-label>
-          <input formControlName="c_Correo" matInput required>
-          <mat-icon matSuffix svgIcon="mat:email"></mat-icon>
-          <mat-error *ngIf="usuarioForm.get('c_Correo').hasError('required')">Este campo es requerido.</mat-error>
-        </mat-form-field>
-
-
         <div class="flex flex-col sm:flex-row sm:gap-4">
-        <mat-form-field class="flex-auto">
-          <mat-label>Numero de Telefono Principal</mat-label>
-          <input formControlName="c_PNumero_Telefono" matInput required>
-          <mat-icon class="mr-2" matPrefix svgIcon="mat:smartphone"></mat-icon>
-          <mat-error *ngIf="usuarioForm.get('c_PNumero_Telefono').hasError('required')">Este campo es requerido.</mat-error>
-          <mat-error *ngIf="usuarioForm.get('c_PNumero_Telefono').hasError('pattern')">Solo se permiten numeros.</mat-error>
-        </mat-form-field>
-      
-        <mat-form-field class="flex-auto">
-          <mat-label>Numero de Telefono Secundario</mat-label>
-          <input formControlName="c_SNumero_Telefono" matInput>
-          <mat-icon class="mr-2" matPrefix svgIcon="mat:smartphone"></mat-icon>
-          <mat-error *ngIf="usuarioForm.get('c_SNumero_Telefono').hasError('pattern')">Solo se permiten numeros.</mat-error>
-        </mat-form-field>
+          <table border="1">
+            <thead>
+                <tr>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>SubTotal</th>
+                    <th>IVA</th>
+                    <th>Total SubTotal</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí puedes agregar filas para tus productos -->
+                <tr>
+                    <td>Levantado de Texto</td>
+                    <td>10.00</td>
+                    <td>2</td>
+                    <td>20.00</td>
+                    <td>3.60</td>
+                    <td>4.60</td>
+                    <td>23.60</td>
+                </tr>
+                <tr>
+                    <td>Caja Rusal Remesas</td>
+                    <td>1500.50</td>
+                    <td>1</td>
+                    <td>46.50</td>
+                    <td>8.37</td>
+                    <td>6.50</td>
+                    <td>54.87</td>
+                </tr>
+                <!-- Agrega más filas según tus necesidades -->
+            </tbody>
+            
+        </table>
       </div>
 
-        <div class="form-field-row">
-          <mat-form-field>
-            <mat-label>Fecha de Nacimiento</mat-label>
-            <input formControlName="c_Fecha_Nacimiento" [matDatepicker]="datepickerRef" matInput>
-            <mat-datepicker-toggle [for]="datepickerRef" matSuffix></mat-datepicker-toggle>
-            <mat-datepicker #datepickerRef></mat-datepicker>
-            <mat-error *ngIf="usuarioForm.get('c_Fecha_Nacimiento').hasError('required')">Este campo es requerido.</mat-error>
-          </mat-form-field>
-        </div>
+      
 
         <div class="flex items-center justify-end gap-2">
           <button mat-button type="button">Cancelar</button>

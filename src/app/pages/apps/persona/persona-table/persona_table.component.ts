@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PersonaEditComponent } from '../components/persona-edit/persona-edit.component';
 import { PersonaData } from '../interfaces/persona.interface';
 import { EmpleadoTableColumn } from 'src/@vex/interfaces/empleado_table_column.interface';
-import { CrearUsuariosService } from 'src/app/Service/CrearUsuarios.service';
+import { CrearUsuariosService } from 'src/app/Service/GetPersona.service';
 import { BehaviorSubject } from 'rxjs';
 import jwt_decode from "jwt-decode";
 import { ConfirmDialogComponent } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.component';

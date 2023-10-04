@@ -1,32 +1,31 @@
-import { Input,Component, OnInit,Renderer2, HostListener,ChangeDetectionStrategy,
-  ChangeDetectorRef,  NgZone,ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit,ViewChild,Renderer2, ElementRef,HostListener } from '@angular/core';
 import { Link } from '../../../../../@vex/interfaces/link.interface';
 import { scaleIn400ms } from '../../../../../@vex/animations/scale-in.animation';
 import { fadeInRight400ms } from '../../../../../@vex/animations/fade-in-right.animation';
-import { PersonaEditComponent } from '../components/persona-edit/persona-edit.component';
+import { ProductoEditComponent } from '../components/producto-edit/producto-edit.component';
 import { MatDialog } from '@angular/material/dialog';
-import { PersonaData } from '../interfaces/persona.interface';
+import { ProductoData } from '../interfaces/producto.interface';
+import {  of, Observable } from 'rxjs';
 import { stagger40ms } from '../../../../../@vex/animations/stagger.animation';
 import { fadeInUp400ms } from '../../../../../@vex/animations/fade-in-up.animation';
 import { scaleFadeIn400ms } from '../../../../../@vex/animations/scale-fade-in.animation';
 import { ActivatedRoute } from '@angular/router';
-import { CrearUsuariosService } from 'src/app/Service/CrearUsuarios.service';
+import { map } from 'rxjs/operators';
+import { ProductoService } from 'src/app/Service/Productos.service';
 import { Router } from '@angular/router';
-import {  of, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { MatSnackBar } from "@angular/material/snack-bar";
 import jwt_decode from "jwt-decode";
 import { ConfirmDialogComponent } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.component';
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { timeStamp } from 'console';
 
-
-export function trackById<T extends { c_Id_Persona: string | number }>(index: number, item: T) {
-  return item.c_Id_Persona;
+export function trackById<T extends { c_Id_Producto: string | number }>(index: number, item: T) {
+  return item.c_Id_Producto;
 }
 
 @Component({
   selector: 'vex-contacts-grid',
-  templateUrl: './persona-grid.component.html',
-  styleUrls: ['./persona-grid.component.scss'],
+  templateUrl: './producto-grid.component.html',
+  styleUrls: ['./producto-grid.component.scss'],
   animations: [
     scaleIn400ms,
     fadeInRight400ms,
@@ -35,22 +34,21 @@ export function trackById<T extends { c_Id_Persona: string | number }>(index: nu
     scaleFadeIn400ms
   ]
 })
-export class PersonaGridComponent implements OnInit {
+export class ProductoGridComponent implements OnInit {
 
   @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
+  c_Id_UsuarioModificacion: string;
   titulo: string;
   estado: number = 1;
+  Servicio: ProductoData[] = [];
   razon: string;
-  c_Id_UsuarioModificacion: string;
-  persona: PersonaData[] = [];
-  tipo: string;
 
   buscar() {
     const searchTerm = this.searchInput.nativeElement.value.toLowerCase();
   
     // Realiza el filtrado basado en searchTerm
     if (searchTerm) {
-      const filteredPersona = this.persona.filter(item => {
+      const filteredServicio = this.Servicio.filter(item => {
         for (const propiedad in item) {
           if (item.hasOwnProperty(propiedad) && typeof item[propiedad] === 'string') {
             const valor = item[propiedad].toLowerCase();
@@ -68,16 +66,16 @@ export class PersonaGridComponent implements OnInit {
           switch (activeCategory) {
             case 'activos': {
               this.activeCategory = activeCategory;
-           return  filteredPersona.filter(c => c.c_Estado === 1);
+           return  filteredServicio.filter(c => c.c_Estado === 1);
             }
     
             case 'inactivos': {
               this.activeCategory = activeCategory;
-              return filteredPersona.filter(c => c.c_Estado === 2);
+              return filteredServicio.filter(c => c.c_Estado === 2);
             }
     
             default: {
-              return filteredPersona;
+              return filteredServicio;
             }
           }
         })
@@ -88,11 +86,14 @@ export class PersonaGridComponent implements OnInit {
       
     }
   }
-  filteredContacts$: Observable<PersonaData[]> = of([]);
+  filteredContacts$: Observable<ProductoData[]> = of([]);
   loadingData = true;
-
-  tableData = this.persona;
   activeCategory = 'activos';
+  tableData = this.Servicio;
+
+
+
+
   links: Link[] = [
     {
       label: 'Activos',
@@ -106,177 +107,144 @@ export class PersonaGridComponent implements OnInit {
 
   trackById = trackById;
 
-
   constructor(private dialog: MatDialog,
               private route: ActivatedRoute,
-              private CrearUsuariosService:CrearUsuariosService,
+              private ProductoService:ProductoService,
               private router: Router, private renderer: Renderer2,
-              private cd: ChangeDetectorRef,
-              private ngZone: NgZone,
               private snackBar: MatSnackBar,
-            ) { }
+             ) { }
 
   ngOnInit() {
-   this.obtenerTablaData();
-   // this.checkScreenSize();
-
-
-
-}
-
-  
-
-
-
-
+    this.obtenerTablaData();
+  }
 
 
   obtenerTablaData() {
 
-  this.CrearUsuariosService.getPersona("").subscribe((response: any) => {
-  this.persona = response.response;
-  this.tableData = this.persona.filter(c => c.c_Estado === this.estado);
-  
-  this.filteredContacts$ = this.route.paramMap.pipe(
-    map(paramMap => paramMap.get('activeCategory')),
-    map(activeCategory => {
-      switch (activeCategory) {
-        case 'activos': {
-          this.activeCategory = activeCategory;
-       return  this.persona.filter(c => c.c_Estado === 1);
-        }
-
-        case 'inactivos': {
-          this.activeCategory = activeCategory;
-          return this.persona.filter(c => c.c_Estado === 2);
-        }
-
-        default: {
-          return this.persona;
-        }
-      }
-    })
+    this.ProductoService.getProducto("").subscribe((response: any) => {
+    this.Servicio = response.response;
+    this.tableData = this.Servicio.filter(c => c.c_Estado === this.estado);
     
-  );
-
-});
-
- }
-
-  OpenContact(id?: PersonaData['c_Id_Persona']) {
-    this.dialog.open(PersonaEditComponent, {
+    this.filteredContacts$ = this.route.paramMap.pipe(
+      map(paramMap => paramMap.get('activeCategory')),
+      map(activeCategory => {
+        switch (activeCategory) {
+          
+          case 'activos': {
+            this.activeCategory = activeCategory;
+         return  this.Servicio.filter(c => c.c_Estado === 1);
+          }
+  
+          case 'inactivos': {
+            this.activeCategory = activeCategory;
+            return this.Servicio.filter(c => c.c_Estado === 2);
+          }
+  
+          default: {
+            return this.Servicio;
+          }
+        }
+      })
+      
+    );
+  
+  });
+  
+   }
+  openContact(id?: ProductoData['c_Id_Producto']) {
+    this.dialog.open(ProductoEditComponent, {
       data: id || null,
-      width: '60rem'
-
+      width: '55rem'
     });
   }
 
-    // toggleStar(id: PersonaData['c_Id_Persona']) {
-    //   const contact = this.persona.find(c => c.c_Id_Persona === id);
 
-    //   if (contact) {
-    //     contact.c_Estado = !contact.c_Estado ? 1 : 2;
-    //   }
+  toggleStar(c_Id_Producto: ProductoData['c_Id_Producto']) {
+    const contact = this.Servicio.find(c => c.c_Id_Producto === c_Id_Producto);
+ 
+    const token = localStorage.getItem("token"); 
+    const decodedToken: any = jwt_decode(token);
+    const idUsuario = decodedToken.IdUsuario;
+    this.c_Id_UsuarioModificacion = idUsuario;
 
-    
-    // }
 
-    toggleStar(c_Id_Persona: PersonaData['c_Id_Persona']) {
-      const contact = this.persona.find(c => c.c_Id_Persona === c_Id_Persona);
-      const token = localStorage.getItem("token"); 
-      const decodedToken: any = jwt_decode(token);
-      const idUsuario = decodedToken.IdUsuario;
-      this.c_Id_UsuarioModificacion = idUsuario;
+    if(this.activeCategory == 'activos'){
+      this.titulo = "¿Estás seguro que deseas desactivar la marca?";
+      this.razon = "Razon por la cual se desactiva el registro";
+      this.estado = 1;
+          
+    }else{
+      this.titulo = '¿Estás seguro de que deseas activar la marca?';
+      this.razon = "Razon por la cual se activa el registro";
+      this.estado = 2;
+    }
 
-      this.c_Id_UsuarioModificacion = idUsuario;
-      if(contact.c_Tipo =="PROVEEDOR"){
-        this.tipo = "Proveedor";
-      }
-      if(contact.c_Tipo =="CLIENTE"){
-        this.tipo = "Cliente";
-      }
 
-      if(this.activeCategory == 'activos'){
-        this.titulo = "¿Estás seguro que deseas desactivar el  " + this.tipo + "?";
-        this.razon = "Razon por la cual se desactiva el registro";
-        this.estado = 1;
-      }else{
-        this.titulo = "¿Estás seguro de que deseas activar el "+ this.tipo  + "?";
-        this.razon = "Razon por la cual se activa el registro";
-        this.estado = 2;
-      }
+    console.log(this.titulo,this.activeCategory);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      height: '20rem',
+      width: '28rem', 
+      data: { title: this.titulo, textAreaValue: '', razon: this.razon,valido: true  }  
 
-      console.log(this.titulo,this.activeCategory);
-      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        height: '20rem',
-        width: '28rem', 
-        data: { title: this.titulo, textAreaValue: '', razon: this.razon,valido: true  }  
-  
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          console.log('Valor del textarea:', result);
-          this.CrearUsuariosService.CambiarEstadoPersona(contact.c_Id_Persona,this.c_Id_UsuarioModificacion,result).subscribe((response) => {
-            console.log(response);
-            if(response.ok){
-              this.snackBar.open(response.transaccion_Mensaje, "Cerrar", {
-                duration: 5000,
-                panelClass: ["success-snackbar"], 
-              });
-              this.obtenerTablaData();
-              this.filteredContacts$ = this.route.paramMap.pipe(
-                map(paramMap => paramMap.get('activeCategory')),
-                map(activeCategory => {
-                  switch (activeCategory) {
-                    case 'activos': {
-                      this.activeCategory = activeCategory;
-                      console.log(this.activeCategory);
-                   return  this.persona.filter(c => c.c_Estado === 1);
-                    }
-                    case 'inactivos': {
-                      this.activeCategory = activeCategory;
-                      console.log(this.activeCategory);
-                      return this.persona.filter(c => c.c_Estado === 2);
-                    }
-                    default: {
-                      return this.persona;
-                    }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+       // console.log('Valor del textarea:', result);
+        this.ProductoService.CambiarEstadoProducto(c_Id_Producto,this.c_Id_UsuarioModificacion,result).subscribe((response) => {
+          console.log(response);
+          if(response.ok){
+            this.snackBar.open(response.transaccion_Mensaje, "Cerrar", {
+              duration: 5000,
+              panelClass: ["success-snackbar"], 
+            });
+            this.obtenerTablaData();
+            this.filteredContacts$ = this.route.paramMap.pipe(
+              map(paramMap => paramMap.get('activeCategory')),
+              map(activeCategory => {
+                switch (activeCategory) {
+                  
+                  case 'activos': {
+                    this.activeCategory = activeCategory;
+                 return  this.Servicio.filter(c => c.c_Estado === 1);
                   }
-                })
-
-              );
-            }else{
-              this.snackBar.open("No se ha cambiado el estado del empleado", "Cerrar", {
-                duration: 4000,
-                panelClass: ["red-snackbar"]
-              });
-            }
-          });
-        }
-      });
-    }
-
-    onToggleChange(event: any): void {
-      if (this.activeCategory == 'activos') {
-        this.CrearUsuariosService.estado = 1;
-        this.router.navigate(['/apps/persona/table']);
-      } else if(event.checked &&  this.activeCategory == 'inactivos'){
-        this.CrearUsuariosService.estado = 2;
-        this.router.navigate(['/apps/persona/table']);
+          
+                  case 'inactivos': {
+                    this.activeCategory = activeCategory;
+                    return this.Servicio.filter(c => c.c_Estado === 2);
+                  }
+          
+                  default: {
+                    return this.Servicio;
+                  }
+                }
+              })
+              
+            );
+          }else{
+            this.snackBar.open("Codigo de Error: "+response.transaccion_Estado+" "+ "Mensje: "+response.transaccion_Mensaje, "Cerrar", {
+              duration: 10000,
+              panelClass: ["red-snackbar"]
+            });
+          }
+        });
       }
+    });
 
+   
+  
+
+  }
+ 
+
+  onToggleChange(event: any): void {
+    if (event.checked &&  this.activeCategory == 'activos') {
+      this.ProductoService.estado = 1;
+      this.router.navigate(['/apps/producto/table']);
+    } else if(event.checked &&  this.activeCategory == 'inactivos'){
+      this.ProductoService.estado = 2;
+      this.router.navigate(['/apps/producto/table']);
     }
+  }
 
-
-  // @HostListener('window:resize', ['$event'])
-  // onResize(event) {
-  //   this.checkScreenSize();
-  // }
-
-  // private checkScreenSize() {
-  //   if (window.innerWidth > 768) {
-  //     this.router.navigate(['/apps/persona/table']); 
-  //   }
-  // }
 }

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output,Renderer2, HostListener } from '@angular/core';
-import { CrearUsuariosService } from 'src/app/Service/CrearUsuarios.service';
+import { CrearUsuariosService } from 'src/app/Service/GetPersona.service';
 import { PersonaData} from '../../interfaces/persona.interface';
 import { fadeInRight400ms } from '../../../../../../@vex/animations/fade-in-right.animation';
 import { stagger40ms } from '../../../../../../@vex/animations/stagger.animation';

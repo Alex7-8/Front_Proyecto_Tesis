@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { PersonaEditComponent } from './persona-edit.component';
+import { MarcaEditComponent } from './marca-edit.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -15,7 +16,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
-  declarations: [PersonaEditComponent],
+  declarations: [MarcaEditComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -29,8 +30,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatMenuModule,
     MatButtonModule,
     MatNativeDateModule,
+    FormsModule,
 
   ]
 })
-export class PersonaEditModule {
+export class MarcaEditModule {
 }

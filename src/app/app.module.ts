@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VexModule } from '../@vex/vex.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomLayoutModule } from './custom-layout/custom-layout.module';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+///import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 
@@ -30,10 +30,11 @@ import { RouterModule, Routes } from '@angular/router';
     
   ],
   providers: [
-    {
-    provide: LocationStrategy,
-     useClass: HashLocationStrategy,
-    },
+    
+   // {
+   // provide: LocationStrategy,
+   //  useClass: HashLocationStrategy,
+   // },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor, 

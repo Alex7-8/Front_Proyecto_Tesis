@@ -35,8 +35,8 @@
             <th *matHeaderCellDef mat-header-cell mat-sort-header> {{ column.label }}</th>
             <td *matCellDef="let row" [ngClass]="column.cssClasses" class="w-10" mat-cell>
               <button (click)="emitToggleStar($event, row.c_Id_Persona)" mat-icon-button type="button">
-                <mat-icon *ngIf="row[column.property]" class="text-amber" svgIcon="mat:remove_circle"></mat-icon>
-                <mat-icon *ngIf="!row[column.property]" svgIcon="mat:remove_circle_outline"></mat-icon>
+                <mat-icon *ngIf="row.c_Estado == 2"  svgIcon="mat:control_point"></mat-icon>
+                <mat-icon *ngIf="row.c_Estado == 1" svgIcon="mat:cancel"></mat-icon>
               </button>
             </td>
           </ng-container>

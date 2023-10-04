@@ -1,0 +1,334 @@
+<form  *ngIf="contactId != null" (ngSubmit)="openConfirmDialog()" [formGroup]="form">
+  <div class="flex items-center" mat-dialog-title>
+    <h2 class="headline m-0 flex-auto">{{ "Actualizar Producto" || "Actualizar Producto" }}</h2>
+
+   
+
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+  </div>
+
+        <mat-divider class="text-border"></mat-divider>
+
+
+
+        
+  <mat-dialog-content   class=" flex flex-col mat-form-field">
+
+    <div class="image-upload-container">
+      <div class="selected-image-container">
+        <div class="selected-image-wrapper">
+          <img [src]="selectedImageURL" alt="Imagen seleccionada">
+        </div>
+      </div>
+      <div class="button-container">
+        <label for="image-upload" class="custom-file-upload">
+          <span>Subir Imagen</span>
+        </label>
+        <input id="image-upload" type="file" (change)="onFileSelecteds($event)" accept="image/*">
+      </div>
+     
+    </div>
+    <div class="flex flex-col sm:flex-row sm:gap-5" style="margin-top: 15px;">
+    <mat-form-field class="flex-1 sm:w-1/4"  >
+      <mat-label>Nombre</mat-label>
+      <input formControlName="c_Nombre_Producto" matInput>
+      <mat-icon matSuffix svgIcon="mat:format_shapes"></mat-icon>
+      <mat-error *ngIf="form.get('c_Nombre_Producto').hasError('required')">Este campo es requerido.</mat-error>
+      <mat-error *ngIf="form.get('c_Nombre_Producto').hasError('pattern')">Solo se permiten letras y números.</mat-error>
+     <mat-error *ngIf="form.get('c_Nombre_Producto').hasError('minlength')">Debe tener al menos 4 caracteres.</mat-error>
+    </mat-form-field>
+    <mat-form-field class="flex-1 sm:w-1/4">
+      <mat-label>Sucursal</mat-label>
+      <mat-select  formControlName="c_Id_Sucursal"  placeholder="Sucursal" >
+        <mat-option *ngFor="let sl of filteredSucursal$ | async"  [value]="sl.Id">
+          <div class="option-container">
+            <img [src]="sl.flag" class="align-middle mr-4 shadow-lg" style="width: 40%; height: 50%;" >
+            <span class="body-1">{{ sl.name }}</span>
+        </div>
+        </mat-option>
+      </mat-select>
+     <mat-error *ngIf="form.get('c_Id_Sucursal').hasError('required')">Este campo es requerido.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="flex-1 sm:w-1/4">
+      <mat-label>Marca</mat-label>
+      <mat-select  formControlName="c_Id_Marca"  placeholder="Marca" >
+        <mat-option *ngFor="let ms of filteredMarca$ | async"  [value]="ms.Id">
+          <div class="option-container">
+            <img [src]="ms.flag" class="align-middle mr-4 shadow-lg" style="width: 40%; height: 50%;" >
+            <span class="body-1">{{ ms.name }}</span>
+        </div>
+        </mat-option>
+      </mat-select>
+     <mat-error *ngIf="form.get('c_Id_Sucursal').hasError('required')">Este campo es requerido.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="flex-1 sm:w-1/4">
+      <mat-label>Categoria</mat-label>
+      <mat-select formControlName="c_Id_Categoria">
+        <mat-option *ngFor="let Cat of Categoria" [value]="Cat.c_Id_Categoria">{{ Cat.c_Nombre_Categoria }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('c_Id_Categoria').hasError('required')">Este campo es requerido.</mat-error>
+    </mat-form-field>
+  </div>
+
+   <div class="flex flex-col sm:flex-row sm:gap-5">
+    <mat-form-field class="flex-1 sm:w-1/4"  style="margin-top: 15px;">
+        <mat-label>Stock</mat-label>
+        <input   formControlName="c_Stock_Disponible"  matInput  >
+        <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+        <mat-error *ngIf="form.get('c_Stock_Disponible').hasError('required')">Este campo es requerido.</mat-error>
+        <mat-error *ngIf="form.get('c_Stock_Disponible').hasError('pattern')">Solo se permiten números.</mat-error>
+        <mat-error *ngIf="form.get('c_Stock_Disponible').hasError('precioInvalido')"> El formato del precio es incorrecto. Debe ser un número entero o decimal con 2 decimales.</mat-error>
+    </mat-form-field>
+   
+    <div style="margin-left: 1.3rem;">
+      <label style="margin-right: 0.5rem;"for="gridViewToggle">{{ buttonText }}</label>
+      <mat-slide-toggle
+        id="gridViewToggle"
+        color="primary"
+        [checked]="true"
+        (change)="onToggleChange($event)"
+      ></mat-slide-toggle>
+    </div>
+
+    <mat-form-field class="flex-1 sm:w-1/4"  style="margin-top: 15px;">
+      <mat-label>Cantidad</mat-label>
+      <input cdkFocusInitial formControlName="c_Precio_Compra" matInput >
+      <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+      <mat-error *ngIf="form.get('c_Precio_Compra').hasError('required')">Este campo es requerido.</mat-error>
+      <mat-error *ngIf="form.get('c_Precio_Compra').hasError('pattern')">Solo se permiten números.</mat-error>
+      <mat-error *ngIf="form.get('c_Precio_Compra').hasError('precioInvalido')"> El formato del precio es incorrecto. Debe ser un número entero o decimal con 2 decimales.</mat-error>
+  
+    </mat-form-field>
+ 
+   </div>
+
+   <div class="flex flex-col sm:flex-row sm:gap-5">
+    <mat-form-field class="flex-1 sm:w-1/4"  style="margin-top: 15px;">
+      <mat-label>Precio Crompra</mat-label>
+      <input cdkFocusInitial formControlName="c_Precio_Compra" matInput >
+      <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+      <mat-error *ngIf="form.get('c_Precio_Compra').hasError('required')">Este campo es requerido.</mat-error>
+      <mat-error *ngIf="form.get('c_Precio_Compra').hasError('pattern')">Solo se permiten números.</mat-error>
+      <mat-error *ngIf="form.get('c_Precio_Compra').hasError('precioInvalido')"> El formato del precio es incorrecto. Debe ser un número entero o decimal con 2 decimales.</mat-error>
+  
+    </mat-form-field>
+
+    <mat-form-field class="flex-1 sm:w-1/4"  style="margin-top: 15px;">
+      <mat-label>Precio Venta</mat-label>
+      <input cdkFocusInitial formControlName="c_Precio_Venta" matInput >
+      <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+      <mat-error *ngIf="form.get('c_Precio_Venta').hasError('required')">Este campo es requerido.</mat-error>
+      <mat-error *ngIf="form.get('c_Precio_Venta').hasError('pattern')">Solo se permiten números.</mat-error>
+      <mat-error *ngIf="form.get('c_Precio_Venta').hasError('precioInvalido')"> El formato del precio es incorrecto. Debe ser un número entero o decimal con 2 decimales.</mat-error>
+  
+    </mat-form-field>
+   </div>
+
+    <div class="flex flex-col sm:flex-row sm:gap-5">
+      <ng-container *ngIf="contactId">
+        <mat-form-field class="flex-auto" >
+          <mat-label>Razon por la cual se actualiza el registro</mat-label>
+          <textarea formControlName="Razon" matInput></textarea>
+          <mat-error *ngIf="form.get('Razon').hasError('pattern')">Solo se permiten letras, comas y puntos.</mat-error>
+        </mat-form-field>
+      </ng-container>
+    </div>
+
+  </mat-dialog-content>
+
+ 
+  <mat-dialog-actions align="end">
+    <!-- <span class="loader"></span> -->
+   
+    <div class="flex flex-col sm:flex-row sm:gap-7">
+      <div class="flex-1 sm:w-1/4">
+        <ng-container *ngIf="valido" >
+          <button mat-button mat-dialog-close type="button" >Cancel</button>
+          <button  color="primary" mat-flat-button type="submit" [disabled]="!form.valid" >Actualizar Producto</button>
+          <button hidden></button>
+        </ng-container>
+        <ng-container *ngIf="!valido">
+          <span class="loader"></span>
+          <button mat-button mat-dialog-close type="button" [disabled]="form.valid">Cancel</button>
+          <button  color="primary" mat-flat-button type="submit" [disabled]="form.valid">Actualizar Producto</button>
+          
+        </ng-container>
+      </div>
+      
+    </div>
+   
+    
+   
+  </mat-dialog-actions>
+</form>
+
+
+
+
+
+
+
+
+<form *ngIf="contactId === null"  (ngSubmit)="openConfirmDialog()" [formGroup]="registerForm">
+  <div class="flex items-center" mat-dialog-title>
+    <h2 class="headline m-0 flex-auto">Registrar Servicio</h2>
+
+   
+
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+  </div>
+
+        <mat-divider class="text-border"></mat-divider>
+  <mat-dialog-content   class=" flex flex-col mat-form-field">
+
+   
+  <div formArrayName="campo" *ngFor="let servicio of Servicio.controls; let i = index">
+    <div [formGroupName]="i">
+      <div class="form-group row">
+       
+        <div class="col-md-3">
+          <div class="flex flex-col sm:flex-row sm:gap-5">
+            <div class="px-6 py-4 flex flex-col">
+              <div class="image-upload-container">
+                <div class="selected-image-container">
+                  <div class="selected-image-wrapper">
+                    <img  [src]="urlsImagenes[i] || imagenPorDefectoURL "   alt="Imagen seleccionada" >
+                  </div>
+                </div>
+                <div class="button-container">
+                  <label for="image-upload-{{i}}" class="custom-file-upload">
+                    <span>Subir Imagen</span>
+                  </label>
+                  <input id="image-upload-{{i}}" type="file" (change)="onFileSelected($event, i)" accept="image/*">
+                </div>
+              </div>
+            </div>
+
+          </div>
+         
+          
+         <div  class="flex flex-col sm:flex-row sm:gap-5">
+          <div class="flex-1 sm:w-1/4">
+            <div class="flex flex-col sm:flex-row sm:gap-7">
+              <mat-form-field class="flex-1 sm:w-1/4" >
+                <mat-label class="col-md-1" [attr.for]="'c_Nombre_Producto' + i">Nombre</mat-label>
+  
+                  <input type="text" [attr.id]="'c_Nombre_Producto' + i" class="form-control" formControlName="c_Nombre_Producto"  matInput>
+                  <mat-icon matSuffix svgIcon="mat:format_shapes"></mat-icon>
+                  <mat-error *ngIf="servicio.get('c_Nombre_Producto').hasError('required')">Este campo es requerido.</mat-error>
+                  <mat-error *ngIf="servicio.get('c_Nombre_Producto').hasError('pattern')">Solo se permiten letras y números.</mat-error>
+                  <mat-error *ngIf="servicio.get('c_Nombre_Producto').hasError('minlength')">Debe tener al menos 4 caracteres.</mat-error>  
+              </mat-form-field >
+  
+              <mat-form-field class="flex-1 sm:w-1/4">
+                <mat-label class="col-md-1" [attr.for]="'c_Id_Marca' + i" >Marca</mat-label>
+                <mat-select  [attr.id]="'c_Id_Marca' + i" class="form-control" formControlName="c_Id_Marca"  placeholder="Marca" >
+                  <mat-option *ngFor="let ms of filteredMarca$ | async"  [value]="ms.Id">
+                    <div class="option-container">
+                      <img [src]="ms.flag" class="align-middle mr-4 shadow-lg" style="width: 40%; height: 50%;" >
+                      <span class="body-1">{{ ms.name }}</span>
+                  </div>
+                  </mat-option>
+                </mat-select>
+               <mat-error *ngIf="servicio.get('c_Id_Marca').hasError('required')">Este campo es requerido.</mat-error>
+              </mat-form-field>
+          
+              <mat-form-field class="flex-1 sm:w-1/4">
+                <mat-label class="col-md-1" [attr.for]="'c_Id_Categoria' + i" >Categoria</mat-label>
+                <mat-select  [attr.id]="'c_Id_Categoria' + i" class="form-control" formControlName="c_Id_Categoria">
+                  <mat-option *ngFor="let Cat of Categoria" [value]="Cat.c_Id_Categoria">{{ Cat.c_Nombre_Categoria }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="servicio.get('c_Id_Categoria').hasError('required')">Este campo es requerido.</mat-error>
+              </mat-form-field>
+            </div >
+            <div class="flex flex-col sm:flex-row sm:gap-7">
+              <mat-form-field class="flex-1 sm:w-1/4" >
+                <mat-label class="col-md-1" [attr.for]="'c_Stock_Disponible' + i">Precio</mat-label>
+                  <input type="text" [attr.id]="'c_Stock_Disponible' + i" class="form-control" formControlName="c_Stock_Disponible"  matInput >
+                  <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+                  <mat-error *ngIf="servicio.get('c_Stock_Disponible').hasError('required')">Este campo es requerido.</mat-error>
+                  <mat-error *ngIf="servicio.get('c_Stock_Disponible').hasError('pattern')">Solo se permiten números.</mat-error>
+                  <mat-error *ngIf="servicio.get('c_Stock_Disponible').hasError('precioInvalido')"> El formato del precio es incorrecto. Debe ser un número entero o decimal con 2 decimales.</mat-error>  
+              </mat-form-field >
+  
+              <mat-form-field class="flex-1 sm:w-1/4" >
+                <mat-label class="col-md-1" [attr.for]="'c_Precio_Compra' + i">Precio</mat-label>
+                  <input type="text" [attr.id]="'c_Precio_Compra' + i" class="form-control" formControlName="c_Precio_Compra"  matInput >
+                  <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+                  <mat-error *ngIf="servicio.get('c_Precio_Compra').hasError('required')">Este campo es requerido.</mat-error>
+                  <mat-error *ngIf="servicio.get('c_Precio_Compra').hasError('pattern')">Solo se permiten números.</mat-error>
+                  <mat-error *ngIf="servicio.get('c_Precio_Compra').hasError('precioInvalido')"> El formato del precio es incorrecto. Debe ser un número entero o decimal con 2 decimales.</mat-error>  
+              </mat-form-field >
+  
+              <mat-form-field class="flex-1 sm:w-1/4" >
+                <mat-label class="col-md-1" [attr.for]="'c_Precio_Venta' + i">Precio</mat-label>
+  
+                  <input type="text" [attr.id]="'c_Precio_Venta' + i" class="form-control" formControlName="c_Precio_Venta"  matInput >
+                  <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+                  <mat-error *ngIf="servicio.get('c_Precio_Venta').hasError('required')">Este campo es requerido.</mat-error>
+                  <mat-error *ngIf="servicio.get('c_Precio_Venta').hasError('pattern')">Solo se permiten números.</mat-error>
+                  <mat-error *ngIf="servicio.get('c_Precio_Venta').hasError('precioInvalido')"> El formato del precio es incorrecto. Debe ser un número entero o decimal con 2 decimales.</mat-error>  
+                  
+  
+              </mat-form-field >
+  
+              
+            </div>
+
+
+
+
+       
+       
+       
+          </div>
+          <div >
+            <button mat-flat-button mat-button color="warn" (click)="removerCampo(i)">Remover</button>
+          </div>
+        </div>
+         </div>
+
+         
+
+
+      </div>
+    </div>
+  </div>
+  <div [ngStyle]="{'margin-top': applyMarginBottom ? '0' : '1.4rem' } ">
+    <button color="primary" mat-flat-button mat-button type="button" (click)="agregarCampo()">Añadir Más</button> 
+  </div> 
+</mat-dialog-content >
+
+  <mat-dialog-actions align="end">
+    <!-- <span class="loader"></span> -->
+   
+    <div class="flex flex-col sm:flex-row sm:gap-7">
+      <div class="flex-1 sm:w-1/4">
+        <ng-container *ngIf="valido" >
+          <button mat-button mat-dialog-close type="button" >Cancel</button>
+          <button  color="primary" mat-flat-button type="submit" [disabled]="!registerForm.valid" > Registrar Marca</button>
+          <button hidden></button>
+        </ng-container>
+        <ng-container *ngIf="!valido">
+          <span class="loader"></span>
+          <button mat-button mat-dialog-close type="button" [disabled]="registerForm.valid">Cancel</button>
+          <button  color="primary" mat-flat-button type="submit" [disabled]="registerForm.valid"> Registrar Marca</button>
+          
+        </ng-container>
+      </div>
+      
+    </div>
+   
+    
+   
+  </mat-dialog-actions>
+
+</form>
+
+

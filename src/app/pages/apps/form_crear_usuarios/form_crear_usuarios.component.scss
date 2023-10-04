@@ -78,3 +78,38 @@
     }
   }
 }
+
+
+
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto; /* Centra la tabla horizontalmente */
+  margin-left: 50px; /* Espacio en la izquierda */
+  margin-right: 50px; /* Espacio en la derecha */
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tfoot td {
+  font-weight: bold;
+}
+
+/* Estilos para separar las columnas */
+th:first-child, td:first-child {
+  border-left: none;
+}
+
+th:last-child, td:last-child {
+  border-right: none;
+}

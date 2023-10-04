@@ -214,7 +214,7 @@
         <input cdkFocusInitial formControlName="Direccion" matInput>
         <mat-icon matPrefix svgIcon="mat:person"></mat-icon>
         <mat-error *ngIf="form.get('Direccion').hasError('required')">Este campo es requerido.</mat-error>
-        <mat-error *ngIf="form.get('Direccion').hasError('pattern')">Solo se permiten letras, numeros, guiones y comas.</mat-error>
+        <mat-error *ngIf="form.get('Direccion').hasError('pattern')">Solo se permiten letras, numeros, guiones, comas y puntos.</mat-error>
       </mat-form-field>
 
       <mat-form-field class="flex-auto">

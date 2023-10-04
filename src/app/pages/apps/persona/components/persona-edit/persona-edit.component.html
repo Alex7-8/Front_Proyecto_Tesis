@@ -1,4 +1,5 @@
 <form  (ngSubmit)="openConfirmDialog()" [formGroup]="form">
+  <!-- <pre>{{ form.value | json }}</pre> -->
   <div class="flex items-center" mat-dialog-title>
     <h2 class="headline m-0 flex-auto">{{ form.get('Nombre').value || '' }}</h2>
 
@@ -212,7 +213,7 @@
         <input cdkFocusInitial formControlName="Direccion" matInput>
         <mat-icon matPrefix svgIcon="mat:person"></mat-icon>
         <mat-error *ngIf="form.get('Direccion').hasError('required')">Este campo es requerido.</mat-error>
-        <mat-error *ngIf="form.get('Direccion').hasError('pattern')">Solo se permiten letras, numeros, guiones y comas.</mat-error>
+        <mat-error *ngIf="form.get('Direccion').hasError('pattern')">Solo se permiten letras, numeros, guiones, comas y puntos.</mat-error>
       </mat-form-field>
 
       <mat-form-field class="flex-auto">

@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output,Renderer2, HostListener } from '@angular/core';
-import { CrearUsuariosService } from 'src/app/Service/CrearUsuarios.service';
-import { PersonaData} from '../../interfaces/persona.interface';
+import { CrearUsuariosService } from 'src/app/Service/GetPersona.service';
+import { ProductoData} from '../../interfaces/producto.interface';
 import { fadeInRight400ms } from '../../../../../../@vex/animations/fade-in-right.animation';
 import { stagger40ms } from '../../../../../../@vex/animations/stagger.animation';
 import { BehaviorSubject } from 'rxjs';
-import { PersonaTableComponent } from '../persona_table.component';
+import { ProductoTableComponent } from '../producto_table.component';
 import { Router } from '@angular/router';
 
 export interface ContactsTableMenu {
@@ -19,18 +19,18 @@ export interface ContactsTableMenu {
 
 @Component({
   selector: 'vex-contacts-table-menu',
-  templateUrl: './persona_menu.component.html',
+  templateUrl: './producto_menu.component.html',
   animations: [fadeInRight400ms, stagger40ms]
 })
-export class PersonaTableMenuComponent implements OnInit {
-  empleado: PersonaData[] = [];
+export class ProductoTableMenuComponent implements OnInit {
+  Producto: ProductoData[] = [];
   @Input() items: ContactsTableMenu[] = [
     
     {
       type: 'link',
       id: 'Activo',
       icon: 'mat:label',
-      label: 'Activos',
+      label: 'Productos Activos',
       classes: {
         icon: 'text-green'
       }
@@ -39,14 +39,14 @@ export class PersonaTableMenuComponent implements OnInit {
       type: 'link',
       id: 'Inactivo',
       icon: 'mat:label',
-      label: 'Inactivos',
+      label: 'Productos Inactivos',
       classes: {
         icon: 'text-gray'
       }
     },
   ];
 
-  @Output() filterChange = new EventEmitter<PersonaData[]>();
+  @Output() filterChange = new EventEmitter<ProductoData[]>();
   @Output() openAddNew = new EventEmitter<void>();
 
   activeCategory: ContactsTableMenu['id'] = 'all';
@@ -54,7 +54,7 @@ export class PersonaTableMenuComponent implements OnInit {
   tablaData$ = this.tablaDataSubject.asObservable();
 
   constructor(private CrearUsuariosService:CrearUsuariosService,
-              private PTC:PersonaTableComponent,
+              private em:ProductoTableComponent,
               private router: Router, private renderer: Renderer2) { }
 
   ngOnInit() {
@@ -62,30 +62,39 @@ export class PersonaTableMenuComponent implements OnInit {
    
   }
 
+  
+  // @HostListener('window:resize', ['$event'])
+  // onResize(event) {
+  //   this.checkScreenSize();
+  // }
+
+
   onToggleChange(event: any): void {
      
-    if (event.checked  &&  this.PTC.activeCategory == 'Activo') {
+    if (event.checked  &&  this.em.activeCategory == 'Activo') {
     
-      this.router.navigate(['/apps/persona/grid/activos']);
-      this.PTC.activeCategory = 'Activo';
-    } else if (event.checked  &&  this.PTC.activeCategory == 'Inactivo') {
-      this.router.navigate(['/apps/persona/grid/inactivos']);
+      this.router.navigate(['/apps/producto/grid/activos']);
+      this.em.activeCategory = 'Activo';
+    } else if (event.checked  &&  this.em.activeCategory == 'Inactivo') {
+      this.router.navigate(['/apps/producto/grid/inactivos']);
 
     }
   }
 
+
+  
   setFilter(category: ContactsTableMenu['id']) {
      this.activeCategory = category;
-    
+     
      if (category === 'Activo') {
-      this.PTC.activeCategory = 'Activo';
-      this.PTC.tableData  = this.PTC.persona.filter(c => c.c_Estado === 1);
+      this.em.activeCategory = 'Activo';
+      this.em.tableData = this.em.Servicio.filter(c => c.c_Estado === 1);
 
     }
     
     if (category === 'Inactivo') {
-      this.PTC.activeCategory = 'Inactivo';
-      this.PTC.tableData  = this.PTC.persona.filter(c => c.c_Estado === 2);
+      this.em.activeCategory = 'Inactivo';
+      this.em.tableData = this.em.Servicio.filter(c => c.c_Estado === 2);
     }
   }
 

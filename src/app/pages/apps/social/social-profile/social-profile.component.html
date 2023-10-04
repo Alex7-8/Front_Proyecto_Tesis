@@ -114,7 +114,7 @@
             <mat-select formControlName="c_Id_Municipio" placeholder="Municipio">
               <mat-option *ngFor="let Mun of filteredMunicipio$ | async" [value]="Mun.Id">
                 <div class="option-container">
-                  <img [src]="Mun.flag" class="align-middle mr-5 shadow-lg" style="width: 12%; height: 12%;">
+                  <img [src]="Mun.flag" class="align-middle mr-5 shadow-lg" style="width: 20%; height: 20%;">
                   <span class="body-2">{{ Mun.name }}</span>
                 </div>
               </mat-option>

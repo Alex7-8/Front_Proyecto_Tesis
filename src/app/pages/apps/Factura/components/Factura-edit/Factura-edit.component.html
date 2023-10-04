@@ -1,0 +1,151 @@
+<form  *ngIf="contactId != null" (ngSubmit)="openConfirmDialog()" [formGroup]="form">
+  <div class="flex items-center" mat-dialog-title>
+    <h2 class="headline m-0 flex-auto">{{ "Actualizar Categoria" || "Actualizar Categoria" }}</h2>
+
+   
+
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+  </div>
+
+        <mat-divider class="text-border"></mat-divider>
+
+
+
+        
+  <mat-dialog-content   class=" flex flex-col mat-form-field">
+  
+    <mat-form-field class="flex-auto"  style="margin-top: 15px;">
+      <mat-label>Nombre</mat-label>
+      <input formControlName="c_Nombre_Categoria" matInput>
+      <mat-icon matSuffix svgIcon="mat:format_shapes"></mat-icon>
+      <mat-error *ngIf="form.get('c_Nombre_Categoria').hasError('required')">Este campo es requerido.</mat-error>
+      <mat-error *ngIf="form.get('c_Nombre_Categoria').hasError('pattern')">Solo se permiten letras y números.</mat-error>
+      <!-- <mat-error *ngIf="form.get('c_Nombre').hasError('minlength')">Debe tener al menos 4 caracteres.</mat-error>
+      <mat-error *ngIf="form.get('c_Nombre').hasError('maxlength')">No debe exceder los 24 caracteres.</mat-error> -->
+    </mat-form-field>
+
+
+   
+
+    <div class="flex flex-col sm:flex-row sm:gap-5">
+      <ng-container *ngIf="contactId">
+        <mat-form-field class="flex-auto" >
+          <mat-label>Razon por la cual se actualiza el registro</mat-label>
+          <textarea formControlName="Razon" matInput></textarea>
+          <mat-error *ngIf="form.get('Razon').hasError('pattern')">Solo se permiten letras, comas y puntos.</mat-error>
+        </mat-form-field>
+      </ng-container>
+    </div>
+
+  </mat-dialog-content>
+
+ 
+  <mat-dialog-actions align="end">
+    <!-- <span class="loader"></span> -->
+   
+    <div class="flex flex-col sm:flex-row sm:gap-7">
+      <div class="flex-1 sm:w-1/4">
+        <ng-container *ngIf="valido" >
+          <button mat-button mat-dialog-close type="button" >Cancel</button>
+          <button  color="primary" mat-flat-button type="submit" [disabled]="!form.valid" >Actualizar Marca</button>
+          <button hidden></button>
+        </ng-container>
+        <ng-container *ngIf="!valido">
+          <span class="loader"></span>
+          <button mat-button mat-dialog-close type="button" [disabled]="form.valid">Cancel</button>
+          <button  color="primary" mat-flat-button type="submit" [disabled]="form.valid">Actualizar Marca</button>
+          
+        </ng-container>
+      </div>
+      
+    </div>
+   
+    
+   
+  </mat-dialog-actions>
+</form>
+
+
+
+
+
+
+
+
+<form *ngIf="contactId === null"  (ngSubmit)="openConfirmDialog()" [formGroup]="registerForm">
+  <div class="flex items-center" mat-dialog-title>
+    <h2 class="headline m-0 flex-auto">Registrar Categoria</h2>
+
+   
+
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+  </div>
+
+        <mat-divider class="text-border"></mat-divider>
+  <mat-dialog-content   class=" flex flex-col mat-form-field">
+
+   
+  <div formArrayName="campo" *ngFor="let categoria of Categoria.controls; let i = index">
+    <div [formGroupName]="i">
+      <div class="form-group row">
+       
+        <div class="col-md-3">
+          <div class="flex flex-col sm:flex-row sm:gap-7">
+            <mat-form-field class="flex-auto" >
+              <mat-label class="col-md-1" [attr.for]="'c_Nombre_Categoria' + i">Nombre</mat-label>
+
+                <input type="text" [attr.id]="'c_Nombre_Categoria' + i" class="form-control" formControlName="c_Nombre_Categoria"  matInput>
+                <mat-icon matSuffix svgIcon="mat:format_shapes"></mat-icon>
+                <mat-error *ngIf="categoria.get('c_Nombre_Categoria').hasError('required')">Este campo es requerido.</mat-error>
+                <mat-error *ngIf="categoria.get('c_Nombre_Categoria').hasError('pattern')">Solo se permiten letras y números.</mat-error>
+                <mat-error *ngIf="categoria.get('c_Nombre_Categoria').hasError('minlength')">Debe tener al menos 4 caracteres.</mat-error>  
+                
+
+            </mat-form-field >
+            <div>
+              <button mat-flat-button mat-button color="warn" (click)="removerCampo(i)">Remover</button>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div >
+    <button color="primary" mat-flat-button mat-button type="button" (click)="agregarCampo()">Añadir Más</button> 
+  </div> 
+</mat-dialog-content >
+
+  <mat-dialog-actions align="end">
+    <!-- <span class="loader"></span> -->
+   
+    <div class="flex flex-col sm:flex-row sm:gap-7">
+      <div class="flex-1 sm:w-1/4">
+        <ng-container *ngIf="valido" >
+          <button mat-button mat-dialog-close type="button" >Cancel</button>
+          <button  color="primary" mat-flat-button type="submit" [disabled]="!registerForm.valid" > Registrar Categoria</button>
+          <button hidden></button>
+        </ng-container>
+        <ng-container *ngIf="!valido">
+          <span class="loader"></span>
+          <button mat-button mat-dialog-close type="button" [disabled]="registerForm.valid">Cancel</button>
+          <button  color="primary" mat-flat-button type="submit" [disabled]="registerForm.valid"> Registrar Categoria</button>
+          
+        </ng-container>
+      </div>
+      
+    </div>
+   
+    
+   
+  </mat-dialog-actions>
+
+</form>
+
+

@@ -7,6 +7,7 @@ import { PopoverService } from '../../components/popover/popover.service';
 import { MegaMenuComponent } from '../../components/mega-menu/mega-menu.component';
 import { Observable, of } from 'rxjs';
 import jwt_decode from "jwt-decode";
+import { AppComponent } from 'src/app/app.component';
 @Component({
   selector: 'vex-toolbar',
   templateUrl: './toolbar.component.html',
@@ -35,7 +36,9 @@ NombreSucursal:string;
   constructor(private layoutService: LayoutService,
               private configService: ConfigService,
               private navigationService: NavigationService,
-              private popoverService: PopoverService) {
+              private popoverService: PopoverService,
+              private AppComponent:AppComponent
+              ) {
                 const token = localStorage.getItem("token"); // Reemplaza 'nombreDelToken' con el nombre real de tu token en el localStorage
 
                 const decodedToken: any = jwt_decode(token);
@@ -47,7 +50,7 @@ NombreSucursal:string;
                 this.NombreSucursal = Nombre;
 
                 console.log(this.NombreSucursal);
-            
+                AppComponent.configureMenu()
                
                // [class.hidden]="!mobileQuery"
                }

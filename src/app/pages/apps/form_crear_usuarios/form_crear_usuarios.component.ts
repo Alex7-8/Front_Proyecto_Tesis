@@ -23,7 +23,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 
 import { Router } from "@angular/router";
 import { CatalogoService } from "../../../Service/Catalogo.service";
-import { CrearUsuariosService } from "../../../Service/CrearUsuarios.service";
+import { CrearUsuariosService } from "../../../Service/GetPersona.service";
 import { MatDialog} from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.component';
 import { ConfirmDialogModule } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.module';
@@ -116,27 +116,15 @@ export class FormCrearUsuariosComponent implements OnInit {
         Validators.maxLength(24),
       ]),],
       c_ID_Rol_Persona: [, Validators.required],
-      c_ID_ROL: [[], Validators.required],
+      c_ID_ROL: [['Servicio'], Validators.required],
       c_Tipo_Cuenta: [,Validators.required],
       c_Id_Sucursal: [, Validators.required],
       c_Id_Genero: [, Validators.required],
       c_Id_Departamento: [, Validators.required],
       c_Id_Municipio: [, Validators.required],
-      c_Primer_Nombre: ["", Validators.compose([
-        Validators.required,
-        Validators.minLength(1),
-        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜ]*$/)
-      ])],
-      c_Segundo_Nombre: ["",Validators.compose([
-        Validators.required,
-        Validators.minLength(1),
-        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜ]*$/)
-      ])],
-      c_Tercer_Nombre: ["",Validators.compose([
-
-        Validators.minLength(1),
-        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜ]*$/)
-      ])],
+      c_Primer_Nombre: [""],
+      c_Segundo_Nombre: [""],
+      c_Tercer_Nombre: [""],
       c_Primer_Apellido: ["",Validators.compose([
         Validators.required,
         Validators.minLength(1),
@@ -201,9 +189,9 @@ export class FormCrearUsuariosComponent implements OnInit {
           this.catalogoService.getMunicipioXDepartamentos(newValue, "zacapa");
       });
 
-    this.catalogoService.getRolPersona("").subscribe((response: any) => {
-      this.roles = response.response;
-    });
+    // this.catalogoService.getRolPersona("").subscribe((response: any) => {
+    //   this.roles = response.response;
+    // });
 
     this.catalogoService.getRolUsuario("").subscribe((response: any) => {
       this.rols = response.response;

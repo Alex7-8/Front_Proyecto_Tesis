@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { PersonaEditComponent } from './persona-edit.component';
+import { ProductoEditComponent } from './producto-edit.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -12,10 +13,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 @NgModule({
-  declarations: [PersonaEditComponent],
+  declarations: [ProductoEditComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -29,8 +31,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatMenuModule,
     MatButtonModule,
     MatNativeDateModule,
-
+    FormsModule,
+    MatSlideToggleModule
   ]
 })
-export class PersonaEditModule {
+export class ProductoEditModule {
 }

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { PersonaGridComponent } from './persona-grid.component';
+import { ProductoGridComponent } from './producto-grid.component';
 
-describe('PersonaGridComponent', () => {
-  let component: PersonaGridComponent;
-  let fixture: ComponentFixture<PersonaGridComponent>;
+describe('ProductoGridComponent', () => {
+  let component: ProductoGridComponent;
+  let fixture: ComponentFixture<ProductoGridComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [PersonaGridComponent]
+      declarations: [ProductoGridComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PersonaGridComponent);
+    fixture = TestBed.createComponent(ProductoGridComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PersonaCardComponent } from './persona-card.component';
+import { MarcaCardComponent } from './marca-card.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 
 
 @NgModule({
-  declarations: [PersonaCardComponent],
+  declarations: [MarcaCardComponent],
   imports: [
     CommonModule,
 
@@ -15,7 +15,7 @@ import { MatRippleModule } from '@angular/material/core';
     MatIconModule,
     MatRippleModule
   ],
-  exports: [PersonaCardComponent]
+  exports: [MarcaCardComponent]
 })
-export class PersonaCardModule {
+export class MarcaCardModule {
 }

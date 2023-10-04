@@ -5,7 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { fadeInUp400ms } from '../../../@vex/animations/fade-in-up.animation';
 import { LoginService } from '../../../../src/app/Service/Login.service';
 import { DatosService } from '../../Service/datos.service';
-
+import { NavigationService } from 'src/@vex/services/navigation.service'; 
+import jwt_decode from "jwt-decode";
+import {AppComponent} from '../../app.component';
 
 @Component({
   selector: 'vex-login',
@@ -30,7 +32,10 @@ export class LoginComponent implements OnInit {
     private loginService: LoginService,
     private datosService: DatosService,
     private route: ActivatedRoute,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private navigationService: NavigationService,
+    private appComponent: AppComponent
+
   ) {}
 
 
@@ -45,6 +50,26 @@ export class LoginComponent implements OnInit {
     
   }
  
+  TokenAdmin() {
+    let res: boolean = true;
+    if(sessionStorage.getItem("token") == null){
+      res = false;
+    }else{
+      const token = sessionStorage.getItem("token"); 
+      const decodedToken: any = jwt_decode(token);
+      if(decodedToken.role.includes("ADMINISTRADOR"))
+      {
+        res = true;
+      }else{
+        res = false;
+      }
+      
+    }
+    console.log(res);
+    //  console.log(this.rol);
+    return res;
+  }
+
   send() {
     const c_Id_Usuario = this.form.get('email').value;
     const c_Contrasenia = this.form.get('password').value;
@@ -69,7 +94,12 @@ export class LoginComponent implements OnInit {
             duration: 5000
           });
 
-          // Redirige a la página principal
+          
+
+        
+          this.appComponent.configureMenu();
+
+
           this.router.navigate(['/analytics']);
         } else {
           const tokenDispositivo = response.token_Dispositivo || '';
