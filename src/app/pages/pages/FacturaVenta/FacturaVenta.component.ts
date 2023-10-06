@@ -363,6 +363,7 @@ this.facturaService.getFacturaVentaCliente(this.tranferenciaService.idSerie, thi
   
   {
     console.log(data)
+    
     this.Numero_Serie = data.response.c_Numero_Serie;
     this.Numero_Factura = data.response.c_Numero_Factura;
     this.Nombre_Sucursal = data.response.c_Nombre_Sucursal;
@@ -439,48 +440,48 @@ generarPDF(): void {
 
 
 
-GenerarPDF() {
-  const element = document.getElementById('pdf-content');
+// GenerarPDF() {
+//   const element = document.getElementById('pdf-content');
 
-  // Descargar la imagen y luego continuar
-  fetch(this.IMG_Sucursal)
-    .then(response => response.blob())
-    .then(blob => {
-      // Crear una URL temporal para la imagen descargada
-      const imgUrl = URL.createObjectURL(blob);
+//   Descargar la imagen y luego continuar
+//   fetch(this.IMG_Sucursal)
+//     .then(response => response.blob())
+//     .then(blob => {
+//       Crear una URL temporal para la imagen descargada
+//       const imgUrl = URL.createObjectURL(blob);
 
-      // Renderizar la imagen en un canvas
-      const imgCanvas = document.createElement('canvas');
-      const imgContext = imgCanvas.getContext('2d');
-      const imgElement = new Image();
+//       Renderizar la imagen en un canvas
+//       const imgCanvas = document.createElement('canvas');
+//       const imgContext = imgCanvas.getContext('2d');
+//       const imgElement = new Image();
 
-      imgElement.onload = () => {
-        imgCanvas.width = imgElement.width;
-        imgCanvas.height = imgElement.height;
-        imgContext.drawImage(imgElement, 0, 0);
+//       imgElement.onload = () => {
+//         imgCanvas.width = imgElement.width;
+//         imgCanvas.height = imgElement.height;
+//         imgContext.drawImage(imgElement, 0, 0);
 
-        // Opciones para html2pdf
-        const opt = {
-          margin: 0,
-          filename: 'factura.pdf',
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-        };
+//         Opciones para html2pdf
+//         const opt = {
+//           margin: 0,
+//           filename: 'factura.pdf',
+//           image: { type: 'jpeg', quality: 0.98 },
+//           html2canvas: { scale: 2 },
+//           jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+//         };
 
-        // Generar PDF
-        html2pdf().set(opt).from(element).save();
+//         Generar PDF
+//         html2pdf().set(opt).from(element).save();
 
-        // Liberar la URL temporal creada
-        URL.revokeObjectURL(imgUrl);
-      };
+//         Liberar la URL temporal creada
+//         URL.revokeObjectURL(imgUrl);
+//       };
 
-      imgElement.src = imgUrl;
-    })
-    .catch(error => {
-      console.error('Error al descargar la imagen:', error);
-    });
-}
+//       imgElement.src = imgUrl;
+//     })
+//     .catch(error => {
+//       console.error('Error al descargar la imagen:', error);
+//     });
+// }
 
 
 
@@ -542,22 +543,22 @@ GenerarPDF() {
 
 
 
-// GenerarPDF() {
+GenerarPDF() {
 
-//   const element = document.getElementById('pdf-content');
+  const element = document.getElementById('pdf-content');
   
-//   const opt = {
-//     margin:       0,
-//     filename:     'factura.pdf',
-//     image:        { type: 'jpeg', quality: 0.98 },
-//     html2canvas:  { scale: 2 },
-//     jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-//   };
+  const opt = {
+    margin:       0,
+    filename:     'factura.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2 },
+    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
 
-//   // Usar html2pdf() para generar el PDF
-//   html2pdf().set(opt).from(element).save();
+  // Usar html2pdf() para generar el PDF
+  html2pdf().set(opt).from(element).save();
 
-// }
+}
 
 
 
