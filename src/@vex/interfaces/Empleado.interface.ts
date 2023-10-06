@@ -25,3 +25,10 @@ export interface Empleado {
     c_Empresa: string;
   
   }
+
+
+  export interface Persona {
+    c_Id_Persona: number;
+    c_NIT: string;
+    c_Direccion: string;
+  }

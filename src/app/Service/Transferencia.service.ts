@@ -4,9 +4,56 @@ import { Injectable } from '@angular/core';
     providedIn: 'root'
 })
 export class TranferenciaService {
-
+body: any;
+idSerie: number;
+idsl: number;
+idPersona: number;
 foto: string;
+bodyFactura: any;
+NombreProducto: string;
+Cantidad: string;
+Precio: string;
+SubTotal: string;
+IVA: string;
+Total: string;
+VPersona: boolean = false;
+
 selectedImageURL: string | ArrayBuffer | null =
 "https://img.srvcentral.com/Sistema/ImagenPorDefecto/Registro.png";
+
+RecibirFacturaCF(idSerie: number, idsl: number) {
+  
+    this.idSerie = idSerie;
+    this.idsl = idsl;
+}
+
+RecibirFacturaCliente(idSerie: number, idsl: number , idPersona: number) {
+  
+    this.idSerie = idSerie;
+    this.idsl = idsl;
+    this.idPersona = idPersona;
+}
+
+RecibirBody(body: any, bodyFactura: any) {
+    this.body = body;
+    this.bodyFactura = bodyFactura;
+
+}
+
+RecibirDatosFactura(NombreProducto: string, Cantidad: string, Precio: string, SubTotal: string, IVA: string, Total: string) { 
+    this.NombreProducto = NombreProducto;
+    this.Cantidad = Cantidad;
+    this.Precio = Precio;
+    this.SubTotal = SubTotal;
+    this.IVA = IVA;
+    this.Total = Total;
+}
+
+VerificarPersona(VPersona: boolean) {
+    this.VPersona = VPersona;
+}
+
+
+
 
 }

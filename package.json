@@ -9,8 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "deploy:production": "ng build --configuration=production --aot --optimization=true --build-optimizer=true --output-path=public && npm run deploy",
-    "deploy": "node deploy-script.js" 
-
+    "deploy": "node deploy-script.js"
   },
   "private": true,
   "dependencies": {
@@ -37,7 +36,9 @@
     "date-fns": "~2.29.3",
     "firebase": "^10.1.0",
     "highlight.js": "~11.7.0",
+    "html2pdf.js": "^0.10.1",
     "js-tokens": "^8.0.1",
+    "jspdf": "^2.5.1",
     "jwt-decode": "^3.1.2",
     "luxon": "~3.2.1",
     "ngx-quicklink": "~0.4.1",

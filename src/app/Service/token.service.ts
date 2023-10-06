@@ -30,8 +30,29 @@ export class TokenService {
     localStorage.removeItem('token');
     
   }
+tokenFactura(body: any, persona: any) 
+{
+  sessionStorage.setItem('body', body);
+  sessionStorage.setItem('persona', persona);
+}
 
+obtenerTokenFactura(){
+  const body = sessionStorage.getItem('body');
+  return body;
+}
 
+tokenExpirado(): boolean {
+  const token = sessionStorage.getItem("token");
+  const decodedToken: any = jwt_decode(token);
+  const expiracion = decodedToken.exp;
+  const expiracionDate = new Date(0);
+  expiracionDate.setUTCSeconds(expiracion);
+  if (expiracionDate.valueOf() > new Date().valueOf()) {
+    return true;
+  } else {
+    return false;
+  }
+}
   TokenAdmin() {
     let res: boolean = true;
     if(sessionStorage.getItem("token") == null){

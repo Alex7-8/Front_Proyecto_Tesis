@@ -1,3 +1,101 @@
+ <!-- <div [@stagger]="true" class="p-gutter container">
+
+  <div  [formGroup]="usuarioForm"   class="flex flex-col sm:flex-row gap-4">
+    <div class="card flex-auto">
+      <div class="px-6 py-4 borde r-b flex items-center">
+        <h2 class="title m-0">Formulario de Facturacion Venta</h2>
+      </div>
+
+      <div class="px-6 py-4 flex flex-col">
+ </div>
+
+      <div class="px-6 py-4 flex flex-col">
+        <div class="flex flex-col sm:flex-row sm:gap-4">
+
+          <mat-form-field class="flex-auto">
+            <mat-label>Seleccione un Cliente</mat-label>
+            <mat-select  formControlName="c_Id_Persona"  placeholder="C/F">
+              <mat-option *ngFor="let ms of filteredFacturacion$ | async"  [value]="ms.Id">
+                <div class="option-container">
+                  <img  [src]="ms.Url_IMG" class="align-middle mr-4 shadow-lg" style="width: 8%; height: 8%;" >
+                  <span class="body-1">{{ ms.name }}</span>
+                  
+              </div>
+              </mat-option>
+            </mat-select>
+          
+          </mat-form-field>
+
+
+          <mat-form-field class="flex-auto">
+            <mat-label>Seleccione un Producto</mat-label>
+            <mat-select formControlName="c_Id_Producto" multiple>
+              <mat-option *ngFor="let ms of filteredProductos$ | async"  [value]="ms.Id">
+                <div class="option-container">
+                  <img  [src]="ms.Url_IMG" class="align-middle mr-4 shadow-lg" style="width: 8%; height: 8%;" >
+                  <span class="body-1">{{ ms.name }}</span>
+              </div>
+              </mat-option>
+            </mat-select>
+          
+          </mat-form-field>
+
+          <mat-form-field class="flex-1 sm:w-1/4">
+            <mat-label>Serie</mat-label>
+            <mat-select formControlName="c_Id_Serie" [(ngModel)]="SerieSeleccionada">
+              <mat-option *ngFor="let Cat of Serie" [value]="Cat.c_Id_Serie">{{ Cat.c_Nombre}}</mat-option>
+            </mat-select>
+          
+          </mat-form-field>
+
+        </div>
+        <div class="flex flex-col sm:flex-row sm:gap-4">
+          <mat-form-field class="flex-auto">
+            <mat-label>Direccion</mat-label>
+            <input formControlName="c_Direccion" matInput required >
+            <mat-icon matSuffix svgIcon="mat:person"></mat-icon>
+          </mat-form-field>
+
+          <mat-form-field class="flex-auto">
+            <mat-label>NIT</mat-label>
+            <input formControlName="c_NIT" matInput>
+            <mat-error *ngIf="usuarioForm.get('c_NIT').hasError('pattern')">Solo se permiten numeros.</mat-error>
+            <mat-error *ngIf="usuarioForm.get('c_NIT').hasError('minlength')">Debe tener 10 caracteres.</mat-error>
+            <mat-error *ngIf="usuarioForm.get('c_NIT').hasError('maxlength')">No puede exceder de los 10 caracteres.</mat-error>
+          </mat-form-field>
+        </div>
+      <(click)="openConfirmDialog()" 
+
+        <div class="flex items-center justify-end gap-2">
+          <button mat-button type="button">Cancelar</button>
+          <button  color="primary" mat-raised-button type="button" [disabled]="!usuarioForm.valid">Guardar</button>
+        </div>
+
+         <pre>{{ usuarioForm.value | json }}</pre> 
+      </div>
+    </div>
+
+  </div>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- <vex-secondary-toolbar current="Formulario">
   <vex-breadcrumbs [crumbs]="['Forms', 'Formuliario Factiracion']" class="flex-auto"></vex-breadcrumbs>
 
@@ -7,7 +105,7 @@
 </vex-secondary-toolbar> -->
 
 
-<div [@stagger]="true" class="p-gutter container">
+<!-- <div [@stagger]="true" class="p-gutter container">
 
   <div  [formGroup]="usuarioForm"   class="flex flex-col sm:flex-row gap-4">
     <div @fadeInUp class="card flex-auto">
@@ -15,7 +113,7 @@
         <h2 class="title m-0">Formulario Facturacion</h2>
       </div>
 
-      <div class="px-6 py-4 flex flex-col">
+      <div class="px-6 py-4 flex flex-col"> -->
         
       <!-- <div class="image-upload-container">
         <div class="selected-image-container">
@@ -33,10 +131,10 @@
 
       
 
-      </div>
+      <!-- </div>
 
       <div class="px-6 py-4 flex flex-col">
-        <div class="flex flex-col sm:flex-row sm:gap-4">
+        <div class="flex flex-col sm:flex-row sm:gap-4"> -->
 
           <!-- <mat-form-field class="flex-auto">
             <mat-label>Usuario</mat-label>
@@ -48,7 +146,7 @@
             <mat-error *ngIf="usuarioForm.get('c_Id_Usuario').hasError('maxlength')">No debe exceder los 24 caracteres.</mat-error>
           </mat-form-field> -->
 
-          <mat-form-field class="flex-auto">
+          <!-- <mat-form-field class="flex-auto">
             <mat-label>Tipo</mat-label>
             <mat-select>
               <mat-option value="Apples">Servicio</mat-option>
@@ -127,9 +225,9 @@
                     <th>Total</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody> -->
                 <!-- Aquí puedes agregar filas para tus productos -->
-                <tr>
+                <!-- <tr>
                     <td>Levantado de Texto</td>
                     <td>10.00</td>
                     <td>2</td>
@@ -146,9 +244,9 @@
                     <td>8.37</td>
                     <td>6.50</td>
                     <td>54.87</td>
-                </tr>
+                </tr> -->
                 <!-- Agrega más filas según tus necesidades -->
-            </tbody>
+            <!-- </tbody>
             
         </table>
       </div>
@@ -158,10 +256,10 @@
         <div class="flex items-center justify-end gap-2">
           <button mat-button type="button">Cancelar</button>
           <button (click)="openConfirmDialog()" color="primary" mat-raised-button type="button" [disabled]="!usuarioForm.valid">Guardar</button>
-        </div>
+        </div> -->
 
         <!-- <pre>{{ usuarioForm.value | json }}</pre> -->
-      </div>
-    </div>
+      <!-- </div>
+    </div> -->
 
    

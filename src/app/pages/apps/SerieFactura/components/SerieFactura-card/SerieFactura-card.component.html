@@ -1,0 +1,28 @@
+<div class="card overflow-hidden">
+
+  <div (click)="openContact.emit(contact.c_Id_Serie)"
+       class="p-4 text-center hover:bg-hover trans-ease-out cursor-pointer relative"
+       matRipple>
+    <!-- <img [src]="contact?.c_Url_IMG" class="avatar h-24 w-24 mx-auto"> -->
+
+    <h2 class="title mb-1 mt-3">{{ contact?.c_Nombre }}</h2>
+    <div class="body-2 text-secondary flex items-center justify-center">
+      <mat-icon class="ltr:mr-1 rtl:ml-1 icon-xs" svgIcon="mat:date_range"></mat-icon>
+      <span>{{ contact?.c_Fecha_Creacion }}</span>
+    </div>
+
+    <div class="body-2 text-secondary flex items-center justify-center">
+  
+      <span class="truncate-text">{{ contact?.c_Descripcion }}</span>
+    </div>
+
+    <button (click)="emitToggleStar($event, contact?.c_Id_Serie)" class="absolute top-2 right-2" mat-icon-button type="button">
+      <mat-icon *ngIf="contact?.c_Estado == 1"svgIcon="mat:cancel"></mat-icon>
+      <mat-icon *ngIf="contact?.c_Estado == 2" svgIcon="mat:control_point"></mat-icon>
+    </button>
+  </div>
+
+  <div class="bg-app-bar p-2 flex items-center justify-around" style="height: 2rem;;">
+  
+  </div>
+</div>

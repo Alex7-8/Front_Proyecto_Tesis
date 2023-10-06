@@ -137,6 +137,14 @@ const routes: VexRoutes = [
             path: 'factura',
             loadChildren: () => import('./pages/apps/Factura/Factura.module').then(m => m.FacturaModule)
           },
+          {
+            path: 'SerieFactura',
+            loadChildren: () => import('./pages/apps/SerieFactura/SerieFactura.module').then(m => m.SerieFacturaModule)
+          },
+          {
+            path: 'FacturaVenta',
+            loadChildren: () => import('./pages/apps/FacturaVenta/FacturaVenta.module').then(m => m.FacturaVentaModule)
+          },
           // {
           //   path: 'factura',
           //   loadChildren: () => import('./pages/apps/servicio/servicio.module').then(m => m.ServicioModule)
@@ -197,6 +205,10 @@ const routes: VexRoutes = [
           {
             path: 'invoice',
             loadChildren: () => import('./pages/pages/invoice/invoice.module').then(m => m.InvoiceModule)
+          },
+          {
+            path: 'FacturaVenta',
+            loadChildren: () => import('./pages/pages/FacturaVenta/FacturaVenta.module').then(m => m.FacturaVentaModule)
           },
           {
             path: 'error-404',

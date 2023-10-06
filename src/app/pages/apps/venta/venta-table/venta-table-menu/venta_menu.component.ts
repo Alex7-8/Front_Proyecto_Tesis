@@ -6,6 +6,19 @@ import { stagger40ms } from '../../../../../../@vex/animations/stagger.animation
 import { BehaviorSubject } from 'rxjs';
 import { VentaTableComponent } from '../venta_table.component';
 import { Router } from '@angular/router';
+import { UntypedFormBuilder,FormControl,FormGroup, Validators,UntypedFormGroup, ReactiveFormsModule, FormArray, FormBuilder,AbstractControl } from '@angular/forms';
+
+
+
+
+
+
+
+
+
+
+
+
 
 export interface ContactsTableMenu {
   type: 'link' | 'subheading';
@@ -24,6 +37,7 @@ export interface ContactsTableMenu {
 })
 export class VentaTableMenuComponent implements OnInit {
   Venta: VentaData[] = [];
+
   @Input() items: ContactsTableMenu[] = [
     
     {
@@ -55,10 +69,14 @@ export class VentaTableMenuComponent implements OnInit {
 
   constructor(private CrearUsuariosService:CrearUsuariosService,
               private em:VentaTableComponent,
-              private router: Router, private renderer: Renderer2) { }
+              private router: Router, private renderer: Renderer2,
+             
+              ) { }
 
   ngOnInit() {
     
+    
+
    
   }
 
@@ -88,13 +106,13 @@ export class VentaTableMenuComponent implements OnInit {
      
      if (category === 'Activo') {
       this.em.activeCategory = 'Activo';
-      this.em.tableData = this.em.Servicio.filter(c => c.c_Estado === 1);
+  //    this.em.tableData = this.em.Servicio.filter(c => c.c_Estado === 1);
 
     }
     
     if (category === 'Inactivo') {
       this.em.activeCategory = 'Inactivo';
-      this.em.tableData = this.em.Servicio.filter(c => c.c_Estado === 2);
+    //  this.em.tableData = this.em.Servicio.filter(c => c.c_Estado === 2);
     }
   }
 

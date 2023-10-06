@@ -221,7 +221,7 @@ if(this.contactId != null){
     this.CrearUsuariosService.getEmpleadoById(this.contactId).subscribe(
       (data: any) => {
         this.empleado = data;
-      
+    
         this.form.patchValue({
           Nombre: "Actualizar Empleado",
           c_Id_Usuario: data.response.c_Id_Usuario,
@@ -263,7 +263,9 @@ if(this.contactId != null){
         console.error('Error fetching employee data:', error);
       }
     );
-    }else
+    }
+    
+    else
     {
       this.form.get('Razon')?.reset();
       this.form.get('Razon')?.disable();

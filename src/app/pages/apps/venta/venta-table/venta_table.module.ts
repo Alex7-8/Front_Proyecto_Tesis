@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { VentaTableRoutingModule } from './venta_table.routing.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -22,6 +21,26 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ComponentsSlideToggleModule } from '../../../../../app/pages/ui/components/components-slide-toggle/components-slide-toggle.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
+
+
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+
+
+
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
+
+
+
+
+
+
+
 @NgModule({
   declarations: [VentaTableComponent, VentaDataTableComponent, VentaTableMenuComponent],
   imports: [
@@ -42,8 +61,14 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     ReactiveFormsModule,
     MatSidenavModule,
     MatSnackBarModule,
-    MatSlideToggleModule
-
+    MatSlideToggleModule,
+    FormsModule,
+    MatInputModule,
+    MatDividerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule,
+    MatAutocompleteModule
   ]
 })
 export class VentaTableModule {

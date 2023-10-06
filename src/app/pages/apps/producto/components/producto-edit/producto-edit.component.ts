@@ -266,8 +266,6 @@ largo: string = "25rem";
                 c_Stock_Disponible: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
                 c_Precio_Compra: ['', [Validators.required, this.precioValidator]],
                 c_Precio_Venta: ['', [Validators.required, this.precioValidator]],
-              //  c_Precio: ['', [Validators.required, this.precioValidator]],
-
               c_Id_Sucursal: this.Id_Sucursal,
                 c_Usuario_Creacion: this.Id_Usuario,
               });

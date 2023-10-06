@@ -10,10 +10,17 @@ import { catchError } from 'rxjs/operators';
 import { get } from "http";
 import { map } from 'rxjs/operators';
 import { DateTime } from "luxon";
-import { Empleado } from '../../@vex/interfaces/Empleado.interface';
+import { Empleado,Persona } from '../../@vex/interfaces/Empleado.interface';
 import axios from 'axios'; 
 
 
+
+export interface Facturacion {
+  Id: string;
+  name: string;   
+  Url_IMG: string;
+
+}
 @Injectable({
     providedIn: 'root'
   })
@@ -741,5 +748,39 @@ getCliente(searchTerm: string): Observable<any> {
 }
 
 
+getPersonaFacturacion(searchTerm: string): Observable<Facturacion[]> {
+  return this.http.get<any>(`${this._url}GetPersonaFacturacion`, {
+  }).pipe(
+    map(response => {
+      if (response.ok && Array.isArray(response.response)) {
+       // console.log(response.response)
+        return response.response.map(item => ({
+          name: item.c_Primer_Nombre,
+          Id: item.c_Id_Persona,
+          Url_IMG: item.c_Img_Base,
+        }));
+      } else {
+        return response.response.map(item => ({
+          name: item.c_Transaccion_Mensaje,
+          Id: item.c_Transaccion_Estado,
+          flag: ''
+        }));
+      }
+    }),
+    catchError(error => {
+      console.error(error);
+      return [];
+    })
+  );
+}
+
+
+
+
+getPersonaFacturacionById(IdPersona: number): Observable<Persona> {
+  const url = `${this._url}GetPersonaFacturacionById?IdPersona=${IdPersona}`;
+  return this.http.get<Persona>(url);
+
+}
   }
   

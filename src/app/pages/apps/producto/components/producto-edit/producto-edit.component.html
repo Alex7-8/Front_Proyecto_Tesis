@@ -250,7 +250,7 @@
             </div >
             <div class="flex flex-col sm:flex-row sm:gap-7">
               <mat-form-field class="flex-1 sm:w-1/4" >
-                <mat-label class="col-md-1" [attr.for]="'c_Stock_Disponible' + i">Precio</mat-label>
+                <mat-label class="col-md-1" [attr.for]="'c_Stock_Disponible' + i">Stock</mat-label>
                   <input type="text" [attr.id]="'c_Stock_Disponible' + i" class="form-control" formControlName="c_Stock_Disponible"  matInput >
                   <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
                   <mat-error *ngIf="servicio.get('c_Stock_Disponible').hasError('required')">Este campo es requerido.</mat-error>
@@ -259,7 +259,7 @@
               </mat-form-field >
   
               <mat-form-field class="flex-1 sm:w-1/4" >
-                <mat-label class="col-md-1" [attr.for]="'c_Precio_Compra' + i">Precio</mat-label>
+                <mat-label class="col-md-1" [attr.for]="'c_Precio_Compra' + i">Precio de Compra</mat-label>
                   <input type="text" [attr.id]="'c_Precio_Compra' + i" class="form-control" formControlName="c_Precio_Compra"  matInput >
                   <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
                   <mat-error *ngIf="servicio.get('c_Precio_Compra').hasError('required')">Este campo es requerido.</mat-error>
@@ -268,7 +268,7 @@
               </mat-form-field >
   
               <mat-form-field class="flex-1 sm:w-1/4" >
-                <mat-label class="col-md-1" [attr.for]="'c_Precio_Venta' + i">Precio</mat-label>
+                <mat-label class="col-md-1" [attr.for]="'c_Precio_Venta' + i">Precio de Venta</mat-label>
   
                   <input type="text" [attr.id]="'c_Precio_Venta' + i" class="form-control" formControlName="c_Precio_Venta"  matInput >
                   <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>

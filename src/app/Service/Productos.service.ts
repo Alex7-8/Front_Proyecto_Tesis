@@ -15,6 +15,13 @@ import { ProductoData } from '../pages/apps/producto/interfaces/producto.interfa
 import axios from 'axios'; 
 
 
+export interface Productos {
+  Id: string;
+  name: string;   
+  Url_IMG: string;
+
+}
+
 
 @Injectable({
     providedIn: 'root'
@@ -122,6 +129,44 @@ getProductoById(Id_Producto: number): Observable<ProductoData> {
 
 
 
+
+
+
+getProductoFacturacion(searchTerm: number): Observable<Productos[]> {
+  
+  return this.http.get<any>(`${this._url}GetProductosFactura?idSL=${searchTerm}`, {
+  }).pipe(
+    map(response => {
+     
+      if (response.ok && Array.isArray(response.response)) {
+       // console.log(response.response)
+        return response.response.map(item => ({
+          name: item.c_Nombre_Producto,
+          Id: item.c_Id_Producto,
+          Url_IMG: item.c_Url_IMG,
+        }));
+      } else {
+        return response.response.map(item => ({
+          name: item.c_Transaccion_Mensaje,
+          Id: item.c_Transaccion_Estado,
+          flag: ''
+        }));
+      }
+    }),
+    catchError(error => {
+      console.error(error);
+      return [];
+    })
+  );
+}
+
+
+
+getProductoFacturacionById(Id_Producto: number): Observable<ProductoData> {
+  const url = `${this._url}GetProductosFacturaById?IdP=${Id_Producto}`;
+  return this.http.get<ProductoData>(url);
+
+}
 
 
 
