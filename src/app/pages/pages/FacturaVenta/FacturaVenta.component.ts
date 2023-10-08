@@ -6,6 +6,11 @@ import { UntypedFormBuilder,FormControl,FormGroup, Validators,UntypedFormGroup, 
 import * as html2pdf from 'html2pdf.js';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas'; 
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { ActivatedRoute,Router } from '@angular/router';
+import { MatDialog} from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.component';
+
 @Component({
   selector: 'vex-invoice',
   templateUrl: './FacturaVenta.component.html',
@@ -23,11 +28,18 @@ Iva: string ="0.00";
 Total: string ="0.00";
 valido: boolean = false;
 Texto: string = "Factura de Venta";
+body: any;
+ancho: string = "500px";
+largo: string = "500px";
+titulo: string = "Razon de Anulacion";
+razon: string = "";
+verificar: boolean = false;
 
 Numero_Serie: string;
 Numero_Factura: string;
+Id_Producto: string;
 NombreProducto: string ;
-IMG_Sucursal: string = "../../../../assets/Factura.jpg";
+IMG_Sucursal: string = "../../../../assets/sucursal.jpg";
 Nombre_Sucursal: string;
 Direccion_Sucursal: string;
 Departamento_Sucursal: string;
@@ -49,6 +61,9 @@ form: FormGroup;
     private facturaService: FacturaService,
     private tranferenciaService: TranferenciaService,
     private fb: UntypedFormBuilder,
+    private snackBar: MatSnackBar,
+    private router: Router,
+    public dialog: MatDialog,
   ) {
 
     this.form = this.fb.group({
@@ -132,6 +147,14 @@ form: FormGroup;
    }
 
   ngOnInit() {
+
+    if(this.tranferenciaService.validarFactura == false)
+    {
+      this.tranferenciaService.validarFactura = false;
+      this.router.navigate(['/apps/FacturaVenta/table']);
+    }else{
+      this.tranferenciaService.validarFactura = true;
+    }
     const fechaActual = new Date();
     const año = fechaActual.getFullYear();
     const mes = fechaActual.getMonth() + 1; // Los meses comienzan en 0, así que sumamos 1
@@ -140,9 +163,7 @@ form: FormGroup;
     const fechaEnTexto = `${año}-${mes < 10 ? '0' : ''}${mes}-${dia < 10 ? '0' : ''}${dia}`;
     this.Fecha = fechaEnTexto;
 
-   // this.Total = this.tranferenciaService.Total 
-    // this.Iva = this.tranferenciaService.IVA
-    // this.SubTotal = this.tranferenciaService.SubTotal
+    this.Id_Producto = this.tranferenciaService.idProducto;
     this.NombreProducto = this.tranferenciaService.NombreProducto
     this.Cantidad = this.tranferenciaService.Cantidad
     this.Precio = this.tranferenciaService.Precio
@@ -155,63 +176,55 @@ form: FormGroup;
 
 
 
-console.log(this.tranferenciaService.NombreProducto);
-console.log(this.tranferenciaService.Cantidad);
-console.log(this.tranferenciaService.Precio);
-
-
 // Obtener la tabla
 const tablaBody = document.getElementById("tabla-body");
 
-// Separar los datos por punto y coma
-
-
-// const nombreProductoFormateado = this.NombreProducto.replace(/\s+/g, "").split(";");
-// const cantidadFormateada = this.Cantidad.split(";");
-// const precioFormateado =this.Precio.replace(",", ".").split(";");
-
 
     const productos = this.NombreProducto.split(';');
-    const precios = this.Precio.split(';');
-    const cantidades = this.Cantidad.split(';');
+  
     //const PrecioFinal = precios.map((precio) => this.formatearPrecio(precio));
     
   
     //const tbody = document.getElementById('tabla-body');
 
     for (let i = 0; i < productos.length; i++) {
+      const idProducto = this.Id_Producto.split(';');
       const producto = this.NombreProducto.split(';');
       const precio = this.Precio.split(';');
       const cantidad = this.Cantidad.split(';');
       //const totales = precio * cantidad;
-
+      console.log(idProducto[i]);
 
       const fila = document.createElement("tr");
+      fila.classList.add("text-gray-700");
 
 
+    const celdaIdProducto = document.createElement("td");
+    celdaIdProducto.textContent = idProducto[i];
     // Celda de Producto
     const celdaProducto = document.createElement("td");
     celdaProducto.textContent = producto[i];
-    celdaProducto.classList.add("py-6", "border-b");
+ 
 
     // Celda de Precio
     const celdaPrecio = document.createElement("td");
     celdaPrecio.textContent = parseFloat(precio[i]).toFixed(2);
-    celdaPrecio.classList.add("py-6", "border-b");
+   
 
     // Celda de Cantidad
     const celdaCantidad = document.createElement("td");
     celdaCantidad.textContent = cantidad[i];
-    celdaCantidad.classList.add("py-6", "border-b");
+   
 
     // Celda de Total (Precio * Cantidad)
     const total = parseFloat(precio[i]) * parseInt(cantidad[i], 10);
     const celdaTotal = document.createElement("td");
     celdaTotal.style.textAlign = "right"; // Alinear a la derecha
-    celdaTotal.classList.add("py-6", "border-b", "font-medium");
+    celdaTotal.classList.add("font-medium");
     celdaTotal.textContent = total.toFixed(2);
 
     // Agregar las celdas a la fila
+    fila.appendChild(celdaIdProducto);
     fila.appendChild(celdaProducto);
     fila.appendChild(celdaPrecio);
     fila.appendChild(celdaCantidad);
@@ -224,108 +237,6 @@ const tablaBody = document.getElementById("tabla-body");
   }
 
 
-// const productosArray = this.NombreProducto[0].split("; ");
-// const preciosArray = this.Precio[0].split("; ");
-// const cantidadesArray = this.Cantidad[0].split(", ");
-
-// // Verificar que tengan la misma longitud
-// if (nombreProductoFormateado.length === precioFormateado.length && precioFormateado.length === cantidadFormateada.length) {
-//   // Crear filas de tabla
-//   for (let i = 0; i < productosArray.length; i++) {
-//     const fila = document.createElement("tr");
-//     console.log(productosArray[i]);
-
-//     // Celda de Producto
-//     const celdaProducto = document.createElement("td");
-//     celdaProducto.textContent = productosArray[i];
-//     celdaProducto.classList.add("py-6", "border-b");
-
-//     // Celda de Precio
-//     const celdaPrecio = document.createElement("td");
-//     celdaPrecio.textContent = parseFloat(preciosArray[i]).toFixed(2);
-//     celdaPrecio.classList.add("py-6", "border-b");
-
-//     // Celda de Cantidad
-//     const celdaCantidad = document.createElement("td");
-//     celdaCantidad.textContent = cantidadesArray[i];
-//     celdaCantidad.classList.add("py-6", "border-b");
-
-//     // Celda de Total (Precio * Cantidad)
-//     const total = parseFloat(preciosArray[i]) * parseInt(cantidadesArray[i], 10);
-//     const celdaTotal = document.createElement("td");
-//     celdaTotal.style.textAlign = "right"; // Alinear a la derecha
-//     celdaTotal.classList.add("py-6", "border-b", "font-medium");
-//     celdaTotal.textContent = total.toFixed(2);
-
-//     // Agregar las celdas a la fila
-//     fila.appendChild(celdaProducto);
-//     fila.appendChild(celdaPrecio);
-//     fila.appendChild(celdaCantidad);
-//     fila.appendChild(celdaTotal);
-
-//     // Agregar la fila a la tabla
-//     tablaBody.appendChild(fila);
-//   }
-// } else {
-//   console.error("Los arreglos tienen longitudes diferentes.");
-// }
-
-
-
-
-
-
-
-
-
-
-
-// const NombreProducto = "Pintura Tucan Azul Porque es el azul;Pintura Tucan Verde;Pintura Tucan Morada";
-// const Precio = "4.5;4.5;4.5";
-// const Cantidad = "3;4;5";
-// const IVA = "1.4;2.1;4.5"
-
-// // Divide las cadenas en arreglos
-// const productos = NombreProducto.split(';');
-// const precios = Precio.split(';');
-// const cantidades = Cantidad.split(';');
-
-//     // const productos = this.NombreProducto.split(';');
-//     // const precios = this.Precio.split(';');
-//     // const cantidades = this.Cantidad.split(';');
-    
-//     // Obtén la referencia al tbody de la tabla
-//     const tbody = document.getElementById('tabla-body');
-
-//     for (let i = 0; i < productos.length; i++) {
-//       const producto = productos[i];
-//       const precio = parseFloat(precios[i]);
-//       const cantidad = parseInt(cantidades[i], 10);
-//       const total = precio * cantidad;
-//       const iva = parseFloat(IVA[i]);
-    
-//       // Crea una fila y la llena con los datos
-//       const fila = document.createElement('tr');
-
-//       fila.innerHTML = `
-//       <td style="padding: 6px; border-bottom: 1px solid #ccc;">${producto}</td>
-//       <td style="padding: 6px; border-bottom: 1px solid #ccc;">Q${precio.toFixed(2)}</td>
-//       <td style="padding: 6px; border-bottom: 1px solid #ccc;">${cantidad}</td>
-//       <td style="padding: 6px; border-bottom: 1px solid #ccc; text-align: right;">Q${total.toFixed(2)}</td>
-//     `;
-    
-
-
-//       // fila.innerHTML = `
-//       //   <td class="py-6 border-b ">${producto}</td>
-//       //   <td class="py-6 border-b ">Q${precio}</td>
-//       //   <td class="py-6 border-b ">${cantidad}</td>
-//       //   <td class="py-6 border-b font-medium text-right">Q${total}</td>
-//       // `;
-    
-//       // Agrega la fila al tbody
-//       tbody.appendChild(fila);
-//     }
 
 
    if(this.tranferenciaService.VPersona == true)
@@ -440,371 +351,193 @@ generarPDF(): void {
 
 
 
-// GenerarPDF() {
-//   const element = document.getElementById('pdf-content');
-
-//   Descargar la imagen y luego continuar
-//   fetch(this.IMG_Sucursal)
-//     .then(response => response.blob())
-//     .then(blob => {
-//       Crear una URL temporal para la imagen descargada
-//       const imgUrl = URL.createObjectURL(blob);
-
-//       Renderizar la imagen en un canvas
-//       const imgCanvas = document.createElement('canvas');
-//       const imgContext = imgCanvas.getContext('2d');
-//       const imgElement = new Image();
-
-//       imgElement.onload = () => {
-//         imgCanvas.width = imgElement.width;
-//         imgCanvas.height = imgElement.height;
-//         imgContext.drawImage(imgElement, 0, 0);
-
-//         Opciones para html2pdf
-//         const opt = {
-//           margin: 0,
-//           filename: 'factura.pdf',
-//           image: { type: 'jpeg', quality: 0.98 },
-//           html2canvas: { scale: 2 },
-//           jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-//         };
-
-//         Generar PDF
-//         html2pdf().set(opt).from(element).save();
-
-//         Liberar la URL temporal creada
-//         URL.revokeObjectURL(imgUrl);
-//       };
-
-//       imgElement.src = imgUrl;
-//     })
-//     .catch(error => {
-//       console.error('Error al descargar la imagen:', error);
-//     });
-// }
-
-
-
-
-
-// GenerarPDF() {
-
-//   // Obtener elemento a convertir
-//   const element = document.getElementById('pdf-content');
-
-//   // Precargar imagen
-//   const image = new Image();
-//   image.src = this.IMG_Sucursal; 
-//   image.onload = () => {
-
-//     // Renderizar imagen a canvas
-//     const imgCanvas = document.createElement('canvas');
-//     const imgContext = imgCanvas.getContext('2d');
-//     imgContext.drawImage(image, 0, 0);
-//     const imgDataURL = imgCanvas.toDataURL('image/png');
-
-//     // Asignar DataURL a elemento img
-//     const imgElement = document.getElementById('logoImg') as HTMLImageElement;
-//     imgElement.src = imgDataURL;
-
-//     // Opciones de html2pdf
-//     const opt = {
-//       margin: 0,
-//       filename: 'factura.pdf',
-//       image: { type: 'jpeg', quality: 0.98 },
-//       html2canvas: { scale: 2 },
-//       jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-//     };
-
-//     // Generar PDF
-//     html2pdf().set(opt).from(element).save();
-
-//   }
-
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 GenerarPDF() {
-
+  let result = false;
   const element = document.getElementById('pdf-content');
-  
-  const opt = {
-    margin:       0,
-    filename:     'factura.pdf',
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2 },
-    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-  };
 
-  // Usar html2pdf() para generar el PDF
-  html2pdf().set(opt).from(element).save();
+  // Crear una Promesa que se resolverá cuando la imagen se cargue
+  const cargarImagen = new Promise((resolve, reject) => {
+    const imgElement = new Image();
 
+    // Establecer la URL de la imagen
+    imgElement.src = this.IMG_Sucursal; // Reemplaza 'URL_DE_LA_IMAGEN' con la URL de tu imagen
+
+    imgElement.onload = () => {
+      resolve(imgElement);
+    };
+
+    imgElement.onerror = (error) => {
+      reject(error);
+    };
+  });
+
+  cargarImagen
+    .then((imgElement) => {
+      result = true;
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      context.drawImage(imgElement as HTMLImageElement, 0, 0, canvas.width, canvas.height);
+
+      // Configurar opciones para la generación de PDF
+      const opt = {
+        margin: 0,
+        filename: 'factura.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+      };
+
+      // Usar html2pdf() para generar el PDF
+      html2pdf().set(opt).from(element).save();
+
+      // Limpieza si es necesario
+      URL.revokeObjectURL((imgElement as HTMLImageElement).src);
+    })
+    .catch((error) => {
+      result = false;
+      console.error('Error al cargar la imagen:', error);
+    });
+    return result;
 }
 
 
 
+Cerrar(resultado: boolean)
+{
 
-
-
-
-
-
-
-
-
-
-
-
-// GenerarPDF() {
-//   const elemento = document.getElementById('pdf-content') as HTMLDivElement;
-//   const imgLogo = "https://img.srvcentral.com/Sistema/ImagenPorDefecto/Factura.jpg" // Reemplaza 'URL_DE_TU_IMAGEN' con la URL de tu imagen
-
-//   if (!elemento) {
-//     console.error('No se encontró el elemento con el ID "pdf-content".');
-//     return;
-//   }
-
-//   html2canvas(elemento).then(canvas => {
-//     const pdf = new jsPDF();
-
-//     // Cargar imagen
-//     const img = new Image();
-//     img.src = imgLogo;
-
-//     img.onload = () => {
-//       // Convertir imagen a Data URL
-//       const imgData = canvas.toDataURL('image/png');
-
-//       // Agregar imagen al PDF
-//       pdf.addImage(imgData, 'PNG', 10, 10, 40, 40);
-
-//       // Convertir elemento HTML a imagen
-//       const htmlData = canvas.toDataURL('image/png');
-
-//       // Configurar dimensiones para la imagen HTML en el PDF
-//       const imgWidth = 180; // Ancho de la imagen en el PDF
-//       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-//       let position = 50;
-
-//       // Agregar la imagen HTML al PDF
-//       pdf.addImage(htmlData, 'PNG', 10, position, imgWidth, imgHeight);
-
-//       // Guardar el PDF
-//       pdf.save('factura.pdf');
-//     };
-//   });
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// GenerarPDF() {
-
-//   // Obtener elemento HTML
-//   const elemento = document.getElementById('pdf-content');
-
-//   // Obtener URL de imagen de logo
-//   const imgLogo = (document.querySelector('#logoImg') as HTMLImageElement).src;
-
-//   // Convertir HTML a canvas
-//   html2canvas(elemento).then(canvas => {
-
-//     // Inicializar PDF
-//     const pdf = new jsPDF();
-    
-//     // Convertir logo a imagen
-//     const img = new Image();
-//     img.src = imgLogo;
-//     img.onload = () => {
-//       pdf.addImage(img, 'PNG', 10, 10, 40, 40);
-
-//       // Convertir el canvas a imagen
-//       const imgData = canvas.toDataURL('image/png');
-//       const imgWidth = 210;
-//       const pageHeight = pdf.internal.pageSize.getHeight();
-//       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-//       let heightLeft = imgHeight;
-//       let position = 50; // empieza después del logo
-
-//       // Agregar páginas hasta completar altura
-//       do {
-//         pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-//         heightLeft -= pageHeight;
-//         position -= heightLeft;
-//       } while (heightLeft >= 0);
-
-//       // Guardar PDF
-//       pdf.save('factura.pdf');
-//     };
-
-      
-//   });
-
-// }
-
-
-// GenerarPDF() {
-//   // Obtiene el elemento HTML que quieres convertir
-//   const elemento = document.getElementById('pdf-content'); 
+    this.titulo = '¿Estás seguro de que deseas cancelar la factura?';
+    this.razon = "Razon por la cual se crea el registro";
+    this.verificar = false;
+    this.ancho = "15rem";
+    this.largo = "25rem";
   
-//   // Convierte el elemento HTML a una imagen utilizando html2canvas
-//   html2canvas(elemento).then(canvas => {
+
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    height: this.ancho,
+    width: this.largo,  
+    data: { title: this.titulo,razon:this.razon, valido: this.verificar }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+
+
+if(result != false)
+{
+ 
+          this.router.navigate(['/apps/FacturaVenta/table']);
+          this.snackBar.open("Factura Cancelada", "Cerrar", {
+            duration: 5000,
+            panelClass: ["success-snackbar"], 
+          });
+
+
+}
   
-//     // Inicializa jsPDF
-//     const pdf = new jsPDF();
-    
-//     // Agrega la imagen al PDF
-//     const imgData = canvas.toDataURL('image/png');
-//     const imgWidth = 210; 
-//     const pageHeight = pdf.internal.pageSize.getHeight();
-//     const imgHeight = (canvas.height * imgWidth) / canvas.width;
-//     let heightLeft = imgHeight;
-//     let position = 0;
 
-//     // Añade imagenes hasta completar la altura de la página
-//     do {
-//       pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-//       heightLeft -= pageHeight;
-//       position -= heightLeft;
-//     } while (heightLeft >= 0);
 
-//     // Guarda el PDF
-//     pdf.save('factura.pdf');
-//   });
-// }
+
+   
+    }
+  );
 
 
 
 
+
+ 
 
 }
 
 
+Facturar(resultado: boolean)
+{
 
-
-
+    this.titulo = '¿Estás seguro de que deseas guardar la factura?';
+    this.razon = "Razon por la cual se crea el registro";
+    this.verificar = false;
+    this.ancho = "15rem";
+    this.largo = "25rem";
   
-    //  const NombreProducto = this.tranferenciaService.bodyFactura.c_Nombre_Producto.split(';');
-    //  const cantidadArray = this.tranferenciaService.bodyFactura.c_Cantidad.split(';');
-    //  const precioArray = this.tranferenciaService.bodyFactura.c_Precio.split(';');
-    //  const subtotalArray = this.tranferenciaService.bodyFactura.c_SubTotal;
-    //  const ivaArray = this.tranferenciaService.bodyFactura.c_IVA;
-    //  const totalArray = this.tranferenciaService.bodyFactura.c_Total;
 
-    
-//      const dataArray = [];
-//      for (let i = 0; i < cantidadArray.length; i++) {
-//       const datas = {
-//         "c_Fecha": fechaEnTexto,
-//         "c_Numero_Serie": data.response.c_Numero_Serie,
-//         "c_Numero_Factura": data.response.c_Numero_Factura,
-//         "c_Nombre_Sucursal": data.response.c_Nombre_Sucursal,
-//         "c_Departamento_Sucursal": data.response.c_Departamento_Sucursal,
-//         "c_Municipio_Sucursal": data.response.c_Municipio_Sucursal,
-//         "c_Direccion_Sucursal": data.response.c_Direccion_Sucursal,
-//         "c_Correo": data.response.c_Correo_Sucursal,
-//         "c_Telefono_Sucursal": data.response.c_Numero_Telefono,
-//         "c_NIT_Sucursal": data.response.c_NIT_Sucursal,
-//         "c_IMG_Sucursal": data.response.c_IMG_Sucursal,
-//         "c_Nombre_Producto": NombreProducto[i], 
-//         "c_Cantidad": cantidadArray[i],
-//         "c_Precio": precioArray[i],
-//         "c_SubTotal": subtotalArray[i],
-//         "c_IVA": ivaArray[i],
-//         "c_Total": totalArray[i]
-//       };
-    
-//       dataArray.push(datas);
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    height: this.ancho,
+    width: this.largo,  
+    data: { title: this.titulo,razon:this.razon, valido: this.verificar }
+  });
 
-//     }
-  
-// console.log(dataArray);
+  dialogRef.afterClosed().subscribe(result => {
 
-// this.factura = {
-//        "c_Fecha": fechaEnTexto,
-//        "c_Numero_Serie": data.response.c_Numero_Serie,
-//        "c_Numero_Factura": data.response.c_Numero_Factura,
-//        "c_Nombre_Sucursal": data.response.c_Nombre_Sucursal,
-//        "c_Departamento_Sucursal": data.response.c_Departamento_Sucursal,
-//        "c_Municipio_Sucursal": data.response.c_Municipio_Sucursal,
-//        "c_Direccion_Sucursal": data.response.c_Direccion_Sucursal,
-//        "c_Correo": data.response.c_Correo_Sucursal,
-//        "c_Telefono_Sucursal": data.response.c_Numero_Telefono,
-//        "c_NIT_Sucursal": data.response.c_NIT_Sucursal,
-//        "c_IMG_Sucursal": data.response.c_IMG_Sucursal,
-//         "c_Nombre_Producto": this.tranferenciaService.NombreProducto,
-//         "c_Cantidad": this.tranferenciaService.Cantidad,
-//         "c_Precio": this.tranferenciaService.Precio,
-//         "c_SubTotal": this.tranferenciaService.SubTotal,
-//         "c_IVA": this.tranferenciaService.IVA,
-//         "c_Total": this.tranferenciaService.Total,
+var res = 0;
 
-//      }
-//      console.log(this.factura);
-       // this.persona = {
-       //   "c_Fecha": fechaEnTexto,
-       //   "c_Numero_Serie": data.response.c_Numero_Serie,
-       //   "c_Numero_Factura": data.response.c_Numero_Factura,
-       //   "c_Nombre_Sucursal": data.response.c_Nombre_Sucursal,
-       //   "c_Departamento_Sucursal": data.response.c_Departamento_Sucursal,
-       //   "c_Municipio_Sucursal": data.response.c_Municipio_Sucursal,
-       //   "c_Direccion_Sucursal": data.response.c_Direccion_Sucursal,
-       //   "c_Correo": data.response.c_Correo_Sucursal,
-       //   "c_Telefono_Sucursal": data.response.c_Numero_Telefono,
-       //   "c_NIT_Sucursal": data.response.c_NIT_Sucursal,
-       //   "c_IMG_Sucursal": data.response.c_IMG_Sucursal,
-       //    "c_Nombre_Producto": "",
-       //    "c_Cantidad": "",
-       //    "c_Precio": "",
-       //    "c_SubTotal": this.SubTotalFinal,
-       //    "c_IVA": this.IVATotal,
-       //    "c_Total": this.sumaTotal,
-       //  };
+if(result != false)
+{
+  console.log("entro");
+  this.body = this.tranferenciaService.body;
+console.log(this.body);
+  this.facturaService.setFactura(this.body).subscribe(
+      (response) => {
+        if (response.ok) {
+         this.valido = true;
+         this.tranferenciaService.validarFactura = false;
+         if(this.GenerarPDF() == true)
+         {
+          this.router.navigate(['/apps/FacturaVenta/table']);
+         }else{
+          
+          this.snackBar.open("Error al Generar PDF", "Cerrar", {
+            duration: 15000,
+            panelClass: ["error-snackbar"], 
+          });
+          this.router.navigate(['/apps/FacturaVenta/table']);
+         }
+        
 
         
-      //console.log(Data);
+          this.snackBar.open(response.transaccion_Mensaje, "Cerrar", {
+            duration: 5000,
+            panelClass: ["success-snackbar"], 
+          });
+
+        } else {
+         this.valido = true;
+          this.snackBar.open("Codigo de Error: "+response.transaccion_Estado+" "+ "Mensje: "+response.transaccion_Mensaje, "Cerrar", {
+            duration: 10000,
+            panelClass: ["red-snackbar"]
+          });
+        }
+      },
+      (error) => {
+  
+        this.snackBar.open("Error Inesperado", "Cerrar", {
+          duration: 15000,
+          panelClass: ["error-snackbar"], 
+        });
+
+      }
+    );
+}
+  
+
+
+
+   
+    }
+  );
+
+
+
+
+
+ 
+
+}
+
+
+
+
+
+
+
+
+}

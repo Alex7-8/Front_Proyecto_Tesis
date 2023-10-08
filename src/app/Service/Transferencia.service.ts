@@ -17,6 +17,8 @@ SubTotal: string;
 IVA: string;
 Total: string;
 VPersona: boolean = false;
+validarFactura: boolean = false;
+idProducto: string;
 
 selectedImageURL: string | ArrayBuffer | null =
 "https://img.srvcentral.com/Sistema/ImagenPorDefecto/Registro.png";
@@ -34,13 +36,14 @@ RecibirFacturaCliente(idSerie: number, idsl: number , idPersona: number) {
     this.idPersona = idPersona;
 }
 
-RecibirBody(body: any, bodyFactura: any) {
+RecibirBody(body: any) {
     this.body = body;
-    this.bodyFactura = bodyFactura;
+  
 
 }
 
-RecibirDatosFactura(NombreProducto: string, Cantidad: string, Precio: string, SubTotal: string, IVA: string, Total: string) { 
+RecibirDatosFactura(IdProducto: string,NombreProducto: string, Cantidad: string, Precio: string, SubTotal: string, IVA: string, Total: string) { 
+    this.idProducto = IdProducto;
     this.NombreProducto = NombreProducto;
     this.Cantidad = Cantidad;
     this.Precio = Precio;

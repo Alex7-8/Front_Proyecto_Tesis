@@ -261,7 +261,7 @@ loadImages(): void {
           FormGroup.get('c_Img_Base')?.setValue(this.imagen);
          
           this.cdr.detectChanges();
-         
+        
         });
       };
       reader.readAsDataURL(selectedImage);

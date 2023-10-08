@@ -117,3 +117,37 @@
       box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0);
     }
   }
+
+
+
+
+
+
+
+
+  .input-like {
+  display: inline-block;
+  position: relative;
+}
+
+.input-like input[type="text"] {
+  /* Estilos del input */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 16px;
+}
+
+.input-like mat-icon {
+  /* Estilos para el icono si es necesario */
+}
+
+.input-like .label-text {
+  /* Estilos para el texto del label */
+  position: absolute;
+  top: 10px; /* Ajusta la posición vertical según sea necesario */
+  left: 10px; /* Ajusta la posición horizontal según sea necesario */
+  font-size: 16px;
+  color: #333; /* Color del texto */
+  pointer-events: none; /* Deshabilita la interacción del usuario con el texto */
+}

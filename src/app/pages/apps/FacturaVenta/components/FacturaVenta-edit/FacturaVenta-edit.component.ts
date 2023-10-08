@@ -106,6 +106,7 @@ export class FacturaVentaEditComponent implements OnInit {
   Id_Sucursal: number;
   titulo: string = "";
   valido: boolean = true;
+  ValidarBoton: boolean = false;
   razon: string = "";
 verificar: boolean = false;
 ancho: string = "15rem";
@@ -141,7 +142,7 @@ largo: string = "25rem";
   empleado: Empleado;
   c_Tipo_Mov: string = "SM";
   toggleChecked = false;
-  cuentaExists: boolean = false;
+  cuentaExists: boolean = true;
   buttonText = 'Pagar en Efectivo';
   vlc: boolean = false;
   vc: number = 0;
@@ -218,7 +219,7 @@ BodyFactura : any;
                 c_Stock_Disponible:[],
                 c_Precio_Compra:[],
                 c_Precio_Venta:[],
-                c_Cantidad:[],
+                c_Cantidad:[,Validators.required],
                 c_Img_Base: ["0"],
                 c_Precio: ['0.00', [Validators.required]],
                 Razon: [""],
@@ -232,19 +233,8 @@ BodyFactura : any;
                 this.agregarCampo();
                 this.Campo();
 
-                
-               
-        
+
              }
-
-
-
-
-        
-
-
-
-
 
              get Servicio(){
               return this.registerForm.get('campo') as FormArray;
@@ -266,6 +256,7 @@ BodyFactura : any;
               this.registerForm
               .get("c_Cantidad")
               .valueChanges.subscribe((newValue) => {
+
                 if(newValue >0){
                   
                   this.registerForm.get('c_Id_Producto')?.reset();
@@ -277,17 +268,12 @@ BodyFactura : any;
                  
                 }
 
-
-              
               });
-             
-            
-              
 
               this.registerForm
               .get("c_Id_Producto")
               .valueChanges.subscribe((newValue) => {
-               
+               if(newValue != undefined){
                 this.ProductoService.getProductoFacturacionById(newValue).subscribe(
                   (data: any) => {
                     if(this.vc == 1){
@@ -295,7 +281,7 @@ BodyFactura : any;
                       this.removerCampo(0);
                     }
                     this.vc++;
-
+                    this.ValidarBoton = true;
                     this.arrayIndiceProductos.forEach(([posicion, idProducto]) => {
                      
                      // const posicionActual = posicion; 
@@ -330,18 +316,8 @@ BodyFactura : any;
                        this.urlsImagenes = [...this.urlsImagenes, data.response.c_Url_IMG];
                       
 
-
-
-
-
-                  
-
-
-
-
-
                        const FormGroup  = this.FormBuilder.group({
-                        c_Id_Persona: this.registerForm.get("c_Id_Persona").value,
+                         c_Id_Persona: this.registerForm.get("c_Id_Persona").value,
                          c_Id_Producto: data.response.c_Id_Producto,
                          c_Img_Base: data.response.c_Url_IMG,
                          c_Nombre_Producto: data.response.c_Nombre_Producto,
@@ -352,25 +328,21 @@ BodyFactura : any;
                          c_Total: (data.response.c_Precio_Venta*Cantidad),
                          c_Usuario_Creacion: this.Id_Usuario,
                        });
-                      
-             
+
                        this.Servicio.push(FormGroup);
                      }
 
-                   
-            
                   },
                   (error) => {
                     console.error('Error fetching employee data:', error);
                   }
                 );
+               }
+              
                
               });
 
 
-             
-
-             
             }
 
 
@@ -397,23 +369,14 @@ BodyFactura : any;
 
             actualizarCalculos(formIndex: number) {
 
-             
-            
-
-
               const formGroup = this.registerForm.controls['campo'].get(formIndex.toString()) as FormGroup;
               const cantidad = formGroup.get('c_Cantidad').value;
               const precioVenta = formGroup.get('c_Precio_Venta').value;
-
-             
               const iva = (precioVenta * cantidad) * 0.12;
               const C_IVA =  parseFloat(iva.toFixed(2));
               const subtotal = (precioVenta * cantidad)-C_IVA ;
               const C_SubTotal = parseFloat(subtotal.toFixed(2));
               const C_Total = precioVenta * cantidad;
-             
-             // this.verificarTotal(); 
-             
               formGroup.patchValue({
                 c_SubTotal: C_SubTotal,
                 c_IVA: C_IVA, 
@@ -421,16 +384,6 @@ BodyFactura : any;
               });
             }
 
-
-
-
-           
-                    
-            
-                  
-
-
-          
             removerCampo(indice: number) {
               this.Servicio.removeAt(indice);
               this.urlsImagenes.splice(indice, 1);
@@ -438,16 +391,24 @@ BodyFactura : any;
                console.log(this.verificarTotal()) 
                 console.log(this.vc);
                 this.arrayIndiceProductos.splice(indice, 1);
-              //   for (let i = indice; i < this.arrayIndiceProductos.length; i++) {
-              //     this.arrayIndiceProductos[i][0] = i; // Ajustar la posición
-                 
-              // }
-             //S this.posicionActual--;
               }
-            
-
               this.form.get('c_Img_Base')?.setValue('');
+              if (this.arrayIndiceProductos.length === 0) 
+              {
+                this.ValidarBoton = false;
+              }else{
+                this.ValidarBoton = true;
+              }
+            }
 
+
+
+            onInputChange(event: any) {
+              const inputValue = event.target.value;
+              const numericValue = inputValue.replace(/[^0-9]/g, ''); // Elimina cualquier carácter no numérico
+          
+              // Actualiza el valor del campo con solo números
+              this.registerForm.get('c_Cantidad')?.setValue(numericValue);
             }
 
 
@@ -460,6 +421,9 @@ BodyFactura : any;
 
     this.registerForm.get('c_Tipo_Cuenta')?.reset();
     this.registerForm.get('c_Tipo_Cuenta')?.disable();
+
+    this.registerForm.get('c_Id_Serie')?.reset();
+    this.registerForm.get('c_Id_Serie')?.disable();
 
 
     this.filteredFacturacion$ = this.FacturacionCtrl.valueChanges.pipe(
@@ -643,8 +607,6 @@ if(this.contactId != null){
   }
 
   onToggleChange(event: any): void {
-   // this.toggleChecked = !event.checked;
-    //this.buttonText = this.toggleChecked ? 'Pagar en Efectivo' : 'Pagar con Saldo';
     if (event.checked ) {
       this.toggleChecked = true;
       this.Texto = "Verificar Saldo";
@@ -734,11 +696,19 @@ loadImages(): void {
 
 
 
-
   openConfirmDialog() {
+
+
+    
+    const nombresControl = this.registerForm.get('campo') as FormGroup;
+    
+    nombresControl.get('c_Precio_Venta')?.enable();
+
+    //console.log(nombresControl.value);
+
     this.Texto = "Verificando";
     this.valido = false;
-
+//console.log(this.registerForm.get('campo')?.value);
     if(this.contactId != null){
       this.titulo = "¿Estás seguro que deseas actualizar el servicio?";
       this.razon = "Razon por la cual se actualiza el registro";
@@ -760,7 +730,7 @@ loadImages(): void {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
+this.valido = true;
 var res = 0;
 
       if (result != false) {
@@ -783,8 +753,8 @@ var res = 0;
           const c_Total = this.body.c_Total;
           const valoresComoCadenas = c_Total.split(';');
 
-           this.sumaTotal = valoresComoCadenas.reduce((total, valor) => total + parseFloat(valor), 0);
-           this.IVATotal = this.sumaTotal * 0.12;
+          this.sumaTotal = valoresComoCadenas.reduce((total, valor) => total + parseFloat(valor), 0);
+          this.IVATotal = this.sumaTotal * 0.12;
           this.SubTotalFinal = this.sumaTotal - this.IVATotal;
           const saldo = this.registerForm.get('c_Saldo')?.value;
       
@@ -812,12 +782,12 @@ var res = 0;
             this.toggleChecked = true;
            }
 
-           const c_Id_Persona = String(this.registerForm.get('c_Id_Persona')?.value || null);
+           const c_Id_Persona = this.registerForm.get('c_Id_Persona')?.value || 0;
 
            const productos: Producto[] = this.registerForm.get('campo')?.value as Producto[];
            this.body = {
             "c_Id_Estado": "1",
-            "c_Id_Servicio": null,
+            "c_Id_Servicio": "",
             "c_Validar": this.c_Tipo_Mov,
              "c_Id_Serie": this.registerForm.get('c_Id_Serie')?.value,
              "c_Id_Persona": c_Id_Persona,
@@ -873,6 +843,7 @@ var res = 0;
           const Product: Producto[] = this.registerForm.get('campo')?.value as Producto[];
 
           // Inicializa arreglos vacíos para los diferentes campos
+          const Id_Producto: string[] = [];
           const cantidades: string[] = [];
           const precios: string[] = [];
           const nombres: string[] = [];
@@ -882,6 +853,7 @@ var res = 0;
           
           // Itera a través de los productos y agrega sus valores a los arreglos
           Product.forEach((producto) => {
+            Id_Producto.push(producto.c_Id_Producto.toString());
             cantidades.push(producto.c_Cantidad.toString());
             precios.push(producto.c_Precio_Venta.toString());
             nombres.push(producto.c_Nombre_Producto);
@@ -890,7 +862,7 @@ var res = 0;
             total.push(producto.c_Total.toString());
           });
           
-          // Convierte los arreglos en cadenas separadas por ;
+          const c_Id_Producto = Id_Producto.join(';');
           const c_Cantidad = cantidades.join(';');
           const c_Precio = precios.join(';');
           const c_Nombre_Producto = nombres.join(';');
@@ -909,15 +881,8 @@ var res = 0;
           this.SubTotalFinal = CadenaSubTotal.reduce((total, valor) => total + parseFloat(valor), 0);
           this.SubTotalFinal = parseFloat(this.SubTotalFinal.toFixed(2));
 
-          // console.log("c_Cantidad: ", c_Cantidad);
-          // console.log("c_Precio: ", c_Precio);
-          // console.log("c_Nombre_Producto: ", c_Nombre_Producto);
-          // console.log("c_IVA: ",  this.IVATotal);
-          // console.log("c_SubTotal: ",  this.SubTotalFinal);
-          // console.log("c_Total: ", this.sumaTotal);
 
-
-          this.transferenciaService.RecibirDatosFactura(c_Nombre_Producto, c_Cantidad, c_Precio, this.SubTotalFinal, this.IVATotal, this.sumaTotal);
+          this.transferenciaService.RecibirDatosFactura(c_Id_Producto,c_Nombre_Producto, c_Cantidad, c_Precio, this.SubTotalFinal, this.IVATotal, this.sumaTotal);
 
 
 
@@ -930,49 +895,7 @@ var res = 0;
             this.Id_Sucursal
            const idS = this.registerForm.get('c_Id_Serie')?.value
            this.transferenciaService.RecibirFacturaCliente(idS,this.Id_Sucursal,idp)
-          //   this.FacturaService.getFacturaVentaCliente(idp,this.Id_Sucursal,idS).subscribe(
-          //    (data: any) => {
- 
-          //   const fechaActual = new Date();
-          //    const año = fechaActual.getFullYear();
-          //    const mes = fechaActual.getMonth() + 1; // Los meses comienzan en 0, así que sumamos 1
-          //    const dia = fechaActual.getDate();
- 
-          //    const fechaEnTexto = `${año}-${mes < 10 ? '0' : ''}${mes}-${dia < 10 ? '0' : ''}${dia}`;
-          //    const Person : Person[] = this.registerForm.get('campo')?.value as Person[];
-          //      this.persona = {
-          //        "c_Nombre_Cliente": data.response.c_Nombre_Cliente,
-          //        "c_Municipio_Cliente": data.response.c_Municipio,
-          //        "c_Departamento_Cliente": data.response.c_Departamento,
-          //        "c_Direccion_Cliente": data.response.c_Direccion,
-          //        "c_Telefono_Cliente": data.response.c_Telefono,
-          //        "c_NIT_Cliente": data.response.c_NIT,
-          //        "c_Fecha": fechaEnTexto,
-          //        "c_Numero_Serie": data.response.c_Numero_Serie,
-          //        "c_Numero_Factura": data.response.c_Numero_Factura,
-          //        "c_Nombre_Sucursal": data.response.c_Nombre_Sucursal,
-          //        "c_Departamento_Sucursal": data.response.c_Departamento_Sucursal,
-          //        "c_Municipio_Sucursal": data.response.c_Municipio_Sucursal,
-          //        "c_Direccion_Sucursal": data.response.c_Direccion_Sucursal,
-          //        "c_Correo": data.response.c_Correo_Sucursal,
-          //        "c_Telefono_Sucursal": data.response.c_Numero_Telefono,
-          //        "c_NIT_Sucursal": data.response.c_NIT_Sucursal,
-          //        "c_IMG_Sucursal": data.response.c_IMG_Sucursal,
-          //         "c_Nombre_Producto": "",
-          //         "c_Cantidad": "",
-          //         "c_Precio": "",
-          //         "c_SubTotal": this.SubTotalFinal,
-          //         "c_IVA": this.IVATotal,
-          //         "c_Total": this.sumaTotal,
-          //       };
- 
-          //         Person.forEach((producto, index) => {
-          //        this.persona.c_Nombre_Producto += producto.c_Nombre_Producto + (index < Person .length - 1 ? ";" : "");
-          //        this.persona.c_Cantidad += producto.c_Cantidad + (index < Person.length - 1 ? ";" : "");
-          //        this.persona.c_Precio += producto.c_Precio_Venta + (index < Person.length - 1 ? ";" : "");
-          //      });
-          //    }
-          //  );
+  
          
  
  
@@ -992,41 +915,12 @@ var res = 0;
 
 
          
-           
-          // this.transferenciaService.RecibirBody(this.body,this.BodyFactura)
+           this.transferenciaService.validarFactura = true;
+           this.transferenciaService.RecibirBody(this.body)
           this.dialogRef.close();
           this.router.navigate(['/pages/FacturaVenta']);
         
-          //   this.FacturaService.setFactura(this.body).subscribe(
-          //     (response) => {
-          //       if (response.ok) {
-          //        this.valido = true;
-          //         //this.lm.obtenerTablaData();
-          //         this.dialogRef.close();
-          //        // location.reload();
-          //        this.router.navigate(['/pages/invoice']);
-          //         this.snackBar.open(response.transaccion_Mensaje, "Cerrar", {
-          //           duration: 5000,
-          //           panelClass: ["success-snackbar"], 
-          //         });
-        
-          //       } else {
-          //        this.valido = true;
-          //         this.snackBar.open("Codigo de Error: "+response.transaccion_Estado+" "+ "Mensje: "+response.transaccion_Mensaje, "Cerrar", {
-          //           duration: 10000,
-          //           panelClass: ["red-snackbar"]
-          //         });
-          //       }
-          //     },
-          //     (error) => {
-          
-          //       this.snackBar.open("Error Inesperado", "Cerrar", {
-          //         duration: 15000,
-          //         panelClass: ["error-snackbar"], 
-          //       });
-        
-          //     }
-          //   );
+  
           }
         
 

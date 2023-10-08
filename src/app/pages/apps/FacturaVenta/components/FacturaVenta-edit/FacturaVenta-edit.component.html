@@ -224,14 +224,14 @@
   
   
   
-    <mat-form-field class="flex-auto" style="margin-left: 1.563rem;">
+    <mat-form-field class="flex-auto" style="margin-left: 1.563rem;" >
       <mat-label>Cantidad</mat-label>
-      <input cdkFocusInitial formControlName="c_Cantidad" matInput >
+      <input cdkFocusInitial formControlName="c_Cantidad" matInput  pattern="[0-9]*" (input)="onInputChange($event)">
       <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
-      <!-- <mat-error *ngIf="form.get('c_Cantidad').hasError('required')">Este campo es requerido.</mat-error>
-      <mat-error *ngIf="form.get('c_Precio_Compra').hasError('pattern')">Solo se permiten números.</mat-error>
+     <mat-error *ngIf="form.get('c_Cantidad').hasError('required')">Este campo es requerido.</mat-error>
+      <!-- <mat-error *ngIf="form.get('c_Precio_Compra').hasError('pattern')">Solo se permiten números.</mat-error>
       <mat-error *ngIf="form.get('c_Precio_Compra').hasError('precioInvalido')"> El formato del precio es incorrecto. Debe ser un número entero o decimal con 2 decimales.</mat-error> -->
-  
+   
     </mat-form-field>
   
     <mat-form-field class="flex-1 sm:w-1/4" style="margin-left: 1.563rem;" >
@@ -271,7 +271,7 @@
               </div>
               <mat-form-field class="flex-auto" style="height: 85px; margin-top: 25px;" >
                 <mat-label class="col-md-1" [attr.for]="'c_Nombre_Producto' + i">Nombre</mat-label>
-                  <input type="text" [attr.id]="'c_Nombre_Producto' + i" class="form-control" formControlName="c_Nombre_Producto"  matInput>
+                  <input type="text" [attr.id]="'c_Nombre_Producto' + i" class="form-control" formControlName="c_Nombre_Producto"  matInput [readonly]="true">
                   <mat-icon matSuffix svgIcon="mat:format_shapes"></mat-icon>  
               </mat-form-field >
           
@@ -295,18 +295,19 @@
                   <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
               
               </mat-form-field >
-  
               <mat-form-field class="flex-1 sm:w-1/4" >
-                <mat-label class="col-md-1" [attr.for]="'c_Precio_Venta' + i">Precio</mat-label>
-                  <input type="text" [attr.id]="'c_Precio_Venta' + i" class="form-control" formControlName="c_Precio_Venta"  matInput >
-                  <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+
+
+               <mat-label class="col-md-1" [attr.for]="'c_Precio_Venta' + i">Precio</mat-label>
+                  <input type="text" [attr.id]="'c_Precio_Venta' + i" class="form-control" formControlName="c_Precio_Venta"  matInput  [readonly]="true">
+                <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon> 
                    
               </mat-form-field >
   
               <mat-form-field class="flex-1 sm:w-1/4" >
                 <mat-label class="col-md-1" [attr.for]="'c_SubTotal' + i">SubTotal</mat-label>
   
-                  <input type="text" [attr.id]="'c_SubTotal' + i" class="form-control" formControlName="c_SubTotal"  matInput  >
+                  <input type="text" [attr.id]="'c_SubTotal' + i" class="form-control" formControlName="c_SubTotal"  matInput  [readonly]="true" >
                   <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
 
               </mat-form-field >
@@ -314,15 +315,15 @@
               <mat-form-field class="flex-1 sm:w-1/4" >
                 <mat-label class="col-md-1" [attr.for]="'c_IVA' + i">IVA</mat-label>
   
-                  <input type="text" [attr.id]="'c_IVA' + i" class="form-control" formControlName="c_IVA"  matInput >
+                  <input type="text" [attr.id]="'c_IVA' + i" class="form-control" formControlName="c_IVA"  matInput [readonly]="true">
                   <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
 
               </mat-form-field >
 
               <mat-form-field class="flex-1 sm:w-1/4" >
-                <mat-label class="col-md-1" [attr.for]="'c_Total' + i">Total</mat-label>
+                <mat-label class="col-md-1" [attr.for]="'c_Total' + i">Total</mat-label >
   
-                  <input type="text" [attr.id]="'c_Total' + i" class="form-control" formControlName="c_Total"  matInput >
+                  <input type="text" [attr.id]="'c_Total' + i" class="form-control" formControlName="c_Total"  matInput  [readonly]="true">
                   <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
 
               </mat-form-field >
@@ -358,7 +359,7 @@
       <div class="flex-1 sm:w-1/4">
         <ng-container *ngIf="valido" >
           <button mat-button mat-dialog-close type="button" >Cancel</button>
-          <button  color="primary" mat-flat-button type="submit" [disabled]="!registerForm.valid"> {{ Texto }}</button>
+          <button  color="primary" mat-flat-button type="submit" [disabled]="ValidarBoton === false"> {{ Texto }}</button>
           <button hidden></button>
         </ng-container>
         <ng-container *ngIf="!valido">
