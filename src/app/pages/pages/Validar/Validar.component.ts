@@ -57,7 +57,7 @@ const tokenValue = urlSearchParams.get("token");
   send() {
    
     
-//console.log(this.Id_Usuario, this.uniqueID, this.token)
+console.log(this.Id_Usuario, this.uniqueID, this.token)
     this.ValidarService.Validar(this.Id_Usuario, this.uniqueID, this.token).subscribe(
       response => {
         console.log(response);
