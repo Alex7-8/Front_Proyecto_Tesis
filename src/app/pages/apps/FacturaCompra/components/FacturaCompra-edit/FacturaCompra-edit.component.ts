@@ -2,7 +2,7 @@ import { Component,ChangeDetectionStrategy,ChangeDetectorRef,NgZone, Inject, OnI
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import jwt_decode from "jwt-decode";
 import { UntypedFormBuilder,FormControl,FormGroup, Validators,UntypedFormGroup, ReactiveFormsModule, FormArray, FormBuilder,AbstractControl,UntypedFormControl } from '@angular/forms';
-import { FacturaVentaData } from '../../interfaces/FacturaVenta.interface';
+import { FacturaCompraData } from '../../interfaces/FacturaCompra.interface';
 import { Empleado } from '../../../../../../@vex/interfaces/Empleado.interface';
 import { CatalogoService } from "../../../../../Service/Catalogo.service";
 import { EMPTY, Observable, combineLatest, of } from "rxjs";
@@ -92,10 +92,10 @@ export interface Marca {
 
 @Component({
   selector: 'vex-contacts-edit',
-  templateUrl: './FacturaVenta-edit.component.html',
-  styleUrls: ['./FacturaVenta-edit.component.scss']
+  templateUrl: './FacturaCompra-edit.component.html',
+  styleUrls: ['./FacturaCompra-edit.component.scss']
 })
-export class FacturaVentaEditComponent implements OnInit {
+export class FacturaCompraEditComponent implements OnInit {
 
   c_nombre: string[] = [];
   c_Img_Base: string[] = [];
@@ -174,8 +174,8 @@ BodyFactura : any;
   }
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public contactId:FacturaVentaData['c_Id_Factura'],
-              private dialogRef: MatDialogRef<FacturaVentaEditComponent>,
+  constructor(@Inject(MAT_DIALOG_DATA) public contactId:FacturaCompraData['c_Id_Factura'],
+              private dialogRef: MatDialogRef<FacturaCompraEditComponent>,
               private fb: UntypedFormBuilder,
               private cdr: ChangeDetectorRef,
               private ngZone: NgZone,

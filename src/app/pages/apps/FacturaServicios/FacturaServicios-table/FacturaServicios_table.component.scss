@@ -1,0 +1,33 @@
+/* Estilos generales de la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  /* Estilos para la celda de botón */
+  .cell {
+    /* Puedes ajustar estos estilos según tus necesidades */
+    cursor: pointer;
+    padding: 8px;
+    background-color: #f2f2f2;
+  }
+  
+  /* Cambiar el estilo al pasar el mouse por encima de la celda de botón */
+  .cell:hover {
+    background-color: #e0e0e0;
+  }
+  
+
+
+  .truncate-text {
+    white-space: nowrap;      
+    overflow: hidden;         
+    text-overflow: ellipsis; 
+    max-width: 20px;        
+  }

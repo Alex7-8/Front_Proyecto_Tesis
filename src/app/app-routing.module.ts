@@ -106,6 +106,10 @@ const routes: VexRoutes = [
             loadChildren: () => import('./pages/apps/empleado/listar_empleado.module').then(m => m.ListarEmpleadoModule)
           },
           {
+            path: 'EmpleadoG',
+            loadChildren: () => import('./pages/apps/EmpleadoG/listar_empleado.module').then(m => m.ListarEmpleadoModule)
+          },
+          {
             path: 'persona',
             loadChildren: () => import('./pages/apps/persona/persona.module').then(m => m.PersonaModule)
           },
@@ -144,6 +148,14 @@ const routes: VexRoutes = [
           {
             path: 'FacturaVenta',
             loadChildren: () => import('./pages/apps/FacturaVenta/FacturaVenta.module').then(m => m.FacturaVentaModule)
+          },
+          // {
+          //   path: 'FacturaCompra',
+          //   loadChildren: () => import('./pages/apps/FacturaCompra/FacturaCompra.module').then(m => m.FacturaCompraModule)
+          // },
+          {
+            path: 'FacturaServicios',
+            loadChildren: () => import('./pages/apps/FacturaServicios/FacturaServicios.module').then(m => m.FacturaServiciosModule)
           },
           // {
           //   path: 'factura',
@@ -186,8 +198,8 @@ const routes: VexRoutes = [
             loadChildren: () => import('./pages/apps/form_crear_usuarios/form_crear_usuarios.module').then(m => m.FormCrearUsuariosModule)
           },
           {
-            path: 'ActualizarUsuarios',
-            loadChildren: () => import('./pages/apps/form_actualizar_usuarios/form_actualizar_usuarios.module').then(m => m.FormActualizarUsuariosModule)
+            path: 'Depositos&Retiros',
+            loadChildren: () => import('./pages/apps/Cuentas/Cuentas.module').then(m => m.FormActualizarUsuariosModule)
           },
           {
             path: 'pricing',

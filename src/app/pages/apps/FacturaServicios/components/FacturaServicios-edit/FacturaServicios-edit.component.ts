@@ -2,7 +2,7 @@ import { Component,ChangeDetectionStrategy,ChangeDetectorRef,NgZone, Inject, OnI
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import jwt_decode from "jwt-decode";
 import { UntypedFormBuilder,FormControl,FormGroup, Validators,UntypedFormGroup, ReactiveFormsModule, FormArray, FormBuilder,AbstractControl,UntypedFormControl } from '@angular/forms';
-import { FacturaVentaData } from '../../interfaces/FacturaVenta.interface';
+import { FacturaServiciosData } from '../../interfaces/FacturaServicios.interface';
 import { Empleado } from '../../../../../../@vex/interfaces/Empleado.interface';
 import { CatalogoService } from "../../../../../Service/Catalogo.service";
 import { EMPTY, Observable, combineLatest, of } from "rxjs";
@@ -22,6 +22,7 @@ import { RouterLink } from '@angular/router';
 import { ActivatedRoute,Router } from '@angular/router';
 import { TokenService } from 'src/app/Service/token.service';
 import { TranferenciaService } from 'src/app/Service/Transferencia.service'; 
+import {ServicioService} from 'src/app/Service/Servicio.service'; 
 
 
 export let contactIdCounter = 50;
@@ -29,7 +30,7 @@ export let contactIdCounter = 50;
 
 interface Producto {
   c_Nombre_Producto: string;
-  c_Id_Producto: string;
+  c_Id_Servicio: string;
   c_Cantidad: string;
   c_Precio_Venta: string;
   c_SubTotal: string;
@@ -41,7 +42,7 @@ interface Producto {
 
 interface Person {
   c_Nombre_Producto: string;
-  c_Id_Producto: string;
+  c_Id_Servicio: string;
   c_Cantidad: string;
   c_Precio_Venta: string;
   c_SubTotal: string;
@@ -59,7 +60,7 @@ export interface Facturacion {
 }
 
 
-export interface Productos {
+export interface Servicios {
   Id: string;
   name: string;   
   Url_IMG: string;
@@ -67,7 +68,7 @@ export interface Productos {
 
 export interface FacturaData {
   c_Url_IMG: string;
-  c_Id_Producto: number;
+  c_Id_Servicio: number;
   c_Nombre: string;
   c_Cantidad: number;
   c_Precio: number;
@@ -92,10 +93,10 @@ export interface Marca {
 
 @Component({
   selector: 'vex-contacts-edit',
-  templateUrl: './FacturaVenta-edit.component.html',
-  styleUrls: ['./FacturaVenta-edit.component.scss']
+  templateUrl: './FacturaServicios-edit.component.html',
+  styleUrls: ['./FacturaServicios-edit.component.scss']
 })
-export class FacturaVentaEditComponent implements OnInit {
+export class FacturaServiciosEditComponent implements OnInit {
 
   c_nombre: string[] = [];
   c_Img_Base: string[] = [];
@@ -120,7 +121,7 @@ largo: string = "25rem";
   FacturacionCtrl = new UntypedFormControl();
   ProductosCtrl = new UntypedFormControl();
   filteredFacturacion$: Observable<Facturacion[]>;
-  filteredProductos$: Observable<Productos[]>;
+  filteredServicios$: Observable<Servicios[]>;
   arrayIndiceProductos: [number, number][] = [];
   posicionActual: number = 0;
   selectedImage: File | null = null;
@@ -174,8 +175,8 @@ BodyFactura : any;
   }
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public contactId:FacturaVentaData['c_Id_Factura'],
-              private dialogRef: MatDialogRef<FacturaVentaEditComponent>,
+  constructor(@Inject(MAT_DIALOG_DATA) public contactId:FacturaServiciosData['c_Id_Factura'],
+              private dialogRef: MatDialogRef<FacturaServiciosEditComponent>,
               private fb: UntypedFormBuilder,
               private cdr: ChangeDetectorRef,
               private ngZone: NgZone,
@@ -190,6 +191,7 @@ BodyFactura : any;
               private router: Router,
               private tokenService: TokenService,
               private transferenciaService: TranferenciaService,
+              private ServicioService: ServicioService,
            
              ) { 
 
@@ -207,7 +209,7 @@ BodyFactura : any;
 
               this.form = this.fb.group({
                 c_Id_Serie : [],
-                c_Id_Producto: [],
+                c_Id_Servicio: [],
                 c_Nombre_Producto: ["",Validators.compose([
                   Validators.required,
                   Validators.minLength(1),
@@ -227,8 +229,8 @@ BodyFactura : any;
 
               });
 
-              this.registerForm.get('c_Id_Producto')?.reset();
-              this.registerForm.get('c_Id_Producto')?.disable();
+              this.registerForm.get('c_Id_Servicio')?.reset();
+              this.registerForm.get('c_Id_Servicio')?.disable();
 
                 this.agregarCampo();
                 this.Campo();
@@ -242,7 +244,7 @@ BodyFactura : any;
           
             registerForm = this.FormBuilder.group({
               c_Id_Serie:[],
-              c_Id_Producto: [],
+              c_Id_Servicio: [],
               c_Cantidad: [],
               c_Saldo: [],
               c_Tipo_Cuenta: [],
@@ -259,19 +261,19 @@ BodyFactura : any;
 
                 if(newValue >0){
                   
-                  this.registerForm.get('c_Id_Producto')?.reset();
-                  this.registerForm.get('c_Id_Producto')?.enable();
+                  this.registerForm.get('c_Id_Servicio')?.reset();
+                  this.registerForm.get('c_Id_Servicio')?.enable();
                 }else{
                  
-                  this.registerForm.get('c_Id_Producto')?.reset();
-                  this.registerForm.get('c_Id_Producto')?.disable();  
+                  this.registerForm.get('c_Id_Servicio')?.reset();
+                  this.registerForm.get('c_Id_Servicio')?.disable();  
                  
                 }
 
               });
 
               this.registerForm
-              .get("c_Id_Producto")
+              .get("c_Id_Servicio")
               .valueChanges.subscribe((newValue) => {
                if(newValue != undefined){
                 this.ProductoService.getProductoFacturacionById(newValue).subscribe(
@@ -289,7 +291,7 @@ BodyFactura : any;
                       if(newValue == idProducto){
                         
                        this.IdProducto = idProducto;
-                        this.snackBar.open("El producto ya ha sido agregado", "Cerrar", {
+                        this.snackBar.open("El servicio ya ha sido agregado", "Cerrar", {
                           duration: 5000,
                           panelClass: ["red-snackbar"],
                         });
@@ -318,14 +320,14 @@ BodyFactura : any;
 
                        const FormGroup  = this.FormBuilder.group({
                          c_Id_Persona: this.registerForm.get("c_Id_Persona").value,
-                         c_Id_Producto: data.response.c_Id_Producto,
+                         c_Id_Servicio: data.response.c_Id_Servicio,
                          c_Img_Base: data.response.c_Url_IMG,
-                         c_Nombre_Producto: data.response.c_Nombre_Producto,
+                         c_Nombre_Producto: data.response.c_Nombre_Servicio,
                          c_Cantidad: Cantidad,
-                         c_Precio_Venta: data.response.c_Precio_Venta,
+                         c_Precio_Venta: data.response.c_Precio_Final,
                          c_SubTotal: C_SubTotal,
                          c_IVA: C_IVA,
-                         c_Total: (data.response.c_Precio_Venta*Cantidad),
+                         c_Total: (data.response.c_Precio_Final*Cantidad),
                          c_Usuario_Creacion: this.Id_Usuario,
                        });
 
@@ -353,7 +355,7 @@ BodyFactura : any;
                 console.log(this.vc);
                 const FormGroup  = this.FormBuilder.group({
                   c_Img_Base: this.imagenPorDefectoURL,
-                  c_Nombre_Producto: "Producto",
+                  c_Nombre_Producto: "Servicio",
                   c_Cantidad: [],
                   c_Precio_Venta: [],
                   c_SubTotal: [],
@@ -433,11 +435,11 @@ BodyFactura : any;
     );
 
 
-    this.filteredProductos$ = this.ProductosCtrl.valueChanges.pipe(
-      startWith(""),
-      switchMap((Id_Sucursal) => this.ProductoService.getProductoFacturacion(this.Id_Sucursal)),
-      map((States) =>  States.slice())
-    );
+    // this.filteredServicios$ = this.ProductosCtrl.valueChanges.pipe(
+    //   startWith(""),
+    //   switchMap((Id_Sucursal) => this.ServicioService.getServicios(Id_Sucursal)),
+    //   map((States) =>  States.slice())
+  //  );
 
 
     this.registerForm
@@ -526,12 +528,7 @@ if(this.contactId != null){
     );
 
 
-    this.filteredMarca$ = this.MarcaCtrl.valueChanges.pipe(
-      startWith(""),
-      switchMap((Sl) => this.catalogoService.getMarca(Sl)
-      ),
-      map((Sl) => Sl.slice())
-    );
+   
 
 
 
@@ -793,7 +790,6 @@ var res = 0;
             "c_Validar": this.c_Tipo_Mov,
              "c_Id_Serie": this.registerForm.get('c_Id_Serie')?.value,
              "c_Id_Persona": c_Id_Persona,
-             "c_Id_Producto": "",
              "c_Cantidad": "",
              "c_Precio": "",
              "c_SubTotal": "",
@@ -808,7 +804,7 @@ var res = 0;
        
            productos.forEach((producto, index) => {
 
-             this.body.c_Id_Producto += producto.c_Id_Producto + (index < productos.length - 1 ? ";" : "");
+             this.body.c_Id_Servicio += producto.c_Id_Servicio + (index < productos.length - 1 ? ";" : "");
              this.body.c_Cantidad += producto.c_Cantidad + (index < productos.length - 1 ? ";" : "");
              this.body.c_Precio += producto.c_Precio_Venta + (index < productos.length - 1 ? ";" : "");
              this.body.c_SubTotal += producto.c_SubTotal + (index < productos.length - 1 ? ";" : "");
@@ -820,7 +816,7 @@ var res = 0;
 
            const Productos: Producto[] = this.registerForm.get('campo')?.value as Producto[];
            this.BodyFactura = {
-             "c_Id_Producto": "",
+             "c_Id_Servicio": "",
              "c_Nombre_Producto": "",
              "c_Cantidad": "",
              "c_Precio": "",
@@ -833,7 +829,7 @@ var res = 0;
 
            Productos.forEach((producto, index) => {
            
-            this.BodyFactura.c_Id_Producto += producto.c_Id_Producto + (index < Productos.length - 1 ? ";" : "");
+            this.BodyFactura.c_Id_Servicio += producto.c_Id_Servicio + (index < Productos.length - 1 ? ";" : "");
             this.BodyFactura.c_Nombre_Producto += producto.c_Nombre_Producto + (index < Productos .length - 1 ? ";" : "");
             this.BodyFactura.c_Cantidad += producto.c_Cantidad + (index < Productos.length - 1 ? ";" : "");
             this.BodyFactura.c_Precio += producto.c_Precio_Venta + (index < Productos.length - 1 ? ";" : "");
@@ -845,7 +841,7 @@ var res = 0;
           const Product: Producto[] = this.registerForm.get('campo')?.value as Producto[];
 
           // Inicializa arreglos vacíos para los diferentes campos
-          const Id_Producto: string[] = [];
+          const Id_Servicio: string[] = [];
           const cantidades: string[] = [];
           const precios: string[] = [];
           const nombres: string[] = [];
@@ -855,7 +851,7 @@ var res = 0;
           
           // Itera a través de los productos y agrega sus valores a los arreglos
           Product.forEach((producto) => {
-            Id_Producto.push(producto.c_Id_Producto.toString());
+            Id_Servicio.push(producto.c_Id_Servicio.toString());
             cantidades.push(producto.c_Cantidad.toString());
             precios.push(producto.c_Precio_Venta.toString());
             nombres.push(producto.c_Nombre_Producto);
@@ -864,7 +860,7 @@ var res = 0;
             total.push(producto.c_Total.toString());
           });
           
-          const c_Id_Producto = Id_Producto.join(';');
+          const c_Id_Servicio = Id_Servicio.join(';');
           const c_Cantidad = cantidades.join(';');
           const c_Precio = precios.join(';');
           const c_Nombre_Producto = nombres.join(';');
@@ -884,7 +880,7 @@ var res = 0;
           this.SubTotalFinal = parseFloat(this.SubTotalFinal.toFixed(2));
 
 
-          this.transferenciaService.RecibirDatosFactura(c_Id_Producto,c_Nombre_Producto, c_Cantidad, c_Precio, this.SubTotalFinal, this.IVATotal, this.sumaTotal);
+          this.transferenciaService.RecibirDatosFactura(c_Id_Servicio,c_Nombre_Producto, c_Cantidad, c_Precio, this.SubTotalFinal, this.IVATotal, this.sumaTotal);
 
 
 
@@ -929,7 +925,7 @@ var res = 0;
         }else{
           this.valido = false;
                 const  C_Tipo_Mov = this.c_Tipo_Mov;
-                 const C_Id_Producto = this.form.get("c_Id_Producto").value;
+                 const c_Id_Servicio = this.form.get("c_Id_Servicio").value;
                  const C_Nombre_Producto = this.form.get("c_Nombre_Producto").value;
                  const C_Id_Marca = this.form.get("c_Id_Marca").value;
                  const C_Id_Sucursal = this.form.get("c_Id_Sucursal").value;
@@ -944,7 +940,7 @@ var res = 0;
 
                  this.ProductoService.putProducto(
                     C_Tipo_Mov,
-                    C_Id_Producto,
+                    c_Id_Servicio,
                     C_Nombre_Producto,
                     C_Id_Marca,
                     C_Id_Sucursal,

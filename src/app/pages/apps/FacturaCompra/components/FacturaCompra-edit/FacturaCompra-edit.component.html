@@ -1,0 +1,280 @@
+ <form  *ngIf="contactId != null" (ngSubmit)="openConfirmDialog()" [formGroup]="form">
+  <div class="flex items-center" mat-dialog-title>
+    <h2 class="headline m-0 flex-auto">{{ "Detalle de Factura" || "Detalle de Factura" }}</h2>
+
+   
+
+    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+  </div>
+
+        <mat-divider class="text-border"></mat-divider>
+
+
+
+        
+  <mat-dialog-content   class=" flex flex-col mat-form-field">
+
+    <table class="table w-full mt-24">
+      <thead>
+        <tr>
+          <th class="py-6 border-b text-left">CODIGO</th>
+          <th class="py-6 border-b text-left">DESCRIPCION</th>
+          <th class="py-6 border-b text-left">PRECIO</th>
+          <th class="py-6 border-b text-left">CANTIDAD</th>
+          <th class="py-6 border-b text-left">TOTAL</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-body">
+
+     
+
+      </tbody>
+    </table>
+ 
+ 
+ 
+  
+
+
+  </mat-dialog-content>
+
+ 
+  <!-- <mat-dialog-actions align="end">
+   <span class="loader"></span> 
+   
+    <div class="flex flex-col sm:flex-row sm:gap-7">
+      <div class="flex-1 sm:w-1/4">
+        <ng-container *ngIf="valido" >
+          <button mat-button mat-dialog-close type="button" >Cancel</button>
+        
+          <button hidden></button>
+        </ng-container>
+        <ng-container *ngIf="!valido">
+          <span class="loader"></span>
+          <button mat-button mat-dialog-close type="button" [disabled]="form.valid">Cancel</button>
+          <button  color="primary" mat-flat-button type="submit" [disabled]="form.valid">Actualizar Producto</button>
+          
+        </ng-container>
+      </div>
+      
+    </div>
+   
+    
+   
+  </mat-dialog-actions> -->
+</form> 
+
+
+
+
+
+
+
+
+<form *ngIf="contactId === null" (ngSubmit)="openConfirmDialog()" [formGroup]="registerForm">
+  <div class="flex items-center" mat-dialog-title>
+    <h2 class="headline m-0 flex-auto">Registrar Factura</h2>
+
+    <button  class="text-secondary" mat-dialog-close mat-icon-button type="button">
+      <mat-icon svgIcon="mat:close"></mat-icon>
+    </button>
+  </div>
+
+  <div  style="margin-left: 1.563rem;">
+    <mat-form-field  class="flex-1 sm:w-1/4">
+      <mat-label>Seleccione un Cliente</mat-label>
+      <mat-select  formControlName="c_Id_Persona"  placeholder="C/F">
+        <mat-option *ngFor="let ms of filteredFacturacion$ | async"  [value]="ms.Id">
+          <div class="option-container">
+            <img  [src]="ms.Url_IMG" class="align-middle mr-4 shadow-lg" style="width: 8%; height: 8%;" >
+            <span class="body-1">{{ ms.name }}</span>
+        </div>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="flex-1 sm:w-1/4" style="margin-left: 1.563rem;">
+      <mat-label>Serie</mat-label>
+      <mat-select formControlName="c_Id_Serie" >
+        <mat-option *ngFor="let Cat of Serie" [value]="Cat.c_Id_Serie">{{ Cat.c_Nombre}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <div style="margin-left: 1.3rem;">
+        
+      <label style="margin-right: 0.5rem;"for="gridViewToggle">{{ buttonText }}</label>
+      <mat-slide-toggle
+        id="gridViewToggle"
+        color="primary"
+        [checked]="toggleChecked"
+        [disabled]="cuentaExists"
+        (change)="onToggleChange($event)"
+      ></mat-slide-toggle>
+    </div>
+  
+    <mat-form-field class="flex-1 sm:w-1/4"  style="margin-top: 15px;" >
+      <mat-label>Fondos</mat-label>
+      <input   formControlName="c_Tipo_Cuenta"  matInput  >
+      <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+    </mat-form-field>
+
+  
+  
+  
+    <mat-form-field class="flex-auto" style="margin-left: 1.563rem;" >
+      <mat-label>Cantidad</mat-label>
+      <input cdkFocusInitial formControlName="c_Cantidad" matInput  pattern="[0-9]*" (input)="onInputChange($event)">
+      <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+     <mat-error *ngIf="form.get('c_Cantidad').hasError('required')">Este campo es requerido.</mat-error>
+      <!-- <mat-error *ngIf="form.get('c_Precio_Compra').hasError('pattern')">Solo se permiten números.</mat-error>
+      <mat-error *ngIf="form.get('c_Precio_Compra').hasError('precioInvalido')"> El formato del precio es incorrecto. Debe ser un número entero o decimal con 2 decimales.</mat-error> -->
+   
+    </mat-form-field>
+  
+    <mat-form-field class="flex-1 sm:w-1/4" style="margin-left: 1.563rem;" >
+      <mat-label>Seleccione un Producto</mat-label>
+      <mat-select formControlName="c_Id_Producto">
+        <mat-option *ngFor="let ms of filteredProductos$ | async"  [value]="ms.Id">
+          <div class="option-container">
+            <img  [src]="ms.Url_IMG" class="align-middle mr-4 shadow-lg" style="width: 8%; height: 8%;" >
+            <span class="body-1">{{ ms.name }}</span>
+        </div>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+   
+  
+   
+  
+  </div>
+        <mat-divider class="text-border"></mat-divider>
+  <mat-dialog-content   class=" flex flex-col mat-form-field">
+
+   
+  <div formArrayName="campo" *ngFor="let servicio of Servicio.controls; let i = index">
+    <div [formGroupName]="i">
+      <div class="form-group row">
+       
+        <div class="col-md-3">
+          <div class="flex flex-col sm:flex-row sm:gap-7">
+           
+              <div class="image-upload-container">
+                <div class="selected-image-container">
+                  <div class="selected-image-wrapper">
+                    <img  [src]="urlsImagenes[i] || imagenPorDefectoURL "   alt="Imagen seleccionada" >
+                  </div>
+                </div>
+              </div>
+              <mat-form-field class="flex-auto" style="height: 85px; margin-top: 25px;" >
+                <mat-label class="col-md-1" [attr.for]="'c_Nombre_Producto' + i">Nombre</mat-label>
+                  <input type="text" [attr.id]="'c_Nombre_Producto' + i" class="form-control" formControlName="c_Nombre_Producto"  matInput [readonly]="true">
+                  <mat-icon matSuffix svgIcon="mat:format_shapes"></mat-icon>  
+              </mat-form-field >
+          
+
+          </div>
+         
+          
+         <div  class="flex flex-col sm:flex-row sm:gap-5" style="margin-top: 25px;">
+          <div class="flex-1 sm:w-1/4">
+            <!-- <div class="flex flex-col sm:flex-row sm:gap-7">
+             
+            </div > -->
+
+
+            <div class="flex flex-col sm:flex-row sm:gap-7">
+
+             
+              <mat-form-field class="flex-1 sm:w-1/4" >
+                <mat-label class="col-md-1" [attr.for]="'c_Cantidad' + i">Cantidad</mat-label>
+                  <input type="text" [attr.id]="'c_Cantidad' + i" class="form-control" formControlName="c_Cantidad"  matInput (input)="actualizarCalculos(i)" >
+                  <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+              
+              </mat-form-field >
+              <mat-form-field class="flex-1 sm:w-1/4" >
+
+
+               <mat-label class="col-md-1" [attr.for]="'c_Precio_Venta' + i">Precio</mat-label>
+                  <input type="text" [attr.id]="'c_Precio_Venta' + i" class="form-control" formControlName="c_Precio_Venta"  matInput  [readonly]="true">
+                <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon> 
+                   
+              </mat-form-field >
+  
+              <mat-form-field class="flex-1 sm:w-1/4" >
+                <mat-label class="col-md-1" [attr.for]="'c_SubTotal' + i">SubTotal</mat-label>
+  
+                  <input type="text" [attr.id]="'c_SubTotal' + i" class="form-control" formControlName="c_SubTotal"  matInput  [readonly]="true" >
+                  <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+
+              </mat-form-field >
+  
+              <mat-form-field class="flex-1 sm:w-1/4" >
+                <mat-label class="col-md-1" [attr.for]="'c_IVA' + i">IVA</mat-label>
+  
+                  <input type="text" [attr.id]="'c_IVA' + i" class="form-control" formControlName="c_IVA"  matInput [readonly]="true">
+                  <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+
+              </mat-form-field >
+
+              <mat-form-field class="flex-1 sm:w-1/4" >
+                <mat-label class="col-md-1" [attr.for]="'c_Total' + i">Total</mat-label >
+  
+                  <input type="text" [attr.id]="'c_Total' + i" class="form-control" formControlName="c_Total"  matInput  [readonly]="true">
+                  <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
+
+              </mat-form-field >
+  
+            </div>
+
+
+
+
+       
+       
+       
+          </div>
+          <div >
+            <button mat-flat-button mat-button color="warn" (click)="removerCampo(i)">Remover</button>
+          </div>
+        </div>
+         </div>
+
+         
+
+
+      </div>
+    </div>
+  </div>
+  
+</mat-dialog-content >
+
+  <mat-dialog-actions align="end">
+    <!-- <span class="loader"></span> -->
+   
+    <div class="flex flex-col sm:flex-row sm:gap-7">
+      <div class="flex-1 sm:w-1/4">
+        <ng-container *ngIf="valido" >
+          <button mat-button mat-dialog-close type="button" >Cancel</button>
+          <button  color="primary" mat-flat-button type="submit" [disabled]="ValidarBoton === false"> {{ Texto }}</button>
+          <button hidden></button>
+        </ng-container>
+        <ng-container *ngIf="!valido">
+          <span class="loader"></span>
+          <button mat-button mat-dialog-close type="button" [disabled]="registerForm.valid">Cancel</button>
+          <button  color="primary" mat-flat-button type="submit" [disabled]="registerForm.valid"> {{ Texto }}</button>
+          
+        </ng-container>
+      </div>
+      
+    </div>
+   
+    
+   
+  </mat-dialog-actions>
+
+</form>
+
+

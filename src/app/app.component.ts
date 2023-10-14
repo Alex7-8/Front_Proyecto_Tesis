@@ -139,11 +139,11 @@ this.configureMenu();
       this.navigationService.items = [
         {
           type: 'subheading',
-          label: 'Dashboards',
+          label: 'Ganancias',
           children: [
             {
               type: 'link',
-              label: 'Grafica',
+              label: 'Ganancias',
               route: '/analytics',
               icon: 'mat:insights',
               routerLinkActiveOptions: { exact: false }
@@ -162,30 +162,19 @@ this.configureMenu();
               children: [
                 {
                   type: 'link',
-                  label: 'Registrar Empleados',
-                  icon: 'mat:watch_later',
-                  route: '/pages/CrearUsuarios'
-                },
-                {
-                  type: 'link',
-                  label: 'Servicios',
-                  route: '/apps/contacts/table',
-                },
-                {
-                  type: 'link',
-                  label: 'Ventas',
-                  route: '/apps/venta/table',
+                  label: 'Factura Servicios',
+                  route: '/apps/FacturaServicios/table',
                 },
                 {
                   type: 'link',
                   label: 'Factura Venta',
                   route: '/apps/FacturaVenta/table',
                 },
-                {
-                  type: 'link',
-                  label: 'Compras',
-                  route: '/apps/contacts/table',
-                },
+                // {
+                //   type: 'link',
+                //   label: 'Compras',
+                //   route: '/apps/contacts/table',
+                // },
                 {
                   type: 'link',
                   label: 'Depositos y Retiros',
@@ -200,6 +189,12 @@ this.configureMenu();
               icon: 'mat:assignment',
               
               children: [
+                {
+    
+                  type: 'link',
+                  label: 'Empleados',
+                  route: '/apps/EmpleadoG/table',
+                },
                 {
     
                   type: 'link',
@@ -309,18 +304,18 @@ this.configureMenu();
           label: 'Aplicaciones',
           children: [
      
-            {
-              type: 'dropdown',
-              label: 'Facturacion',
-              icon: 'mat:payment',
-              children: [
-                {
-                  type: 'link',
-                  label: 'Compras',
-                  route: '/apps/contacts/table',
-                }
-              ]
-            },
+            // {
+            //   type: 'dropdown',
+            //   label: 'Facturacion',
+            //   icon: 'mat:payment',
+            //   children: [
+            //     {
+            //       type: 'link',
+            //       label: 'Compras',
+            //       route: '/apps/contacts/table',
+            //     }
+            //   ]
+            // },
            
             {
               type: 'dropdown',
@@ -330,7 +325,7 @@ this.configureMenu();
                 {
                   type: 'link',
                   label: 'Empleados',
-                  route: '/apps/empleado/table',
+                  route: '/apps/EmpleadoG/table',
                 },
                 {
                   type: 'link',
@@ -437,13 +432,13 @@ this.configureMenu();
               children: [
                 {
                   type: 'link',
-                  label: 'Servicios',
+                  label: 'Factura Servicios',
                   route: '/apps/contacts/table',
                 },
                 {
                   type: 'link',
-                  label: 'Ventas',
-                  route: '/apps/venta/table',
+                  label: 'Factura Venta',
+                  route: '/apps/FacturaVenta/table',
                 },
                 {
                   type: 'link',
