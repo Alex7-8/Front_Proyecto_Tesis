@@ -554,10 +554,24 @@ var res = 0;
                  const C_Id_Marca = this.form.get("c_Id_Marca").value;
                  const C_Id_Sucursal = this.form.get("c_Id_Sucursal").value;
                  const C_Id_Categoria = this.form.get("c_Id_Categoria").value;
-                const C_Stock_Disponible = this.form.get("c_Stock_Disponible").value;
+
+                // const C_Cantidad = this.form.get("c_Cantidad").value;
+                // const C_Stock_Disponible = this.form.get("c_Stock_Disponible").value 
+
+                const C_Cantidad = parseInt(this.form.get("c_Cantidad").value);
+                const C_Stock_Disponible = parseInt(this.form.get("c_Stock_Disponible").value);
+                var operacion
+                if(C_Tipo_Mov == "SM"){
+                 operacion =  C_Stock_Disponible + C_Cantidad ;
+                }else{
+                  operacion  =  C_Stock_Disponible - C_Cantidad;
+                }
+                const STOCK =  operacion
+                
+
                 const C_Precio_Compra = this.form.get("c_Precio_Compra").value;
-                  const C_Precio_Venta = this.form.get("c_Precio_Venta").value;
-                  const C_Cantidad = this.form.get("c_Cantidad").value;
+                const C_Precio_Venta = this.form.get("c_Precio_Venta").value;
+               
                  const C_Img_Base = this.form.get("c_Img_Base").value;
                  const C_Descripcion = result
                  const C_Usuario_Modificacion = this.form.get("c_Usuario_CoM").value;
@@ -569,7 +583,7 @@ var res = 0;
                     C_Id_Marca,
                     C_Id_Sucursal,
                     C_Id_Categoria,
-                    C_Stock_Disponible,
+                    STOCK,
                     C_Precio_Compra,
                     C_Precio_Venta,
                     C_Cantidad,

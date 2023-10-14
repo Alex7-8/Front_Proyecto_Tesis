@@ -30,7 +30,7 @@ export class FacturaVentaTableMenuComponent implements OnInit {
       type: 'link',
       id: 'Activo',
       icon: 'mat:label',
-      label: 'Productos Activos',
+      label: 'Facturas Activas',
       classes: {
         icon: 'text-green'
       }
@@ -39,7 +39,7 @@ export class FacturaVentaTableMenuComponent implements OnInit {
       type: 'link',
       id: 'Inactivo',
       icon: 'mat:label',
-      label: 'Productos Inactivos',
+      label: 'Facturas Inactivas',
       classes: {
         icon: 'text-gray'
       }
@@ -88,13 +88,13 @@ export class FacturaVentaTableMenuComponent implements OnInit {
      
      if (category === 'Activo') {
       this.em.activeCategory = 'Activo';
-      this.em.tableData = this.em.Servicio.filter(c => c.c_Estado === 1);
+      this.em.tableData = this.em.Servicio.filter(c => c.c_Id_Estado_Factura === 1);
 
     }
     
     if (category === 'Inactivo') {
       this.em.activeCategory = 'Inactivo';
-      this.em.tableData = this.em.Servicio.filter(c => c.c_Estado === 2);
+      this.em.tableData = this.em.Servicio.filter(c => c.c_Id_Estado_Factura === 5);
     }
   }
 

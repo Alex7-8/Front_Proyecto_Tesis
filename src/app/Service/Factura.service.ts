@@ -77,6 +77,17 @@ CambiarEstadoSerie(
 }
 
 
+getFacturaVentaProductosByDia(): Observable<SerieFacturaData> {
+  const url = `${this._url}GetFacturaVentaByDia`;
+  return this.http.get<SerieFacturaData>(url);
+
+}
+
+
+
+
+
+
   
 
 getSerieFactura(searchTerm: string): Observable<any> {
@@ -97,9 +108,19 @@ getFacturaVentaCF(IdSerie: number,IdSL: number): Observable<SerieFacturaData> {
   return this.http.get<SerieFacturaData>(url);
 
 }
+getFacturaVentaClienteByDia(): Observable<SerieFacturaData> {
+  const url = `${this._url}GetFacturaVentaCF`;
+  return this.http.get<SerieFacturaData>(url);
+
+}
 
 
 
+getDetalleFacturaById(ids: number): Observable<SerieFacturaData> {
+  const url = `${this._url}GetDetalleFacturaById?IdS=${ids}`;
+  return this.http.get<SerieFacturaData>(url);
+
+}
 
 
 

@@ -174,7 +174,7 @@ BodyFactura : any;
   }
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public contactId:FacturaVentaData['c_Id_Producto'],
+  constructor(@Inject(MAT_DIALOG_DATA) public contactId:FacturaVentaData['c_Id_Factura'],
               private dialogRef: MatDialogRef<FacturaVentaEditComponent>,
               private fb: UntypedFormBuilder,
               private cdr: ChangeDetectorRef,
@@ -479,37 +479,72 @@ if(this.contactId != null){
   this.form.get('c_Stock_Disponible')?.reset();
   this.form.get('c_Stock_Disponible')?.disable();
 
+ 
 
-    this.ProductoService.getProductoById(this.contactId).subscribe(
-      (data: any) => {
-       // console.log(data.response);
-        this.empleado = data;
-        this.form.patchValue({
-          Nombre: "Actualizar Servicio",
-          c_Id_Producto: data.response.c_Id_Producto,
-          c_Id_Marca: data.response.c_Id_Marca,
-          c_Id_Sucursal: data.response.c_Id_Sucursal,
-          c_Id_Categoria: data.response.c_Id_Categoria,
-          c_Nombre_Producto: data.response.c_Nombre_Producto,
-          c_Stock_Disponible: data.response.c_Stock_Disponible,
-          c_Precio_Compra: data.response.c_Precio_Compra,
-          c_Precio_Venta: data.response.c_Precio_Venta,
-          Razon: data.response.c_Descripcion,
-        }
 
-          );
-        this.selectedImageURL = data.response.c_Url_IMG ? `${data.response.c_Url_IMG}` : "https://img.srvcentral.com/Sistema/ImagenPorDefecto/Servicios.jpg";
-        this.ngZone.run(() => {
-          this.form.get('c_Img_Base')?.setValue(data.response.c_Url_IMG);
-        });
-        this.cdr.detectChanges();
 
-      },
-      (error) => {
-        console.error('Error fetching employee data:', error);
+  this.FacturaService.getDetalleFacturaById(this.contactId).subscribe((data: any) => {
+    this.empleado = data;
+
+    if (Array.isArray(data.response)) {
+      // Obtén la referencia a la tabla
+      const tabla = document.querySelector('#tabla-body') as HTMLTableSectionElement;
+
+      // Limpia el contenido anterior de la tabla
+      while (tabla.firstChild) {
+        tabla.removeChild(tabla.firstChild);
       }
-    );
+
+      // Itera a través de los objetos en 'data.response' y crea filas en la tabla
+      data.response.forEach((item: any) => {
+        const row = tabla.insertRow();
+        row.insertCell(0).textContent = item.c_Id_Producto;
+        row.insertCell(1).textContent = item.c_Nombre_Producto; // Agrega la propiedad 'c_Descripcion' si está disponible en tus datos
+        row.insertCell(2).textContent = item.c_Precio;
+        row.insertCell(3).textContent = item.c_Cantidad;
+        row.insertCell(4).textContent = item.c_SubTotal;
+        // Puedes agregar más columnas según sea necesario
+      });
+    } else {
+      console.error('Los datos no son un array');
     }
+  });
+
+
+
+
+    // this.FacturaService.getDetalleFacturaById(this.contactId).subscribe(
+    //   (data: any) => {
+    //    // console.log(data.response);
+    //     this.empleado = data;
+    //     this.form.patchValue({
+    //       Nombre: "Detalle de la Factura",
+    //       c_Id_Factura: data.response.c_Id_Factura,
+    //       c_Id_Producto: data.response.c_Id_Producto,
+    //       c_Id_Servicio: data.response.c_Id_Servicio,
+    //       c_Cantidad: data.response.c_Cantidad,
+    //       c_Precio: data.response.c_Precio,
+    //       c_SubTotal: data.response.c_SubTotal,
+    //       c_IVA: data.response.c_IVA,
+    //       c_Total: data.response.c_Total,
+    //     }
+
+    //       );
+    //     this.selectedImageURL = data.response.c_Url_IMG ? `${data.response.c_Url_IMG}` : "https://img.srvcentral.com/Sistema/ImagenPorDefecto/Servicios.jpg";
+    //     this.ngZone.run(() => {
+    //       this.form.get('c_Img_Base')?.setValue(data.response.c_Url_IMG);
+    //     });
+    //     this.cdr.detectChanges();
+
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching employee data:', error);
+    //   }
+    // );
+    
+  
+  
+  }
    
     this.filteredSucursal$ = this.SucCtrl.valueChanges.pipe(
       startWith(""),
@@ -768,6 +803,8 @@ var res = 0;
             this.buttonText = 'Pagar en Efectivo';
             this.c_Tipo_Mov ="RM"
             this.toggleChecked = false;
+            this.ValidarBoton = true;
+            this.valido = true;
           }else{
            if(this.toggleChecked == true ){
  

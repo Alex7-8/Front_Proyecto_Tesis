@@ -9,15 +9,15 @@ import { FacturaVentaData} from '../../interfaces/FacturaVenta.interface';
 export class FacturaVentaCardComponent implements OnInit {
 
   @Input() contact: FacturaVentaData;
-  @Output() openContact = new EventEmitter<FacturaVentaData['c_Id_Producto']>();
-  @Output() toggleStar = new EventEmitter<FacturaVentaData['c_Id_Producto']>();
+  @Output() openContact = new EventEmitter<FacturaVentaData['c_Id_Factura']>();
+  @Output() toggleStar = new EventEmitter<FacturaVentaData['c_Id_Factura']>();
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  emitToggleStar(event: MouseEvent, contactId: FacturaVentaData['c_Id_Producto']) {
+  emitToggleStar(event: MouseEvent, contactId: FacturaVentaData['c_Id_Factura']) {
     event.stopPropagation();
     this.toggleStar.emit(contactId);
   }

@@ -97,11 +97,11 @@
 
     <mat-form-field class="flex-1 sm:w-1/4"  style="margin-top: 15px;">
       <mat-label>Cantidad</mat-label>
-      <input cdkFocusInitial formControlName="c_Precio_Compra" matInput >
+      <input cdkFocusInitial formControlName="c_Cantidad" matInput >
       <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon>
-      <mat-error *ngIf="form.get('c_Precio_Compra').hasError('required')">Este campo es requerido.</mat-error>
-      <mat-error *ngIf="form.get('c_Precio_Compra').hasError('pattern')">Solo se permiten números.</mat-error>
-      <mat-error *ngIf="form.get('c_Precio_Compra').hasError('precioInvalido')"> El formato del precio es incorrecto. Debe ser un número entero o decimal con 2 decimales.</mat-error>
+      <mat-error *ngIf="form.get('c_Cantidad').hasError('required')">Este campo es requerido.</mat-error>
+      <mat-error *ngIf="form.get('c_Cantidad').hasError('pattern')">Solo se permiten números.</mat-error>
+      
   
     </mat-form-field>
  

@@ -85,7 +85,7 @@ c_Img_Base,
 c_Descripcion,
 c_Usuario_Modificacion,
 };
-
+console.log(body)
 const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 return this.http.post<any>(this._url + 'PutProductos', JSON.stringify(body),{ headers } )
 .pipe(

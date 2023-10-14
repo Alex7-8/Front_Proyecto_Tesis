@@ -34,9 +34,9 @@
           <ng-container *ngIf="column.property === 'starred'">
             <th *matHeaderCellDef mat-header-cell mat-sort-header> {{ column.label }}</th>
             <td *matCellDef="let row" [ngClass]="column.cssClasses" class="w-10" mat-cell>
-              <button (click)="emitToggleStar($event, row.c_Id_Producto)" mat-icon-button type="button">
-                <mat-icon *ngIf="row.c_Estado == 2"  svgIcon="mat:control_point"></mat-icon>
-                <mat-icon *ngIf="row.c_Estado == 1" svgIcon="mat:cancel"></mat-icon>
+              <button (click)="emitToggleStar($event, row.c_Id_Factura)" mat-icon-button type="button">
+                <mat-icon *ngIf="row.c_Id_Estado_Factura == 2"  svgIcon="mat:control_point"></mat-icon>
+                <mat-icon *ngIf="row.c_Id_Estado_Factura == 1" svgIcon="mat:cancel"></mat-icon>
               </button>
             </td>
           </ng-container>
@@ -58,7 +58,7 @@
 
       <tr *matHeaderRowDef="visibleColumns; sticky: true" mat-header-row></tr>
       <!--suppress UnnecessaryLabelJS -->
-      <tr (click)="openContact.emit(row.c_Id_Producto)"
+      <tr (click)="openContact.emit(row.c_Id_Factura)"
           *matRowDef="let row; columns: visibleColumns;"
           @fadeInUp
           class="hover:bg-hover cursor-pointer"

@@ -37,8 +37,8 @@ export class FacturaVentaDataTableComponent<T> implements OnInit, OnChanges, Aft
   @Input() pageSizeOptions = [15, 20,50];
   @Input() searchStr: string;
 
-  @Output() toggleStar = new EventEmitter<FacturaVentaData['c_Id_Producto']>();
-  @Output() openContact = new EventEmitter<FacturaVentaData['c_Id_Producto']>();
+  @Output() toggleStar = new EventEmitter<FacturaVentaData['c_Id_Factura']>();
+  @Output() openContact = new EventEmitter<FacturaVentaData['c_Id_Factura']>();
 
   visibleColumns: Array<keyof T | string>;
   dataSource = new MatTableDataSource<T>();
@@ -65,7 +65,7 @@ export class FacturaVentaDataTableComponent<T> implements OnInit, OnChanges, Aft
     }
   }
 
-  emitToggleStar(event: Event, id: FacturaVentaData['c_Id_Producto']) {
+  emitToggleStar(event: Event, id: FacturaVentaData['c_Id_Factura']) {
     event.stopPropagation();
     this.toggleStar.emit(id);
   }

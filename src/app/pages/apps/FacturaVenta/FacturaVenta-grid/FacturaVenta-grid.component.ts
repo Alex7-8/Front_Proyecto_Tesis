@@ -18,8 +18,8 @@ import jwt_decode from "jwt-decode";
 import { ConfirmDialogComponent } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.component';
 import { timeStamp } from 'console';
 
-export function trackById<T extends { c_Id_Producto: string | number }>(index: number, item: T) {
-  return item.c_Id_Producto;
+export function trackById<T extends { c_Id_Factura: string | number }>(index: number, item: T) {
+  return item.c_Id_Factura;
 }
 
 @Component({
@@ -66,12 +66,12 @@ export class FacturaVentaGridComponent implements OnInit {
           switch (activeCategory) {
             case 'activos': {
               this.activeCategory = activeCategory;
-           return  filteredServicio.filter(c => c.c_Estado === 1);
+           return  filteredServicio.filter(c => c.c_Id_Estado_Factura === 1);
             }
     
             case 'inactivos': {
               this.activeCategory = activeCategory;
-              return filteredServicio.filter(c => c.c_Estado === 2);
+              return filteredServicio.filter(c => c.c_Id_Estado_Factura === 5);
             }
     
             default: {
@@ -96,13 +96,13 @@ export class FacturaVentaGridComponent implements OnInit {
 
   links: Link[] = [
     {
-      label: 'Activos',
+      label: 'Factura',
       route: '../activos'
     },
-    {
-      label: 'Inactivos',
-      route: '../inactivos'
-    },
+    // {
+    //   label: 'Inactivos',
+    //   route: '../inactivos'
+    // },
   ];
 
   trackById = trackById;
@@ -123,7 +123,7 @@ export class FacturaVentaGridComponent implements OnInit {
 
     this.ProductoService.getProducto("").subscribe((response: any) => {
     this.Servicio = response.response;
-    this.tableData = this.Servicio.filter(c => c.c_Estado === this.estado);
+    this.tableData = this.Servicio.filter(c => c.c_Id_Estado_Factura === this.estado);
     
     this.filteredContacts$ = this.route.paramMap.pipe(
       map(paramMap => paramMap.get('activeCategory')),
@@ -132,12 +132,12 @@ export class FacturaVentaGridComponent implements OnInit {
           
           case 'activos': {
             this.activeCategory = activeCategory;
-         return  this.Servicio.filter(c => c.c_Estado === 1);
+         return  this.Servicio.filter(c => c.c_Id_Estado_Factura === 1);
           }
   
           case 'inactivos': {
             this.activeCategory = activeCategory;
-            return this.Servicio.filter(c => c.c_Estado === 2);
+            return this.Servicio.filter(c => c.c_Id_Estado_Factura === 5);
           }
   
           default: {
@@ -151,7 +151,7 @@ export class FacturaVentaGridComponent implements OnInit {
   });
   
    }
-  openContact(id?: FacturaVentaData['c_Id_Producto']) {
+  openContact(id?: FacturaVentaData['c_Id_Factura']) {
     this.dialog.open(FacturaVentaEditComponent, {
       data: id || null,
       width: '55rem'
@@ -159,8 +159,8 @@ export class FacturaVentaGridComponent implements OnInit {
   }
 
 
-  toggleStar(c_Id_Producto: FacturaVentaData['c_Id_Producto']) {
-    const contact = this.Servicio.find(c => c.c_Id_Producto === c_Id_Producto);
+  toggleStar(c_Id_Factura: FacturaVentaData['c_Id_Factura']) {
+    const contact = this.Servicio.find(c => c.c_Id_Factura === c_Id_Factura);
  
     const token = localStorage.getItem("token"); 
     const decodedToken: any = jwt_decode(token);
@@ -191,7 +191,7 @@ export class FacturaVentaGridComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
        // console.log('Valor del textarea:', result);
-        this.ProductoService.CambiarEstadoProducto(c_Id_Producto,this.c_Id_UsuarioModificacion,result).subscribe((response) => {
+        this.ProductoService.CambiarEstadoProducto(c_Id_Factura,this.c_Id_UsuarioModificacion,result).subscribe((response) => {
           console.log(response);
           if(response.ok){
             this.snackBar.open(response.transaccion_Mensaje, "Cerrar", {
@@ -206,12 +206,12 @@ export class FacturaVentaGridComponent implements OnInit {
                   
                   case 'activos': {
                     this.activeCategory = activeCategory;
-                 return  this.Servicio.filter(c => c.c_Estado === 1);
+                 return  this.Servicio.filter(c => c.c_Id_Estado_Factura === 1);
                   }
           
                   case 'inactivos': {
                     this.activeCategory = activeCategory;
-                    return this.Servicio.filter(c => c.c_Estado === 2);
+                    return this.Servicio.filter(c => c.c_Id_Estado_Factura === 5);
                   }
           
                   default: {
@@ -240,10 +240,10 @@ export class FacturaVentaGridComponent implements OnInit {
   onToggleChange(event: any): void {
     if (event.checked &&  this.activeCategory == 'activos') {
       this.ProductoService.estado = 1;
-      this.router.navigate(['/apps/producto/table']);
+      this.router.navigate(['/apps/FacturaVenta/table']);
     } else if(event.checked &&  this.activeCategory == 'inactivos'){
       this.ProductoService.estado = 2;
-      this.router.navigate(['/apps/producto/table']);
+      this.router.navigate(['/apps/FacturaVenta/table']);
     }
   }
 

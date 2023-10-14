@@ -33,50 +33,43 @@ export class ValidarComponent implements OnInit {
   ngOnInit() {
     
 
+    const currentUrl = window.location.href;
+    const urlSearchParams = new URLSearchParams(window.location.search);
+const tokenValue = urlSearchParams.get("token");
+    if (tokenValue) {
+      // Si la URL contiene un símbolo '#', obtener los parámetros después del '#'
+      const decodedToken = decodeURIComponent(tokenValue);
+  const DToken: any = jwt_decode(decodedToken);
+    
+  if (DToken.IdUsuario && DToken.IdDispositivo) {
+    this.Id_Usuario = DToken.IdUsuario;
+    this.uniqueID = DToken.IdDispositivo;
+    this.token = decodedToken;
 
+          //  console.log(this.Id_Usuario, this.uniqueID,this.token);
+      }
+          // window.location.href = currentUrl;
+    }
   }
   
 
 
   send() {
-    const currentUrl = window.location.href;
-    const indexOfHash = currentUrl.indexOf('#');
-    if (indexOfHash !== -1) {
-      // Si la URL contiene un símbolo '#', obtener los parámetros después del '#'
-      const urlParams = currentUrl.substring(indexOfHash + 1);
-      const tokenParam = 'token=';
+   
     
-      const tokenStartIndex = urlParams.indexOf(tokenParam);
-      if (tokenStartIndex !== -1) {
-        // Si se encuentra el parámetro 'token' en la URL, obtener el valor del token
-        const tokenValue = urlParams.substring(tokenStartIndex + tokenParam.length);
-    
-        // Decodificar el token si es necesario
-        const decodedToken = decodeURIComponent(tokenValue);
-        this.token = decodedToken;
-        const DToken: any = jwt_decode(decodedToken);
-
-             this.Id_Usuario = DToken.IdUsuario;
-            this.uniqueID = DToken.IdDispositivo;
-
-          //  console.log(this.Id_Usuario, this.uniqueID,this.token);
-      }
-           window.location.href = currentUrl;
-    }
-    
-
+//console.log(this.Id_Usuario, this.uniqueID, this.token)
     this.ValidarService.Validar(this.Id_Usuario, this.uniqueID, this.token).subscribe(
       response => {
-        //console.log(response);
+        console.log(response);
         if (response.ok === true) {
           const mensaje = response.transaccion_Mensaje;
          // localStorage.setItem('token_dispositivo', this.uniqueID);
-          this.snackbar.open(mensaje, 'OK', {
+          this.snackbar.open(mensaje, 'OK', { 
             duration: 5000
           });
           // Redirige a la página principal
        //   console.clear();
-          // this.router.navigate(['/login']);
+           this.router.navigate(['/login']);
         } else {
           // Si la solicitud no fue exitosa, muestra el mensaje de error personalizado
           const estado = "20";
@@ -86,7 +79,7 @@ export class ValidarComponent implements OnInit {
             duration: 5000
           });
          // console.clear();
-         // this.router.navigate(['/login']);
+          this.router.navigate(['/login']);
         }
       },
       error => {
@@ -98,7 +91,7 @@ export class ValidarComponent implements OnInit {
           duration: 5000
         });
         //console.clear();
-       // this.router.navigate(['/login']);
+        this.router.navigate(['/login']);
        // console.error(error);
       }
     );

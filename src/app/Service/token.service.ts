@@ -32,17 +32,17 @@ export class TokenService {
   }
 tokenFactura(body: any, persona: any) 
 {
-  sessionStorage.setItem('body', body);
-  sessionStorage.setItem('persona', persona);
+  localStorage.setItem('body', body);
+  localStorage.setItem('persona', persona);
 }
 
 obtenerTokenFactura(){
-  const body = sessionStorage.getItem('body');
+  const body = localStorage.getItem('body');
   return body;
 }
 
 tokenExpirado(): boolean {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const decodedToken: any = jwt_decode(token);
   const expiracion = decodedToken.exp;
   const expiracionDate = new Date(0);
@@ -55,10 +55,10 @@ tokenExpirado(): boolean {
 }
   TokenAdmin() {
     let res: boolean = true;
-    if(sessionStorage.getItem("token") == null){
+    if(localStorage.getItem("token") == null){
       res = false;
     }else{
-      const token = sessionStorage.getItem("token"); 
+      const token = localStorage.getItem("token"); 
       const decodedToken: any = jwt_decode(token);
       if(decodedToken.role.includes("ADMINISTRADOR"))
       {
@@ -77,10 +77,10 @@ tokenExpirado(): boolean {
   
   TokenGerente() {
     let res: boolean = true;
-    if(sessionStorage.getItem("token") == null){
+    if(localStorage.getItem("token") == null){
       res = false;
     }else{
-      const token = sessionStorage.getItem("token"); 
+      const token = localStorage.getItem("token"); 
       const decodedToken: any = jwt_decode(token);
       if(decodedToken.role.includes("GERENTE"))
       {
@@ -97,10 +97,10 @@ tokenExpirado(): boolean {
   
     TokenCajero() {
       let res: boolean = true;
-      if(sessionStorage.getItem("token") == null){
+      if(localStorage.getItem("token") == null){
         res = false;
       }else{
-        const token = sessionStorage.getItem("token"); 
+        const token = localStorage.getItem("token"); 
         const decodedToken: any = jwt_decode(token);
         if(decodedToken.role == "CAJERO")
         {

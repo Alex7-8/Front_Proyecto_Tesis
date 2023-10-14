@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class ValidarService {
-  private _url: string = `${environment.API_URL}/LogIn/`; // URL de la API
+  private _url: string = `${environment.API_URL}/LogIn/`; 
 
   constructor(private http: HttpClient) { }
 
