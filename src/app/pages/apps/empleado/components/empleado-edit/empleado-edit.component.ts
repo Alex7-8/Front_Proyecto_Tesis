@@ -315,6 +315,56 @@ if(this.contactId != null){
   }
 
 
+
+
+
+
+  
+  onInputChange(event: any) {
+    const inputValue = event.target.value;
+  
+    // Reemplazar cualquier coma por un punto para asegurarnos de que el valor esté en el formato adecuado.
+    const sanitizedValue = inputValue.replace(',', '.');
+  
+    // Usar una expresión regular para permitir solo números y hasta dos decimales después del punto.
+    const numericValue = sanitizedValue.replace(/[^0-9.]/g, '');
+    
+    // Si hay un punto decimal, asegurarse de que no haya más de dos decimales.
+    const parts = numericValue.split('.');
+    if (parts[1] !== undefined) {
+      parts[1] = parts[1].slice(0, 2);
+    }
+  
+    // Reemplazar el valor en el campo de formulario con el valor válido.
+    this.form.get('c_Monto')?.setValue(parts.join('.'));
+  }
+  
+
+
+
+  addDecimalIfNeeded(event: any) {
+    let inputValue = event.target.value;
+  
+    if (!inputValue) {
+      inputValue = '0.00';
+    } else {
+      if (!/\./.test(inputValue)) {
+        inputValue += '.00';
+      }
+      if (/^\d+\.$/.test(inputValue)) {
+        inputValue += '00';
+      } else if (!/\.\d{2}$/.test(inputValue)) {
+        inputValue += '0';
+      }
+      // Agregar ".00" si no hay punto decimal.
+     
+    }
+  
+    event.target.value = inputValue;
+  }
+  
+  
+
   ageRangeValidator(control) {
     const selectedDate = new Date(control.value);
     if (selectedDate >= this.minDate && selectedDate <= this.maxDate) {
@@ -409,7 +459,7 @@ if(this.contactId != null){
              const C_Descripcion = "Creacion de Empleado"
              const C_Fecha_Nacimiento = this.form.get("Fecha_Nacimiento").value;
              const C_Usuario_Creacion = this.form.get("c_Usuario_CoM").value;
-         
+             const C_Monto = this.form.get("c_Monto").value;
              
              this.CrearUsuariosService.setEmpleado(C_Id_Usuario,
                C_ID_ROL,
@@ -433,7 +483,8 @@ if(this.contactId != null){
                C_Img_Base,
                C_Descripcion,
                C_Fecha_Nacimiento,
-               C_Usuario_Creacion
+               C_Usuario_Creacion,
+               C_Monto
                ).subscribe(
                (response) => {
                  if (response.ok) {
@@ -489,7 +540,7 @@ if(this.contactId != null){
              const C_Descripcion = result
              const C_Fecha_Nacimiento = this.form.get("Fecha_Nacimiento").value;
              const c_Usuario_Modificacion = this.form.get("c_Usuario_CoM").value;
-         
+             const C_Monto = this.form.get("c_Monto").value;
           
             this.valido = true;
              this.CrearUsuariosService.putEmpleado(
@@ -516,7 +567,8 @@ if(this.contactId != null){
                C_Img_Base,
                C_Descripcion,
                C_Fecha_Nacimiento,
-               c_Usuario_Modificacion
+               c_Usuario_Modificacion,
+               C_Monto
                ).subscribe(
                (response) => {
                  if (response.ok) {

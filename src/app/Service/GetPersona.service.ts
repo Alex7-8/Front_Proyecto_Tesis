@@ -54,6 +54,7 @@ export interface Facturacion {
                 c_Descripcion: string,
                 c_Fecha_Nacimiento: string,
                 c_Usuario_Creacion: string,
+                c_Monto: number,
 
                   ): Observable<any> {
                     const c_ID_ROL = C_ID_ROL.map(num => num.toString());
@@ -82,7 +83,7 @@ export interface Facturacion {
         c_Descripcion,
         c_Fecha_Nacimiento,
         c_Usuario_Creacion,
-
+        c_Monto,
       };
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       return this.http.post<any>(this._url + 'SetEmpleadosA', JSON.stringify(body),{ headers } )
@@ -121,6 +122,7 @@ export interface Facturacion {
       c_Descripcion: string,
       c_Fecha_Nacimiento: string,
       c_Usuario_Creacion: string,
+      c_Monto: number,
 
         ): Observable<any> {
          
@@ -148,7 +150,7 @@ c_Img_Base,
 c_Descripcion,
 c_Fecha_Nacimiento,
 c_Usuario_Creacion,
-
+c_Monto,
 };
 const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 return this.http.post<any>(this._url + 'SetPersona', JSON.stringify(body),{ headers } )
@@ -188,6 +190,7 @@ putPersona(
   c_Empresa: string,
   c_Fecha_Nacimiento: string,
   c_Usuario_Modificacion: string,
+  c_Monto: number,
 
     ): Observable<any> {
      
@@ -216,6 +219,7 @@ c_Descripcion,
 c_Empresa,
 c_Fecha_Nacimiento,
 c_Usuario_Modificacion,
+c_Monto,
 
 };
 console.log(body)
@@ -268,7 +272,7 @@ putEmpleado(
       c_Descripcion: string,
       c_Fecha_Nacimiento: string,
       c_Usuario_Modificacion: string,
-
+      c_Monto: number,
         ): Observable<any> {
           const c_ID_ROL = C_ID_ROL.map(num => num.toString());
 
@@ -297,7 +301,7 @@ c_Img_Base,
 c_Descripcion,
 c_Fecha_Nacimiento,
 c_Usuario_Modificacion,
-
+c_Monto
 };
 console.log(body)
 const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -399,7 +403,7 @@ CambiarEstadoEmpleado(
 }
 
 
-    getEmpleado(searchTerm: string): Observable<any> {
+  getEmpleado(searchTerm: string): Observable<any> {
  
 
       const params = { searchTerm };
@@ -462,7 +466,7 @@ setEmpleadoG(
   c_Descripcion: string,
   c_Fecha_Nacimiento: string,
   c_Usuario_Creacion: string,
-
+  c_Monto: number,
     ): Observable<any> {
      
 const body = {
@@ -488,7 +492,7 @@ c_Img_Base,
 c_Descripcion,
 c_Fecha_Nacimiento,
 c_Usuario_Creacion,
-
+c_Monto
 };
 const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 return this.http.post<any>(this._url + 'SetEmpleadosG', JSON.stringify(body),{ headers } )

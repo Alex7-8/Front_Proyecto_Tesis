@@ -297,60 +297,64 @@ export class FormCrearUsuariosComponent implements OnInit {
     const C_Usuario_Creacion = this.usuarioForm.get("c_Usuario_Creacion").value;
 
     
-    this.crearUsuariosService.setEmpleado(C_Id_Usuario,
-      C_ID_ROL,
-      C_ID_Rol_Persona,
-      C_Tipo_Cuenta,
-      C_Id_Sucursal,
-      C_Id_Genero,
-      C_Id_Municipio,
-      C_Primer_Nombre,
-      C_Segundo_Nombre,
-      C_Tercer_Nombre,
-      C_Primer_Apellido,
-      C_Segundo_Apellido,
-      C_Apellido_Casada,
-      C_DPI,
-      C_NIT,
-      C_Direccion,
-      C_PNumero_Telefono,
-      C_SNumero_Telefono,
-      C_Correo,
-      C_Img_Base,
-      C_Descripcion,
-      C_Fecha_Nacimiento,
-      C_Usuario_Creacion
-      ).subscribe(
-      (response) => {
-        if (response.ok) {
+    // this.crearUsuariosService.setEmpleado(C_Id_Usuario,
+    //   C_ID_ROL,
+    //   C_ID_Rol_Persona,
+    //   C_Tipo_Cuenta,
+    //   C_Id_Sucursal,
+    //   C_Id_Genero,
+    //   C_Id_Municipio,
+    //   C_Primer_Nombre,
+    //   C_Segundo_Nombre,
+    //   C_Tercer_Nombre,
+    //   C_Primer_Apellido,
+    //   C_Segundo_Apellido,
+    //   C_Apellido_Casada,
+    //   C_DPI,
+    //   C_NIT,
+    //   C_Direccion,
+    //   C_PNumero_Telefono,
+    //   C_SNumero_Telefono,
+    //   C_Correo,
+    //   C_Img_Base,
+    //   C_Descripcion,
+    //   C_Fecha_Nacimiento,
+    //   C_Usuario_Creacion
+    //   ).subscribe(
+    //   (response) => {
+    //     if (response.ok) {
       
-          this.snackBar.open(response.transaccion_Mensaje, "Cerrar", {
-            duration: 5000,
-            panelClass: ["success-snackbar"], 
-          });
+    //       this.snackBar.open(response.transaccion_Mensaje, "Cerrar", {
+    //         duration: 5000,
+    //         panelClass: ["success-snackbar"], 
+    //       });
 
 
-        } else {
+    //     } else {
   
-          this.snackBar.open(
-            `Error: ${response.transaccion_Estado} ${response.transaccion_Mensaje}`,
-            "Cerrar",
-            {
-              duration: 10000, 
-              panelClass: ["error-snackbar"], 
-            }
-          );
+    //       this.snackBar.open(
+    //         `Error: ${response.transaccion_Estado} ${response.transaccion_Mensaje}`,
+    //         "Cerrar",
+    //         {
+    //           duration: 10000, 
+    //           panelClass: ["error-snackbar"], 
+    //         }
+    //       );
 
-        }
-      },
-      (error) => {
+    //     }
+    //   },
+    //   (error) => {
   
-        this.snackBar.open("Error Inesperado", "Cerrar", {
-          duration: 15000,
-          panelClass: ["error-snackbar"], 
-        });
+    //     this.snackBar.open("Error Inesperado", "Cerrar", {
+    //       duration: 15000,
+    //       panelClass: ["error-snackbar"], 
+    //     });
 
-      }
-    );
+    //   }
+    // );
+  
+  
+  
+  
   }
 }

@@ -19,6 +19,12 @@ import { BreadcrumbsModule } from '../../@vex/components/breadcrumbs/breadcrumbs
 import { MatButtonModule } from '@angular/material/button';
 import { PageLayoutModule } from '../../@vex/components/page-layout/page-layout.module';
 
+
+
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 @NgModule({
   declarations: [DashboardAnalyticsComponent],
   imports: [
@@ -37,7 +43,12 @@ import { PageLayoutModule } from '../../@vex/components/page-layout/page-layout.
     SecondaryToolbarModule,
     BreadcrumbsModule,
     MatButtonModule,
-    PageLayoutModule
+    PageLayoutModule,
+
+    FormsModule,
+   // BrowserAnimationsModule,
+    NgxChartsModule
+
   ]
 })
 export class DashboardAnalyticsModule {

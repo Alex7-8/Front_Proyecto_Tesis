@@ -186,6 +186,7 @@ VF: boolean = false;
       c_Usuario_CoM: [""],
       Razon: [""],
       Id_Cuenta: [""],
+      c_Monto: ["",Validators.required],
     });
 
     const token = localStorage.getItem("token"); 
@@ -273,6 +274,7 @@ if(this.contactId != null){
           Fecha_Nacimiento: data.response.c_Fecha_Nacimiento,
           c_Id_Sucursal: data.response.c_Id_Sucursal,
           Razon: data.response.c_Descripcion,
+          c_Monto: data.response.c_Monto,
           
         }
          
@@ -370,6 +372,55 @@ if(this.contactId != null){
     );
 
   }
+
+
+
+
+  
+  onInputChange(event: any) {
+    const inputValue = event.target.value;
+  
+    // Reemplazar cualquier coma por un punto para asegurarnos de que el valor esté en el formato adecuado.
+    const sanitizedValue = inputValue.replace(',', '.');
+  
+    // Usar una expresión regular para permitir solo números y hasta dos decimales después del punto.
+    const numericValue = sanitizedValue.replace(/[^0-9.]/g, '');
+    
+    // Si hay un punto decimal, asegurarse de que no haya más de dos decimales.
+    const parts = numericValue.split('.');
+    if (parts[1] !== undefined) {
+      parts[1] = parts[1].slice(0, 2);
+    }
+  
+    // Reemplazar el valor en el campo de formulario con el valor válido.
+    this.form.get('c_Monto')?.setValue(parts.join('.'));
+  }
+  
+
+
+
+  addDecimalIfNeeded(event: any) {
+    let inputValue = event.target.value;
+  
+    if (!inputValue) {
+      inputValue = '0.00';
+    } else {
+      if (!/\./.test(inputValue)) {
+        inputValue += '.00';
+      }
+      if (/^\d+\.$/.test(inputValue)) {
+        inputValue += '00';
+      } else if (!/\.\d{2}$/.test(inputValue)) {
+        inputValue += '0';
+      }
+      // Agregar ".00" si no hay punto decimal.
+     
+    }
+  
+    event.target.value = inputValue;
+  }
+
+
 
 
   onToggleChange(event: any): void {
@@ -507,7 +558,7 @@ if(this.contactId != null){
              const C_Correo = this.form.get("Correo").value;
              const C_Img_Base = this.form.get("c_Img_Base").value;
              const C_Fecha_Nacimiento = this.form.get("Fecha_Nacimiento").value;
-             
+             const C_Monto = this.form.get("c_Monto").value;
              
              if(C_ID_Rol_Persona ==2){
                this.descripcion = "Registro de Nuevo Cliente"
@@ -600,6 +651,7 @@ if(this.contactId != null){
              const C_Fecha_Nacimiento = this.form.get("Fecha_Nacimiento").value;
              const c_Usuario_Modificacion = this.form.get("c_Usuario_CoM").value;
              const C_Empresa = "";
+             const C_Monto = this.form.get("c_Monto").value;
          
           
             this.valido = true;
@@ -627,7 +679,8 @@ if(this.contactId != null){
                C_Descripcion,
                C_Empresa,
                C_Fecha_Nacimiento,
-               c_Usuario_Modificacion
+               c_Usuario_Modificacion,
+               C_Monto
                ).subscribe(
                (response) => {
                  if (response.ok) {

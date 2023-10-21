@@ -76,7 +76,12 @@
         </mat-select>
         <mat-error *ngIf="form.get('c_Tipo_Cuenta').hasError('required')">Este campo es requerido.</mat-error>
       </mat-form-field>
-     
+      <mat-form-field class="flex-1 sm:w-1/4">
+        <mat-label>Monto</mat-label>
+        <input cdkFocusInitial formControlName="c_Monto" matInput (blur)="addDecimalIfNeeded($event)" (input)="onInputChange($event)">
+        <mat-icon matPrefix svgIcon="mat:dialpad"></mat-icon>
+        <mat-error *ngIf="form.get('c_Monto').hasError('required')">Este campo es requerido.</mat-error>
+      </mat-form-field>
 
 
     </div>
