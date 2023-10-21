@@ -18,6 +18,7 @@ export class DashboardAnalyticsComponent {
 GananciaPD: string;
 GananciaPM: string;
 GananciaPA: string;
+VentasPD: string;
 
 GananciaSD: string;
 GananciaSM: string;
@@ -146,7 +147,7 @@ this.graficaService.getGananciasSAnio("").subscribe((data) => {
 
 this.graficaService.getGananciasPDia("").subscribe((data) => {
   this.GananciaPD = data.response.c_Ganancias;
-
+  this.VentasPD = data.response.c_Ventas;
 });
 
 
