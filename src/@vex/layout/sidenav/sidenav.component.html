@@ -6,7 +6,8 @@
   <div class="vex-sidenav-toolbar__container">
     <div class="sidenav-toolbar flex-none flex items-center">
       <img [src]="imageUrl$ | async" alt="Logo" class="w-6 select-none flex-none"/>
-      <h2 class="vex-sidenav-toolbar__headline flex-auto">{{ title$ | async }}</h2>
+      <h2 class="vex-sidenav-toolbar__headline flex-auto">Cafe Internet..</h2>
+      <!-- {{ title$ | async }} -->
       <button (click)="toggleCollapse()"
               *ngIf="showCollapsePin$ | async"
               class="-mr-4 leading-none flex-none hidden lg:block"
@@ -21,7 +22,7 @@
       </button>
     </div>
 
-    <div *ngIf="searchVisible$ | async" class="vex-sidenav-search__container">
+    <!-- <div *ngIf="searchVisible$ | async" class="vex-sidenav-search__container">
       <div class="vex-sidenav-search relative"
            (click)="openSearch()"
            matRipple
@@ -30,7 +31,7 @@
         <div class="flex-auto vex-sidenav-search__placeholder">Quick Search</div>
         <div class="flex-none vex-sidenav-search__keybind">Ctrl K</div>
       </div>
-    </div>
+    </div> -->
 
     <div class="vex-sidenav-toolbar__divider"></div>
   </div>

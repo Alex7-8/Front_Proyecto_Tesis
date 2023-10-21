@@ -185,6 +185,7 @@ largo: string = "25rem";
       c_Usuario_CoM: [""],
       Razon: [""],
       Id_Cuenta: [""],
+      c_Monto: [""],
     });
 
     const token = localStorage.getItem("token"); 
@@ -201,8 +202,12 @@ largo: string = "25rem";
       this.form.patchValue({
         Nombre: "Registrar Empleado",
         c_Usuario_CoM: this.Id_Usuario,
-        c_Id_Sucursal: parseInt(this.Id_Sucursal, 10)
+        c_Id_Sucursal: parseInt(this.Id_Sucursal, 10),
       });
+
+
+     // this.form.get('c_ID_ROL')?.reset();
+      this.form.get('c_ID_ROL')?.disable();
       this.cdr.detectChanges();
     }
 
@@ -217,6 +222,8 @@ if(this.contactId != null){
   this.form.get('Id_Cuenta')?.disable();
   this.form.get('Razon')?.reset();
   this.form.get('Razon')?.disable();
+   //this.form.get('c_ID_ROL')?.reset();
+   this.form.get('c_ID_ROL')?.disable();
   
     this.CrearUsuariosService.getEmpleadoById(this.contactId).subscribe(
       (data: any) => {
@@ -312,6 +319,8 @@ if(this.contactId != null){
     this.catalogoService.getTipoCuenta("").subscribe((response: any) => {
       this.TipoCuenta = response.response;
     });
+
+
   }
 
 
@@ -388,7 +397,6 @@ if(this.contactId != null){
              this.valido = false;
              const C_Id_Usuario = this.form.get("c_Id_Usuario").value;
              const C_ID_Rol_Persona = 1;
-             const C_ID_ROL = this.form.get("c_ID_ROL").value;
              const C_Tipo_Cuenta = this.form.get("c_Tipo_Cuenta").value;
              const C_Id_Sucursal = this.form.get("c_Id_Sucursal").value;
              const C_Id_Genero = this.form.get("c_Id_Genero").value;
@@ -411,8 +419,8 @@ if(this.contactId != null){
              const C_Usuario_Creacion = this.form.get("c_Usuario_CoM").value;
          
              
-             this.CrearUsuariosService.setEmpleado(C_Id_Usuario,
-               C_ID_ROL,
+             this.CrearUsuariosService.setEmpleadoG(
+               C_Id_Usuario,
                C_ID_Rol_Persona,
                C_Tipo_Cuenta,
                C_Id_Sucursal,
@@ -468,7 +476,7 @@ if(this.contactId != null){
              const C_Id_Persona = this.form.get("Id_Empleado").value;
              const C_Id_Usuario = this.form.get("c_Id_Usuario").value;
              const C_ID_Rol_Persona = 1;
-             const C_ID_ROL = this.form.get("c_ID_ROL").value;
+             const C_ID_ROL = [3]
              const c_Id_Tipo_Cuenta = this.form.get("c_Tipo_Cuenta").value;
              const C_Id_Sucursal = this.form.get("c_Id_Sucursal").value;
              const C_Id_Genero = this.form.get("c_Id_Genero").value;

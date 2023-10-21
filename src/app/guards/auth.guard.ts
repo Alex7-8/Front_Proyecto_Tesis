@@ -4,6 +4,7 @@ import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { LoginService } from '../Service/Login.service'; // Asegúrate de importar el servicio de autenticación de tu proyecto
 import { TokenService } from '../Service/token.service';
+import jwt_decode from "jwt-decode";
 
 @Injectable({
   providedIn: 'root',
@@ -29,4 +30,44 @@ export class AuthGuard implements CanActivate {
       return false;
     }
   }
+
+
+
+VerificarTokenGerente(): boolean {
+  if (this.tokenService.getToken()) {
+    const token = localStorage.getItem("token"); 
+    const decodedToken: any = jwt_decode(token);
+
+   if(decodedToken.role.includes("GERENTE")){
+      return true;
+
+    }
+    else{
+      return false;
+    }
+  } else {
+    return false;
+  }
+
+}
+
+
+VerificarTokenCajero(): boolean {
+  if (this.tokenService.getToken()) {
+    const token = localStorage.getItem("token"); 
+    const decodedToken: any = jwt_decode(token);
+
+    
+    if(decodedToken.role.includes("CAJERO")){
+      return true;
+    }
+    else{
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+
 }

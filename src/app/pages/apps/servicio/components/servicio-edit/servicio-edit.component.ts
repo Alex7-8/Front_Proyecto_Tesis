@@ -94,7 +94,8 @@ largo: string = "25rem";
                 c_Nombre_Servicio: ["",Validators.compose([
                   Validators.required,
                   Validators.minLength(1),
-                  Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
+                  Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/),
+                  Validators.maxLength(50)
                 ])],
                 c_Img_Base: ["0"],
                 c_Id_Servicio: [],
@@ -298,7 +299,7 @@ largo: string = "25rem";
             agregarCampo(){
               const FormGroup  = this.FormBuilder.group({
                 c_Img_Base: '0',
-                c_Nombre_Servicio: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]*$/), Validators.minLength(4), Validators.maxLength(24)]],
+                c_Nombre_Servicio: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/), Validators.minLength(4), Validators.maxLength(50)]],
                 c_Precio: ['', [Validators.required, this.precioValidator]],
                 c_Usuario_Creacion: this.Id_Usuario,
               });

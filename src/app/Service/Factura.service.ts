@@ -49,6 +49,21 @@ import axios from 'axios';
     }
 
 
+    setFacturaServicios(body:any): Observable<any> {
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      return this.http.post<any>(this._url + 'SetFacturaServicios', JSON.stringify(body),{ headers } )
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            console.error(error);
+            const estado = "401";
+            const mensaje = "Sin Autorizacion";
+
+            return throwError({ ok: false, estado, mensaje });
+          })
+        );
+    }
+
+
 
 putSerieFactura(body:any): Observable<any> {
  
@@ -83,6 +98,12 @@ getFacturaVentaProductosByDia(): Observable<SerieFacturaData> {
 
 }
 
+
+getFacturaServiciosByDia(): Observable<SerieFacturaData> {
+  const url = `${this._url}GetFacturaServiciosByDia`;
+  return this.http.get<SerieFacturaData>(url);
+
+}
 
 
 
@@ -123,7 +144,11 @@ getDetalleFacturaById(ids: number): Observable<SerieFacturaData> {
 }
 
 
+getDetalleFacturaServiciosById(ids: number): Observable<SerieFacturaData> {
+  const url = `${this._url}GetDetalleFacturaServicioById?IdS=${ids}`;
+  return this.http.get<SerieFacturaData>(url);
 
+}
 
 
 

@@ -4,6 +4,7 @@ import { CustomLayoutComponent } from './custom-layout/custom-layout.component';
 import { VexRoutes } from '../@vex/interfaces/vex-route.interface';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 import { AuthGuard } from '../../src/app/guards/auth.guard';
+import { AuthGuardAdmin } from '../../src/app/guards/auth_admin.guard';
 import { DashboardAnalyticsComponent } from './dashboards/dashboard-analytics.component';
 import {PersonaGridComponent} from './pages/apps/persona/persona-grid/persona-grid.component';
 import { PersonaTableComponent } from './pages/apps/persona/persona-table/persona_table.component';
@@ -58,7 +59,7 @@ const routes: VexRoutes = [
   {
     path: '',
     component: CustomLayoutComponent,
-   canActivate: [AuthGuard] ,
+    canActivate: [AuthGuard] ,
     children: [
 
       {
@@ -70,7 +71,8 @@ const routes: VexRoutes = [
       {
         path: 'analytics',
         loadChildren: () => import('./dashboards/dashboard-analytics.module').then(m => m.DashboardAnalyticsModule),
-       // canActivate: [AuthGuard] 
+        
+        
       },
       {
         path: 'apps',
@@ -103,7 +105,8 @@ const routes: VexRoutes = [
           },
           {
             path: 'empleado',
-            loadChildren: () => import('./pages/apps/empleado/listar_empleado.module').then(m => m.ListarEmpleadoModule)
+            loadChildren: () => import('./pages/apps/empleado/listar_empleado.module').then(m => m.ListarEmpleadoModule),
+            canActivate: [AuthGuardAdmin]
           },
           {
             path: 'EmpleadoG',
@@ -111,7 +114,8 @@ const routes: VexRoutes = [
           },
           {
             path: 'persona',
-            loadChildren: () => import('./pages/apps/persona/persona.module').then(m => m.PersonaModule)
+            loadChildren: () => import('./pages/apps/persona/persona.module').then(m => m.PersonaModule),
+            canActivate: [AuthGuardAdmin]
           },
           {
             path: 'Proveedor',
@@ -131,7 +135,8 @@ const routes: VexRoutes = [
           },
           {
             path: 'servicio',
-            loadChildren: () => import('./pages/apps/servicio/servicio.module').then(m => m.ServicioModule)
+            loadChildren: () => import('./pages/apps/servicio/servicio.module').then(m => m.ServicioModule),
+            canActivate: [AuthGuardAdmin]
           },
           {
             path: 'categoria',
@@ -221,6 +226,10 @@ const routes: VexRoutes = [
           {
             path: 'FacturaVenta',
             loadChildren: () => import('./pages/pages/FacturaVenta/FacturaVenta.module').then(m => m.FacturaVentaModule)
+          },
+          {
+            path: 'FacturaServicios',
+            loadChildren: () => import('./pages/pages/FacturaServicios/FacturaServicios.module').then(m => m.FacturaServiciosModule)
           },
           {
             path: 'error-404',

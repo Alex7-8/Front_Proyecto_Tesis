@@ -211,7 +211,7 @@ export class FacturaServiciosTableComponent implements OnInit {
 
 
   obtenerTablaData() {
-    this.FacturaService.getFacturaVentaProductosByDia().subscribe((response: any) => {
+    this.FacturaService.getFacturaServiciosByDia().subscribe((response: any) => {
       this.Servicio = response.response;
       this.tableData = this.Servicio.filter(c => c.c_Id_Estado_Factura === this.estado);
     });

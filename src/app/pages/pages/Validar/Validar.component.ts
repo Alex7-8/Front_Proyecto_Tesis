@@ -37,14 +37,20 @@ export class ValidarComponent implements OnInit {
     const urlSearchParams = new URLSearchParams(window.location.search);
 const tokenValue = urlSearchParams.get("token");
     if (tokenValue) {
-      // Si la URL contiene un símbolo '#', obtener los parámetros después del '#'
+     
+      
       const decodedToken = decodeURIComponent(tokenValue);
-  const DToken: any = jwt_decode(decodedToken);
+      const DToken: any = jwt_decode(decodedToken);
+      localStorage.setItem('token_Temporal', decodedToken);
+
+      const tokenTemp = localStorage.getItem('token_Temporal');
+      const decodedTokenTemp: any = jwt_decode(tokenTemp);
     
-  if (DToken.IdUsuario && DToken.IdDispositivo) {
-    this.Id_Usuario = DToken.IdUsuario;
-    this.uniqueID = DToken.IdDispositivo;
-    this.token = decodedToken;
+  if (decodedTokenTemp.IdUsuario && decodedTokenTemp.IdDispositivo) {
+
+    this.Id_Usuario = decodedTokenTemp.IdUsuario;
+    this.uniqueID = decodedTokenTemp.IdDispositivo;
+    this.token = tokenTemp;
 
           //  console.log(this.Id_Usuario, this.uniqueID,this.token);
       }
@@ -70,6 +76,8 @@ console.log(this.Id_Usuario, this.uniqueID, this.token)
           // Redirige a la página principal
        //   console.clear();
            this.router.navigate(['/login']);
+
+           localStorage.removeItem('token_Temporal');
         } else {
           // Si la solicitud no fue exitosa, muestra el mensaje de error personalizado
           const estado = "20";
@@ -80,6 +88,7 @@ console.log(this.Id_Usuario, this.uniqueID, this.token)
           });
          // console.clear();
           this.router.navigate(['/login']);
+          localStorage.removeItem('token_Temporal');
         }
       },
       error => {
@@ -92,6 +101,7 @@ console.log(this.Id_Usuario, this.uniqueID, this.token)
         });
         //console.clear();
         this.router.navigate(['/login']);
+        localStorage.removeItem('token_Temporal');
        // console.error(error);
       }
     );

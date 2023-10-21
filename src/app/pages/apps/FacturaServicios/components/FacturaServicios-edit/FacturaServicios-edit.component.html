@@ -134,7 +134,7 @@
     </mat-form-field>
   
     <mat-form-field class="flex-1 sm:w-1/4" style="margin-left: 1.563rem;" >
-      <mat-label>Seleccione un Producto</mat-label>
+      <mat-label>Seleccione un Servicio</mat-label>
       <mat-select formControlName="c_Id_Servicio">
         <mat-option *ngFor="let ms of filteredServicios$ | async"  [value]="ms.Id">
           <div class="option-container">
@@ -198,7 +198,7 @@
 
 
                <mat-label class="col-md-1" [attr.for]="'c_Precio_Venta' + i">Precio</mat-label>
-                  <input type="text" [attr.id]="'c_Precio_Venta' + i" class="form-control" formControlName="c_Precio_Venta"  matInput  [readonly]="true">
+                  <input type="text" [attr.id]="'c_Precio_Venta' + i" class="form-control" formControlName="c_Precio_Venta"  matInput  (input)="actualizarCalculos(i)" >
                 <mat-icon matSuffix svgIcon="mat:dialpad"></mat-icon> 
                    
               </mat-form-field >

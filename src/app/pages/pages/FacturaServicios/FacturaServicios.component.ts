@@ -13,13 +13,13 @@ import { ConfirmDialogComponent } from 'src/app/pages/ui/components/component-co
 
 @Component({
   selector: 'vex-invoice',
-  templateUrl: './FacturaVenta.component.html',
-  styleUrls: ['./FacturaVenta.component.scss'],
+  templateUrl: './FacturaServicios.component.html',
+  styleUrls: ['./FacturaServicios.component.scss'],
   animations: [
     fadeInUp400ms
   ]
 })
-export class FacturaVentaComponent implements OnInit {
+export class FacturaServiciosComponent implements OnInit {
 factura: any;
 Precio: string;
 Cantidad: string;
@@ -425,7 +425,7 @@ Cerrar(resultado: boolean)
 if(result != false)
 {
  
-          this.router.navigate(['/apps/FacturaVenta/table']);
+          this.router.navigate(['/apps/FacturaServicios/table']);
           this.snackBar.open("Factura Cancelada", "Cerrar", {
             duration: 5000,
             panelClass: ["success-snackbar"], 
@@ -472,24 +472,23 @@ var res = 0;
 
 if(result != false)
 {
-  console.log("entro");
   this.body = this.tranferenciaService.body;
 console.log(this.body);
-  this.facturaService.setFactura(this.body).subscribe(
+  this.facturaService.setFacturaServicios(this.body).subscribe(
       (response) => {
         if (response.ok) {
          this.valido = true;
          this.tranferenciaService.validarFactura = false;
          if(this.GenerarPDF() == true)
          {
-          this.router.navigate(['/apps/FacturaVenta/table']);
+          this.router.navigate(['/apps/FacturaServicios/table']);
          }else{
           
           this.snackBar.open("Error al Generar PDF", "Cerrar", {
             duration: 15000,
             panelClass: ["error-snackbar"], 
           });
-          this.router.navigate(['/apps/FacturaVenta/table']);
+          this.router.navigate(['/apps/FacturaServicios/table']);
          }
         
 

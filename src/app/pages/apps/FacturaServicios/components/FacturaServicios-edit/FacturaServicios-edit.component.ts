@@ -119,7 +119,7 @@ largo: string = "25rem";
   Serie: any[];
   searchCtrl = new UntypedFormControl();
   FacturacionCtrl = new UntypedFormControl();
-  ProductosCtrl = new UntypedFormControl();
+  ServiciosCtrl = new UntypedFormControl();
   filteredFacturacion$: Observable<Facturacion[]>;
   filteredServicios$: Observable<Servicios[]>;
   arrayIndiceProductos: [number, number][] = [];
@@ -135,7 +135,6 @@ largo: string = "25rem";
   isFormActive: boolean = true;
   originalPrecioValue: string | null = null;
   filteredSucursal$: Observable<Sucursal[]>;
-  filteredMarca$: Observable<Marca[]>;
   camposExtras: FormGroup[] = [];
   urlsImagenes: string[] = [] ;
   SucCtrl = new FormControl();
@@ -276,7 +275,7 @@ BodyFactura : any;
               .get("c_Id_Servicio")
               .valueChanges.subscribe((newValue) => {
                if(newValue != undefined){
-                this.ProductoService.getProductoFacturacionById(newValue).subscribe(
+                this.ServicioService.getMarcaById(newValue).subscribe(
                   (data: any) => {
                     if(this.vc == 1){
                       this.vc = 2;
@@ -284,13 +283,13 @@ BodyFactura : any;
                     }
                     this.vc++;
                     this.ValidarBoton = true;
-                    this.arrayIndiceProductos.forEach(([posicion, idProducto]) => {
+                    this.arrayIndiceProductos.forEach(([posicion, idServicio]) => {
                      
                      // const posicionActual = posicion; 
                       
-                      if(newValue == idProducto){
+                      if(newValue == idServicio){
                         
-                       this.IdProducto = idProducto;
+                       this.IdProducto = idServicio;
                         this.snackBar.open("El servicio ya ha sido agregado", "Cerrar", {
                           duration: 5000,
                           panelClass: ["red-snackbar"],
@@ -309,11 +308,11 @@ BodyFactura : any;
                       
 
                        const Cantidad = this.registerForm.get("c_Cantidad").value;
-                       const IVA = (data.response.c_Precio_Venta * Cantidad) * 0.12;
+                       const IVA = (data.response.c_Precio_Final * Cantidad) * 0.12;
                        const C_IVA = parseFloat(IVA.toFixed(2)); // Convertir a número con dos decimales
-                       const s: number =  (data.response.c_Precio_Venta * Cantidad) - C_IVA;
+                       const s: number =  (data.response.c_Precio_Final * Cantidad) - C_IVA;
                        const C_SubTotal = parseFloat(s.toFixed(2)); 
-                       const C_Total = data.response.c_Precio_Venta * Cantidad;
+                       const C_Total = data.response.c_Precio_Final * Cantidad;
                       // this.verificarTotal(); 
                        this.urlsImagenes = [...this.urlsImagenes, data.response.c_Url_IMG];
                       
@@ -390,8 +389,6 @@ BodyFactura : any;
               this.Servicio.removeAt(indice);
               this.urlsImagenes.splice(indice, 1);
               if(this.vc !=2){
-               console.log(this.verificarTotal()) 
-                console.log(this.vc);
                 this.arrayIndiceProductos.splice(indice, 1);
               }
               this.form.get('c_Img_Base')?.setValue('');
@@ -435,11 +432,11 @@ BodyFactura : any;
     );
 
 
-    // this.filteredServicios$ = this.ProductosCtrl.valueChanges.pipe(
-    //   startWith(""),
-    //   switchMap((Id_Sucursal) => this.ServicioService.getServicios(Id_Sucursal)),
-    //   map((States) =>  States.slice())
-  //  );
+    this.filteredServicios$ = this.ServiciosCtrl.valueChanges.pipe(
+      startWith(""),
+      switchMap((Id_Sucursal) => this.ServicioService.getServicios()),
+      map((States) =>  States.slice())
+   );
 
 
     this.registerForm
@@ -485,7 +482,7 @@ if(this.contactId != null){
 
 
 
-  this.FacturaService.getDetalleFacturaById(this.contactId).subscribe((data: any) => {
+  this.FacturaService.getDetalleFacturaServiciosById(this.contactId).subscribe((data: any) => {
     this.empleado = data;
 
     if (Array.isArray(data.response)) {
@@ -500,8 +497,8 @@ if(this.contactId != null){
       // Itera a través de los objetos en 'data.response' y crea filas en la tabla
       data.response.forEach((item: any) => {
         const row = tabla.insertRow();
-        row.insertCell(0).textContent = item.c_Id_Producto;
-        row.insertCell(1).textContent = item.c_Nombre_Producto; // Agrega la propiedad 'c_Descripcion' si está disponible en tus datos
+        row.insertCell(0).textContent = item.c_Id_Servicio;
+        row.insertCell(1).textContent = item.c_Nombre_Servicio; // Agrega la propiedad 'c_Descripcion' si está disponible en tus datos
         row.insertCell(2).textContent = item.c_Precio;
         row.insertCell(3).textContent = item.c_Cantidad;
         row.insertCell(4).textContent = item.c_SubTotal;
@@ -916,7 +913,7 @@ var res = 0;
            this.transferenciaService.validarFactura = true;
            this.transferenciaService.RecibirBody(this.body)
           this.dialogRef.close();
-          this.router.navigate(['/pages/FacturaVenta']);
+          this.router.navigate(['/pages/FacturaServicios']);
         
   
           }

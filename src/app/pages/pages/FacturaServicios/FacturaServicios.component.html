@@ -1,0 +1,138 @@
+<div class="p-gutter container">
+  <div id="pdf-content" @fadeInUp class="card p-16">
+    
+    <div class="grid grid-cols-2">
+      <div>
+        <img id="logoImg" class="h-40" src="../../../../assets/sucursal.jpg">
+
+        <div class="mt-12">
+          <h4 class="body-2 text-secondary mt-0">Cliente</h4>
+          <h3 class="title m-0">{{ Nombre_Cliente }}</h3>
+          <div class="text-secondary">
+            <p class="m-0">{{ Departamento_Cliente }}</p>
+            <p class="m-0">{{ Municipio_Cliente }}</p>
+            <p class="m-0">{{ Direccion_Cliente }}</p>
+            <p class="m-0">NIT:{{ NIT_Cliente|| "C/F" }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-right body-1 flex flex-col items-end">
+        <h1 class="display-2 m-0">Comprobante de Pago</h1>
+
+        <table class="mt-6">
+          <tbody>
+          <tr>
+            <td class="text-secondary body-2">FECHA.</td>
+            <td class="text-left pl-4">{{Fecha}}</td>
+          </tr>
+          <tr>
+            <td class="text-secondary body-2">NUMERO DE SERIE</td>
+            <td class="text-left pl-4">{{Numero_Serie}}</td>
+          </tr>
+          <tr>
+            <td class="text-secondary body-2">NUMERO DE FACTURA.</td>
+            <td class="text-left pl-4">{{Numero_Factura}}</td>
+          </tr>
+         
+          </tbody>
+        </table>
+
+        <div class="mt-12">
+          <h4 class="body-2 text-secondary mt-0">Sucursal</h4>
+          <h3 class="title m-0">{{Nombre_Sucursal}}</h3>
+          <div class="text-secondary">
+            <p class="m-0">{{Departamento_Sucursal}}</p>
+            <p class="m-0">{{Municipio_Sucursal}}</p>
+            <p class="m-0">{{Direccion_Sucursal}}</p>
+
+            <p class="m-0 mt-3">
+              <mat-icon class="mr-2 icon-sm" svgIcon="mat:mail"></mat-icon>
+              <span>{{Correo_Sucursal}}</span>
+            </p>
+
+            <p class="m-0">
+              <mat-icon class="mr-2 icon-sm" svgIcon="mat:phone"></mat-icon>
+              <span>{{Telefono_Sucursal}}</span>
+            </p>
+            <p class="m-0">
+              <span>{{"NIT:"+NIT_Sucursal || ""}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <table class="table w-full mt-24">
+      <thead>
+        <tr>
+          <th class="py-6 border-b text-left">CODIGO</th>
+          <th class="py-6 border-b text-left">DESCRIPCION</th>
+          <th class="py-6 border-b text-left">PRECIO</th>
+          <th class="py-6 border-b text-left">CANTIDAD</th>
+          <th class="py-6 border-b text-right">TOTAL</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-body">
+
+     
+
+      </tbody>
+    </table>
+   
+    <div class="mt-8 flex flex-col items-end">
+      <table class="subheading-2 font-medium pr-6">
+        <tbody>
+        <tr>
+          <td class="text-secondary text-right">SUBTOTAL</td>
+          <td class="pl-12">Q{{SubTotal|| '0.00'}}‬</td>
+        </tr>
+        <tr>
+          <td class="text-secondary text-right">IVA (12%)</td>
+          <td class="pl-12">Q{{Iva || '0.00'}}‬</td>
+        </tr>
+  
+        <tr>
+          <td class="headline font-medium text-right pt-6">TOTAL</td>
+          <td class="headline font-medium pl-12 pt-6">Q{{Total || '0.00'}}‬</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    
+
+    
+
+  </div>
+
+  <mat-dialog-actions align="end" >
+    <!-- <span class="loader"></span> -->
+   
+   
+
+    <div class="flex flex-col sm:flex-row sm:gap-7" style="margin-top: 65px;">
+      <div class="flex-1 sm:w-1/4">
+        <ng-container *ngIf="valido" >
+          <button mat-button  type="button" (click)="Cerrar(true)">Cancel</button>
+          <button  color="primary" (click)="Facturar(true)" mat-flat-button type="submit" [disabled]="!form.valid"> {{ Texto }}</button>
+          <button hidden></button>
+        </ng-container>
+        <ng-container *ngIf="!valido">
+           <!-- <span class="loader"></span>  -->
+          <button mat-button  type="button" (click)="Cerrar(true)" [disabled]="form.valid">Cancel</button>
+          <button  color="primary" (click)="Facturar(true)" mat-flat-button type="submit" [disabled]="form.valid"> {{ Texto }}</button>
+          
+        </ng-container>
+      </div>
+      
+    </div>
+   
+    
+   
+  </mat-dialog-actions>
+
+</div>
+

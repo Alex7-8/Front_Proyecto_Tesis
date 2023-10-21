@@ -14,6 +14,7 @@ import { MatIconRegistry, SafeResourceUrlWithIconOptions } from '@angular/materi
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ColorVariable, colorVariables } from '../@vex/components/config-panel/color-variables';
 import { TokenService } from './Service/token.service';
+import { AuthGuard } from './guards/auth.guard';
 import jwt_decode from "jwt-decode";
 @Component({
   selector: 'vex-root',
@@ -173,12 +174,12 @@ this.configureMenu();
                 // {
                 //   type: 'link',
                 //   label: 'Compras',
-                //   route: '/apps/contacts/table',
+                //   route: '/pages/CrearUsuarios',
                 // },
                 {
                   type: 'link',
-                  label: 'Depositos y Retiros',
-                  route: '/apps/contacts/table',
+                  label: 'Depositos',
+                  route: '/pages/Depositos&Retiros',
                 }
                 
               ]
@@ -189,12 +190,6 @@ this.configureMenu();
               icon: 'mat:assignment',
               
               children: [
-                {
-    
-                  type: 'link',
-                  label: 'Empleados',
-                  route: '/apps/EmpleadoG/table',
-                },
                 {
     
                   type: 'link',
@@ -226,12 +221,7 @@ this.configureMenu();
                   type: 'link',
                   label: 'Categorias',
                   route: '/apps/categoria/table',
-                },
-                {
-                  type: 'link',
-                  label: 'Facturas',
-                  route: '/apps/factura/table',
-                },                
+                },              
                 {
                   type: 'link',
                   label: 'Serie de Facturas',
@@ -353,12 +343,6 @@ this.configureMenu();
                   label: 'Serie de Facturas',
                   route: '/apps/factura/table',
                 }
-                ,
-                {
-                  type: 'link',
-                  label: 'Facturas',
-                  route: '/apps/factura/table',
-                }
                
               ]
             }
@@ -386,8 +370,13 @@ this.configureMenu();
                 type: 'link',
                 label: 'Reporte de Facturas',
                 route: '/apps/persona/table',
-              }
-  
+               }
+               ,
+               {
+                type: 'link',
+                label: 'Reporte de Inventario',
+                route: '/apps/persona/table',
+               }
               ]
             }
             ,
@@ -442,7 +431,7 @@ this.configureMenu();
                 },
                 {
                   type: 'link',
-                  label: 'Depositos y Retiros',
+                  label: 'Depositos',
                   route: '/apps/contacts/table',
                 }
               ]

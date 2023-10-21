@@ -18,9 +18,9 @@ import { DecimalPipe } from "@angular/common";
 
 
 export interface Servicios {
-  name: string;
   Id: string;
-  flag: string;
+  name: string;   
+  Url_IMG: string;
 }
 
 
@@ -117,22 +117,22 @@ getMarcaById(IdServicio: number): Observable<MarcaData> {
 
 
 
-getServicios(searchTerm: string): Observable<Servicios[]> {
+getServicios(): Observable<Servicios[]> {
   return this.http.get<any>(`${this._url}GetServicios`, {
   }).pipe(
     map(response => {
       if (response.ok && Array.isArray(response.response)) {
-       // console.log(response.response)
+        console.log(response.response)
         return response.response.map(item => ({
           name: item.c_Nombre_Servicio,
           Id: item.c_Id_Servicio,
-          flag: item.c_Url_IMG
+          Url_IMG: item.c_Url_IMG
         }));
       } else {
         return response.response.map(item => ({
           name: item.c_Transaccion_Mensaje,
           Id: item.c_Transaccion_Estado,
-          flag: ''
+          Url_IMG: ''
         }));
       }
     }),

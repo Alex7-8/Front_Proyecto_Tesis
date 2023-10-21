@@ -40,19 +40,18 @@
       </div>
 
     <div class="flex flex-col sm:flex-row sm:gap-8">
-      <mat-form-field class="flex-1 sm:w-1/4" *ngIf="valido === true" >
-        <mat-label>Numero de Cuenta</mat-label>
-        <input formControlName="Id_Cuenta" matInput >
-        <mat-icon matPrefix svgIcon="mat:chrome_reader_mode"></mat-icon>
-        <mat-error *ngIf="form.get('Id_Cuenta').hasError('required')">Este campo es requerido.</mat-error>
-      </mat-form-field>
-      <mat-form-field class="flex-1 sm:w-1/4">
-        <mat-label>Rol Sistema</mat-label>
-        <mat-select formControlName="c_ID_ROL" multiple>
-          <mat-option *ngFor="let Rol of rols" [value]="Rol.c_Id_Rol">{{ Rol.c_Nombre }}</mat-option>
-        </mat-select>
-        <mat-error *ngIf="form.get('c_ID_ROL').hasError('required')">Este campo es requerido.</mat-error>
-      </mat-form-field>
+      <ng-container *ngIf="contactId">
+
+        <mat-form-field class="flex-1 sm:w-1/4">
+          <mat-label>Rol Sistema</mat-label>
+          <mat-select formControlName="c_ID_ROL" multiple>
+            <mat-option *ngFor="let Rol of rols" [value]="Rol.c_Id_Rol">{{ Rol.c_Nombre }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('c_ID_ROL').hasError('required')">Este campo es requerido.</mat-error>
+        </mat-form-field>
+
+      </ng-container>
+   
       <mat-form-field class="flex-1 sm:w-1/4">
         <mat-label>Sucursal</mat-label>
         <mat-select  formControlName="c_Id_Sucursal"  placeholder="Sucursal" >
@@ -74,7 +73,15 @@
       </mat-form-field>
       
 
-
+      <mat-form-field class="flex-1 sm:w-1/4" >
+        <mat-label>Monto Maximo</mat-label>
+        <input formControlName="c_Monto" matInput >
+        <mat-icon matSuffix svgIcon="mat:person_pin"></mat-icon>
+        <!-- <mat-error *ngIf="form.get('c_Id_Usuario').hasError('required')">Este campo es requerido.</mat-error>
+        <mat-error *ngIf="form.get('c_Id_Usuario').hasError('pattern')">Solo se permiten letras y números.</mat-error>
+        <mat-error *ngIf="form.get('c_Id_Usuario').hasError('minlength')">Debe tener al menos 4 caracteres.</mat-error>
+        <mat-error *ngIf="form.get('c_Id_Usuario').hasError('maxlength')">No debe exceder los 24 caracteres.</mat-error> -->
+      </mat-form-field>
     </div>
 
     <div class="flex flex-col sm:flex-row sm:gap-5">

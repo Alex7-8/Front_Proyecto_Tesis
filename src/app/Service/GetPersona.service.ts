@@ -439,8 +439,8 @@ getPersonaById(IdPersona: number): Observable<Empleado> {
 
 //zona Gerente
 
-setEmpleadoG(c_Id_Usuario: string,
-  
+setEmpleadoG(
+  c_Id_Usuario: string,
   c_ID_Rol_Persona: number,
   c_Id_Tipo_Cuenta: string,
   c_Id_Sucursal: number,
