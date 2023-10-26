@@ -154,6 +154,26 @@ const routes: VexRoutes = [
             path: 'FacturaVenta',
             loadChildren: () => import('./pages/apps/FacturaVenta/FacturaVenta.module').then(m => m.FacturaVentaModule)
           },
+          {
+            path: 'ReporteFacturaDia',
+            loadChildren: () => import('./pages/apps/ReporteFactura/ReporteFactura.module').then(m => m.FacturaVentaModule)
+          },
+          {
+            path: 'ReporteFacturaSemana',
+            loadChildren: () => import('./pages/apps/ReporteFacturaSemana/ReporteFactura.module').then(m => m.FacturaVentaModule)
+          },
+          {
+            path: 'ReporteFacturaMes',
+            loadChildren: () => import('./pages/apps/ReporteFacturaMes/ReporteFactura.module').then(m => m.FacturaVentaModule)
+          },
+          {
+            path: 'ReporteFacturaAnio',
+            loadChildren: () => import('./pages/apps/ReporteFacturaAnio/ReporteFactura.module').then(m => m.FacturaVentaModule)
+          },
+          {
+            path: 'ReporteFacturaTodoT',
+            loadChildren: () => import('./pages/apps/ReporteFacturaTodo/ReporteFactura.module').then(m => m.FacturaVentaModule)
+          },
           // {
           //   path: 'FacturaCompra',
           //   loadChildren: () => import('./pages/apps/FacturaCompra/FacturaCompra.module').then(m => m.FacturaCompraModule)

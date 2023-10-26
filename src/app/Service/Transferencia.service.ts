@@ -16,6 +16,7 @@ Precio: string;
 SubTotal: string;
 IVA: string;
 Total: string;
+RTotal: string;
 VPersona: boolean = false;
 validarFactura: boolean = false;
 idProducto: string;

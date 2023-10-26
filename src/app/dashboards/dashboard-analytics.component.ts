@@ -23,7 +23,7 @@ VentasPD: string;
 GananciaSD: string;
 GananciaSM: string;
 GananciaSA: string;
-
+multi: any[];
 
 
 
@@ -34,7 +34,7 @@ GananciaSA: string;
   MesS: { name: string; value: any; };
   AnioS: { name: string; value: any; };
 
-  view:[number,number] = [700, 300];
+  view:[number,number] = [700, 250];
  legendPosition: LegendPosition = LegendPosition.Below;
 
   // options
@@ -44,6 +44,14 @@ GananciaSA: string;
   isDoughnut: boolean = false;
 
 
+
+  xAxis: boolean = true;
+  yAxis: boolean = true;
+  showYAxisLabel: boolean = true;
+  showXAxisLabel: boolean = true;
+  xAxisLabel: string = 'Year';
+  yAxisLabel: string = 'Population';
+  timeline: boolean = true;
 
   colorScheme: any = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#0077B5', '#FF6F61', '#5F9EA0', '#FFC857', '#58508D', '#00A8CC']

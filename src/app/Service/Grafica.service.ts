@@ -155,5 +155,9 @@ import axios from 'axios';
       const params = { searchTerm };
       return this.http.get<any>(`${this._url2}GetGananciasSByAnio`, { params });
     }
+
+
+
+    
   }
   

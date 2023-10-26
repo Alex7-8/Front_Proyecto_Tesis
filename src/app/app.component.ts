@@ -237,24 +237,29 @@ this.configureMenu();
               children: [
                 {
                   type: 'link',
-                  label: 'Reporte de Empleados',
-                  route: '/apps/persona/grid',
+                  label: 'Reporte de Facturas Dia',
+                  route: '/apps/ReporteFacturaDia/table',
                 },
                  {
                   type: 'link',
-                  label: 'Reporte de Clientes',
-                  route: '/apps/persona/grid',
+                  label: 'Reporte de Facturas Semana',
+                  route: '/apps/ReporteFacturaSemana/table',
                 },
                 {
                  type: 'link',
-                 label: 'Reporte de Proveedores',
-                 route: '/apps/persona/grid',
+                 label: 'Reporte de Facturas Mes',
+                 route: '/apps/ReporteFacturaMes/table',
                },
                {
                 type: 'link',
-                label: 'Reporte de Facturas',
-                route: '/apps/persona/table',
+                label: 'Reporte de Facturas Año',
+                route: '/apps/ReporteFacturaAnio/table',
               },
+              {
+                type: 'link',
+                label: 'Reporte de Facturas Todo el Tiempo',
+                route: '/apps/ReporteFacturaTodoT/table',
+              }
     
               ],
               
