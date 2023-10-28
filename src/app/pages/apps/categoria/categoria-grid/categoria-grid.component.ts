@@ -17,6 +17,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import jwt_decode from "jwt-decode";
 import { ConfirmDialogComponent } from 'src/app/pages/ui/components/component-confirm-dialog/confirm-dialog.component';
 import { timeStamp } from 'console';
+import { CategoriaService } from 'src/app/Service/Categoria.service'; 
 
 export function trackById<T extends { c_Id_Categoria: string | number }>(index: number, item: T) {
   return item.c_Id_Categoria;
@@ -112,6 +113,7 @@ export class CategoriaGridComponent implements OnInit {
               private MarcaService:MarcaService,
               private router: Router, private renderer: Renderer2,
               private snackBar: MatSnackBar,
+              private CategoriaService:CategoriaService
              ) { }
 
   ngOnInit() {
@@ -121,7 +123,7 @@ export class CategoriaGridComponent implements OnInit {
 
   obtenerTablaData() {
 
-    this.MarcaService.getMarca("").subscribe((response: any) => {
+    this.CategoriaService.getCategoria("").subscribe((response: any) => {
     this.Categoria = response.response;
     this.tableData = this.Categoria.filter(c => c.c_Estado === this.estado);
     
@@ -191,7 +193,7 @@ export class CategoriaGridComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
        // console.log('Valor del textarea:', result);
-        this.MarcaService.CambiarEstadoMarca(c_Id_Categoria,this.c_Id_UsuarioModificacion,result).subscribe((response) => {
+        this.CategoriaService.CambiarEstadoCategoria(c_Id_Categoria,this.c_Id_UsuarioModificacion,result).subscribe((response) => {
           console.log(response);
           if(response.ok){
             this.snackBar.open(response.transaccion_Mensaje, "Cerrar", {

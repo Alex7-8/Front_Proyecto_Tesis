@@ -152,14 +152,14 @@ export class FacturaServiciosTableComponent implements OnInit {
       type: 'text',
       cssClasses: ['font-medium']
     },
-    // {
-    //   label: 'Cambiar Estado',
-    //   property: 'starred',
-    //   type: 'button',
+    {
+      label: 'Cambiar Estado',
+      property: 'starred',
+      type: 'button',
 
-    //   cssClasses: ['text-secondary w-10']
+      cssClasses: ['text-secondary w-10']
 
-    // },
+    },
 
     
   ];
@@ -181,7 +181,7 @@ export class FacturaServiciosTableComponent implements OnInit {
 
   ngOnInit() {
      this.obtenerTablaData()
-     this.checkScreenSize();
+    // this.checkScreenSize();
   }
 
 
@@ -241,12 +241,12 @@ export class FacturaServiciosTableComponent implements OnInit {
 
 
     if(this.activeCategory == 'Activo'){
-      this.titulo = "¿Estás seguro que deseas desactivar el producto?";
+      this.titulo = "¿Estás seguro que deseas anular la factura?";
       this.razon = "Razon por la cual se desactiva el registro";
       this.estado = 1;
           
     }else{
-      this.titulo = '¿Estás seguro de que deseas activar el producto?';
+      this.titulo = '¿Estás seguro de que deseas activar la factura?';
       this.razon = "Razon por la cual se activa el registro";
       this.estado = 5;
     }
@@ -261,7 +261,7 @@ export class FacturaServiciosTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
        if (result) {
-        this.ProductoService.CambiarEstadoProducto(c_Id_Factura,this.c_Id_UsuarioModificacion,result).subscribe((response) => {
+        this.FacturaService.CambiarEstadoFactura (c_Id_Factura,this.c_Id_UsuarioModificacion,result).subscribe((response) => {
           
           if(response.ok){
             this.snackBar.open(response.transaccion_Mensaje, "Cerrar", {
@@ -299,16 +299,16 @@ export class FacturaServiciosTableComponent implements OnInit {
 
 
  
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.checkScreenSize();
-  }
+  // @HostListener('window:resize', ['$event'])
+  // onResize(event) {
+  //   this.checkScreenSize();
+  // }
 
-  private checkScreenSize() {
-    if (window.innerWidth < 768) {
-      this.router.navigate(['/apps/FacturaServicios/grid/activos']); 
-    }
-  }
+  // private checkScreenSize() {
+  //   if (window.innerWidth < 768) {
+  //     this.router.navigate(['/apps/FacturaServicios/grid/activos']); 
+  //   }
+  // }
 
 
 

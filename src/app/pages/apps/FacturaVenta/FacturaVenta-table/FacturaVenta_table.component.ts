@@ -241,12 +241,12 @@ export class FacturaVentaTableComponent implements OnInit {
 
 
     if(this.activeCategory == 'Activo'){
-      this.titulo = "¿Estás seguro que deseas desactivar el producto?";
+      this.titulo = "¿Estás seguro que deseas anular la factura?";
       this.razon = "Razon por la cual se desactiva el registro";
       this.estado = 1;
           
     }else{
-      this.titulo = '¿Estás seguro de que deseas activar el producto?';
+      this.titulo = '¿Estás seguro de que deseas activar la factura?';
       this.razon = "Razon por la cual se activa el registro";
       this.estado = 5;
     }
@@ -261,7 +261,7 @@ export class FacturaVentaTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
        if (result) {
-        this.ProductoService.CambiarEstadoProducto(c_Id_Factura,this.c_Id_UsuarioModificacion,result).subscribe((response) => {
+        this.FacturaService.CambiarEstadoFactura (c_Id_Factura,this.c_Id_UsuarioModificacion,result).subscribe((response) => {
           
           if(response.ok){
             this.snackBar.open(response.transaccion_Mensaje, "Cerrar", {

@@ -8,7 +8,7 @@
    
     
   </div>
-  <div style="margin-left: 1.3rem;">
+  <!-- <div style="margin-left: 1.3rem;">
     <label style="margin-right: 0.5rem;"for="gridViewToggle">Vista de cuadrícula</label>
     <mat-slide-toggle
       id="gridViewToggle"
@@ -16,10 +16,10 @@
       [checked]="false"
       (change)="onToggleChange($event)"
     ></mat-slide-toggle>
-  </div>
-  
+  </div> 
+   -->
 
-  <div class="px-gutter sm:px-0">
+   <div class="px-gutter sm:px-0">
     <ng-container *ngFor="let item of items">
       <a (click)="setFilter(item.id)"
          *ngIf="item.type === 'link'"

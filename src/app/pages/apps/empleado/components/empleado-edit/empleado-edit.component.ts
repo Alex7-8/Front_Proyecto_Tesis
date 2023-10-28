@@ -185,6 +185,7 @@ largo: string = "25rem";
       c_Usuario_CoM: [""],
       Razon: [""],
       Id_Cuenta: [""],
+      c_Monto: ["",Validators.required],
     });
 
     const token = localStorage.getItem("token"); 
@@ -247,6 +248,7 @@ if(this.contactId != null){
           c_Id_Sucursal: data.response.c_Id_Sucursal,
           Id_Cuenta: data.response.c_Id_Cuenta,
           Razon: data.response.c_Descripcion,
+          c_Monto: data.response.c_Monto
         }
 
         

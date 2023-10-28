@@ -35,7 +35,7 @@
             <th *matHeaderCellDef mat-header-cell mat-sort-header> {{ column.label }}</th>
             <td *matCellDef="let row" [ngClass]="column.cssClasses" class="w-10" mat-cell>
               <button (click)="emitToggleStar($event, row.c_Id_Factura)" mat-icon-button type="button">
-                <mat-icon *ngIf="row.c_Id_Estado_Factura == 2"  svgIcon="mat:control_point"></mat-icon>
+                <mat-icon *ngIf="row.c_Id_Estado_Factura == 5"  svgIcon="mat:control_point"></mat-icon>
                 <mat-icon *ngIf="row.c_Id_Estado_Factura == 1" svgIcon="mat:cancel"></mat-icon>
               </button>
             </td>

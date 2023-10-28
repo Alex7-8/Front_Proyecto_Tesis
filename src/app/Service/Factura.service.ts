@@ -80,13 +80,13 @@ return throwError({ ok: false, estado, mensaje });
 );
 }
 
-CambiarEstadoSerie(
-  c_Id_Serie: number,
+CambiarEstadoFactura(
+  c_Id_Factura: number,
   c_Usuario_Modificacion: string,
   c_Descripcion: string
   ):  Observable<any> {
   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  const url = `${this._url}CambiarEstadoSerie?IdSerie=${c_Id_Serie}&IdUM=${c_Usuario_Modificacion}&razon=${c_Descripcion}`;
+  const url = `${this._url}CambiarEstadoFactura?IdFactura=${c_Id_Factura}&IdUM=${c_Usuario_Modificacion}&razon=${c_Descripcion}`;
   return this.http.post<any>(url,headers);
 
 }
