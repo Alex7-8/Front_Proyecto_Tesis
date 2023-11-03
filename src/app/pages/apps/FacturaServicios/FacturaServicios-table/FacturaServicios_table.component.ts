@@ -153,7 +153,7 @@ export class FacturaServiciosTableComponent implements OnInit {
       cssClasses: ['font-medium']
     },
     {
-      label: 'Cambiar Estado',
+      label: 'Anular Factura',
       property: 'starred',
       type: 'button',
 

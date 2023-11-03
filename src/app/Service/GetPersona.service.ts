@@ -753,7 +753,8 @@ getCliente(searchTerm: string): Observable<any> {
 
 
 getPersonaFacturacion(searchTerm: string): Observable<Facturacion[]> {
-  return this.http.get<any>(`${this._url}GetPersonaFacturacion`, {
+  return this.http.get<any>(`${this._url}GetPersonaFacturacion`, 
+  {
   }).pipe(
     map(response => {
       if (response.ok && Array.isArray(response.response)) {
@@ -784,6 +785,40 @@ getPersonaFacturacion(searchTerm: string): Observable<Facturacion[]> {
 getPersonaFacturacionById(IdPersona: number): Observable<Persona> {
   const url = `${this._url}GetPersonaFacturacionById?IdPersona=${IdPersona}`;
   return this.http.get<Persona>(url);
+
+}
+
+
+
+getPersonaFacturacionByParametro(valor: string): Observable<Facturacion[]> {
+  const url = `${this._url}GetPersonaFacturacionByParametro?valor=${valor}`;
+  return this.http.get<any>((url),{
+  }).pipe(
+    map(response => {
+      if (response.ok && Array.isArray(response.response)) {
+       // console.log(response.response)
+
+      
+        return response.response.map(item => ({
+          name: item.c_Primer_Nombre,
+          Id: item.c_Id_Persona,
+          Url_IMG: item.c_Url_Img,
+        }));
+       
+        
+      } else {
+        return response.response.map(item => ({
+          name: item.c_Transaccion_Mensaje,
+          Id: item.c_Transaccion_Estado,
+          flag: ''
+        }));
+      }
+    }),
+    catchError(error => {
+      console.error(error);
+      return [];
+    })
+  );
 
 }
   }

@@ -1,6 +1,0 @@
-.truncate-text {
-    white-space: nowrap;      /* Evita el salto de línea */
-    overflow: hidden;         /* Oculta el contenido que desborda el contenedor */
-    text-overflow: ellipsis;  /* Agrega tres puntos suspensivos al final del texto recortado */
-    max-width: 200px;         /* Establece un ancho máximo para el contenedor */
-  }

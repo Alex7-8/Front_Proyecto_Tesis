@@ -23,6 +23,7 @@ import { ActivatedRoute,Router } from '@angular/router';
 import { TokenService } from 'src/app/Service/token.service';
 import { TranferenciaService } from 'src/app/Service/Transferencia.service'; 
 import {ServicioService} from 'src/app/Service/Servicio.service'; 
+import { ThisReceiver } from '@angular/compiler';
 
 
 export let contactIdCounter = 50;
@@ -85,7 +86,15 @@ export interface Sucursal {
   flag: string;
 }
 
-export interface Marca {
+
+
+export interface Departamento {
+  name: string;
+  Id: string;
+  flag: string;
+}
+
+export interface Municipio {
   name: string;
   Id: string;
   flag: string;
@@ -101,6 +110,7 @@ export class FacturaServiciosEditComponent implements OnInit {
   c_nombre: string[] = [];
   c_Img_Base: string[] = [];
   C_ArrayCampos: string[] = [];
+  generos: any[];
   Categoria: any[];
   imagen: string = "";
   Id_Usuario: string = "";
@@ -142,6 +152,9 @@ largo: string = "25rem";
   empleado: Empleado;
   c_Tipo_Mov: string = "SM";
   toggleChecked = false;
+  CCliente = false
+  VCliente = false;
+  CCTexto: string = "Consumidor Final";
   cuentaExists: boolean = true;
   buttonText = 'Pagar en Efectivo';
   vlc: boolean = false;
@@ -158,6 +171,15 @@ IVATotal : any;
 SubTotalFinal : any;
 VPersona : boolean = false;
 BodyFactura : any;
+
+DeptoCtrl = new FormControl();
+MunCtrl = new FormControl();
+
+filteredDepartamento$: Observable<Departamento[]>;
+filteredMunicipio$: Observable<Municipio[]>;
+
+  maxDate: Date; 
+  minDate: Date;
   get isEdit(): boolean {
 
     return !!this.contactId;
@@ -194,6 +216,11 @@ BodyFactura : any;
            
              ) { 
 
+              this.maxDate = new Date();
+              this.minDate = new Date();
+              this.minDate.setFullYear(this.minDate.getFullYear() - 100);
+              this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
+
               console.log(this.contactId);
               const token = localStorage.getItem("token"); 
 
@@ -214,6 +241,35 @@ BodyFactura : any;
                   Validators.minLength(1),
                   Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
                 ])],
+
+                c_Nombres: ["",Validators.compose([
+                  Validators.required,
+                  Validators.minLength(1),
+                  Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
+                ])],
+
+                c_Apellidos: ["",Validators.compose([
+                  Validators.required,
+                  Validators.minLength(1),
+                  Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
+                ])],
+                c_NIT: ["", Validators.compose([
+                  Validators.minLength(8),
+                  Validators.maxLength(12),
+                  Validators.pattern(/^[\d-]*$/)
+                ]),
+                ],
+                c_Direccion: ["",Validators.compose([
+                  Validators.required,
+                  Validators.minLength(1),
+                  Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
+                ])],
+                c_Numero_Telefono: ["", Validators.compose([
+                  Validators.required,
+                  Validators.minLength(8),
+                  Validators.maxLength(8),
+                  Validators.pattern(/^[0-9]*$/)
+                ]),],
                 c_Id_Marca:[],
                 c_Id_Sucursal:[],
                 c_Id_Categoria:[],
@@ -242,15 +298,59 @@ BodyFactura : any;
             }
           
             registerForm = this.FormBuilder.group({
+            
+              c_Nombre_Producto: ["",Validators.compose([
+                Validators.required,
+                Validators.minLength(1),
+                Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
+              ])],
+
+              c_Nombres: ["",Validators.compose([
+                Validators.required,
+                Validators.minLength(1),
+                Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
+              ])],
+
+              c_Apellidos: ["",Validators.compose([
+                Validators.required,
+                Validators.minLength(1),
+                Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
+              ])],
+              c_Id_Departamento:[,Validators.required],
+              c_Id_Municipio:[,Validators.required],
+              c_Id_Genero:[,Validators.required],
+              Fecha_Nacimiento:["", [Validators.required, this.ageRangeValidator.bind(this)]],
+              c_NIT: ["", Validators.compose([
+                Validators.minLength(8),
+                Validators.maxLength(12),
+                Validators.pattern(/^[\d-]*$/)
+              ]),
+              ],
+              c_Direccion: ["",Validators.compose([
+                Validators.required,
+                Validators.minLength(1),
+                Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
+              ])],
+              c_Numero_Telefono: ["", Validators.compose([
+                Validators.required,
+                Validators.minLength(8),
+                Validators.maxLength(8),
+                Validators.pattern(/^[0-9]*$/)
+              ]),],
               c_Id_Serie:[],
               c_Id_Servicio: [],
               c_Cantidad: [],
               c_Saldo: [],
               c_Tipo_Cuenta: [],
               c_Id_Persona : [],
+              c_ValorB: [],
+              c_Monto: [],
               
               campo: this.FormBuilder.array([])
             });
+
+        
+
 
             agregarCampo(){
            
@@ -284,17 +384,15 @@ BodyFactura : any;
                     this.vc++;
                     this.ValidarBoton = true;
                     this.arrayIndiceProductos.forEach(([posicion, idServicio]) => {
-                     
-                     // const posicionActual = posicion; 
-                      
+
                       if(newValue == idServicio){
-                        
+
                        this.IdProducto = idServicio;
                         this.snackBar.open("El servicio ya ha sido agregado", "Cerrar", {
                           duration: 5000,
                           panelClass: ["red-snackbar"],
                         });
-                       
+
                       }
 
                     });
@@ -313,7 +411,7 @@ BodyFactura : any;
                        const s: number =  (data.response.c_Precio_Final * Cantidad) - C_IVA;
                        const C_SubTotal = parseFloat(s.toFixed(2)); 
                        const C_Total = data.response.c_Precio_Final * Cantidad;
-                      // this.verificarTotal(); 
+                     
                        this.urlsImagenes = [...this.urlsImagenes, data.response.c_Url_IMG];
                       
 
@@ -348,6 +446,27 @@ BodyFactura : any;
 
 
 
+
+ValidarFormulario(dato:any)
+{
+  let cont = dato.length;
+   const valor = cont.split(";");
+  
+
+
+  if(valor.length > 0){
+  // cont = cont + 1;
+    this.ValidarBoton = true;
+
+  }else{
+
+    this.ValidarBoton = false;
+  }
+
+}
+
+
+
             Campo(){
               if(this.vc <= 0){
                 this.vc =1;
@@ -370,9 +489,23 @@ BodyFactura : any;
 
             actualizarCalculos(formIndex: number) {
 
+
+
+              
+
+
+
               const formGroup = this.registerForm.controls['campo'].get(formIndex.toString()) as FormGroup;
               const cantidad = formGroup.get('c_Cantidad').value;
               const precioVenta = formGroup.get('c_Precio_Venta').value;
+
+              if(cantidad.length <= 0 || precioVenta.length <= 0)
+              {
+                this.ValidarBoton = false;
+              }else{
+                this.ValidarBoton = true;
+              }
+
               const iva = (precioVenta * cantidad) * 0.12;
               const C_IVA =  parseFloat(iva.toFixed(2));
               const subtotal = (precioVenta * cantidad)-C_IVA ;
@@ -403,12 +536,49 @@ BodyFactura : any;
 
 
             onInputChange(event: any) {
+            
               const inputValue = event.target.value;
               const numericValue = inputValue.replace(/[^0-9]/g, ''); // Elimina cualquier carácter no numérico
-          
-              // Actualiza el valor del campo con solo números
               this.registerForm.get('c_Cantidad')?.setValue(numericValue);
             }
+
+
+
+
+
+            onInputArrayChange(event: any, formIndex: number) {
+              const formGroup = this.registerForm.controls['campo'].get(formIndex.toString()) as FormGroup;
+              const inputValue = event.target.value;
+              const numericValue = inputValue.replace(/[^0-9]/g, ''); 
+              formGroup.patchValue({
+                c_Cantidad: numericValue,
+              });
+            }
+
+            onInputArrayChangeP(event: any, formIndex: number) {
+              const formGroup = this.registerForm.controls['campo'].get(formIndex.toString()) as FormGroup;
+              const inputValue = event.target.value;
+            
+              // Reemplaza todos los caracteres que no sean dígitos ni el punto decimal
+              const numericValue = inputValue.replace(/[^0-9.]/g, '');
+            
+              // Divide el valor en partes decimal y entera
+              const parts = numericValue.split('.');
+              
+              if (parts.length > 2 || parts[1]?.length > 2) {
+                // Si hay más de un punto decimal o más de dos dígitos después del punto, no actualices el valor
+                return;
+              }
+            
+              // Formatea el valor final con un punto decimal si es necesario
+              const formattedValue = parts.join('.');
+            
+              formGroup.patchValue({
+                c_Precio_Venta: formattedValue,
+              });
+            }
+            
+            
 
 
   ngOnInit() {
@@ -424,12 +594,30 @@ BodyFactura : any;
     this.registerForm.get('c_Id_Serie')?.reset();
     this.registerForm.get('c_Id_Serie')?.disable();
 
+ 
+    this.filteredDepartamento$ = this.DeptoCtrl.valueChanges.pipe(
+      startWith(""),
+      switchMap((states) => this.catalogoService.getDepartamentos(states)),
+      map((States) => States.slice())
+    );
+
+
+    this.registerForm
+      .get("c_Id_Departamento")
+      .valueChanges.subscribe((newValue) => {
+        this.filteredMunicipio$ =
+          this.catalogoService.getMunicipioXDepartamentos(newValue, "");
+      });
+
+
+
 
     this.filteredFacturacion$ = this.FacturacionCtrl.valueChanges.pipe(
       startWith(""),
-      switchMap((states) => this.CS.getPersonaFacturacion(states)),
+      switchMap((states) => this.CS.getPersonaFacturacionByParametro(states)),
       map((States) =>  States.slice())
     );
+  
 
 
     this.filteredServicios$ = this.ServiciosCtrl.valueChanges.pipe(
@@ -439,18 +627,26 @@ BodyFactura : any;
    );
 
 
-    this.registerForm
-    .get("c_Id_Persona")
-    .valueChanges.subscribe((newValue) => {
-      if(newValue != undefined){
-        this.VPersona = true;
-      }else{
-        this.VPersona = false;
-      }
-      this.BuscarCliente(newValue);
-    });
+   this.catalogoService.getGenero("").subscribe((response: any) => {
+    this.generos = response.response;
+  });
 
    
+    this.registerForm
+    .get("c_ValorB")
+    .valueChanges.subscribe((newValue) => {
+
+      if(newValue != undefined && newValue != 33){
+       
+        this.VPersona = true;
+        this.BuscarParametros(newValue);
+      }else{
+      
+        this.VPersona = false;
+      }
+      
+     
+    });
 
 
     
@@ -465,7 +661,7 @@ BodyFactura : any;
       }
     });
 
-    this.ProductoService.getProductoById(this.contactId).subscribe()
+   // this.ProductoService.getProductoById(this.contactId).subscribe()
 
 
 
@@ -498,10 +694,12 @@ if(this.contactId != null){
       data.response.forEach((item: any) => {
         const row = tabla.insertRow();
         row.insertCell(0).textContent = item.c_Id_Servicio;
-        row.insertCell(1).textContent = item.c_Nombre_Servicio; // Agrega la propiedad 'c_Descripcion' si está disponible en tus datos
-        row.insertCell(2).textContent = item.c_Precio;
-        row.insertCell(3).textContent = item.c_Cantidad;
+        row.insertCell(1).textContent = item.c_Nombre_Servicio;
+        row.insertCell(2).textContent = item.c_Cantidad; // Agrega la propiedad 'c_Descripcion' si está disponible en tus datos
+        row.insertCell(3).textContent = item.c_Precio;
         row.insertCell(4).textContent = item.c_SubTotal;
+        row.insertCell(5).textContent = item.c_IVA;
+        row.insertCell(6).textContent = item.c_Total;
         // Puedes agregar más columnas según sea necesario
       });
     } else {
@@ -536,35 +734,30 @@ if(this.contactId != null){
 
   }
 
-  verificarTotal(){
-   
-   
-  
+  ageRangeValidator(control) {
+    const selectedDate = new Date(control.value);
+    if (selectedDate >= this.minDate && selectedDate <= this.maxDate) {
+      return null; // La fecha está dentro del rango
+    } else {
+      return { ageRange: true }; // La fecha está fuera del rango
+    }
   }
 
 
 
-  BuscarProducto(id: number ) {
+  BuscarCliente(id: any ) {
    
+
+    if(id == 33){
+     this.VCliente = true;
+    
+    }else{
+      this.VCliente = false;
+    }
 
     this.CS.getPersonaFacturacionById(id).subscribe(
       (data: any) => {
-
-      },
-      (error) => {
-        console.error('Error fetching employee data:', error);
-      }
-    );
-  }
-
-
-
-  BuscarCliente(id: number ) {
-   
-
-    this.CS.getPersonaFacturacionById(id).subscribe(
-      (data: any) => {
-        if(data.ok == true){
+        if(data.ok == true && id != 33){
           this.Texto = "Verificar Saldo";
           this.cuentaExists = false;
           this.toggleChecked = true;
@@ -574,6 +767,8 @@ if(this.contactId != null){
           this.registerForm.patchValue({
             c_Saldo: data.response.c_Saldo,
             c_Tipo_Cuenta: "Cliente con Cuenta",
+            c_Id_Persona: data.response.c_Id_Persona,
+            c_Monto: data.response.c_MontoMax,
   
           });
         }else{
@@ -600,23 +795,56 @@ if(this.contactId != null){
 
   }
 
+
+  
+  BuscarParametros(Valor: string ) {
+   
+    this.filteredFacturacion$ = this.FacturacionCtrl.valueChanges.pipe(
+      startWith(""),
+      switchMap((states) => this.CS.getPersonaFacturacionByParametro(Valor)),
+      map((States) =>  States.slice())
+    );
+  }
+
   onToggleChange(event: any): void {
     if (event.checked ) {
       this.toggleChecked = true;
       this.Texto = "Verificar Saldo";
       this.buttonText = 'Pagar con Saldo';
+      this.CCTexto = "Registrar Cliente";
       this.c_Tipo_Mov ="Y"
       
     } else if (!event.checked  ) {
       this.toggleChecked = false;
       this.buttonText = 'Pagar en Efectivo';
       this.Texto = "Registrar Factura";
+      this.CCTexto = "Consumidor Final"; 
       this.c_Tipo_Mov ="RM"
 
     }
 
    
   }
+
+
+  Toggle(event: any): void {
+    if (event.checked ) {
+      this.cdr.detectChanges();
+      this.CCliente = true;
+      this.CCTexto = "Registrar Cliente";
+      this.c_Tipo_Mov ="RM"
+
+      
+    } else if (!event.checked  ) {
+      this.CCliente = false;
+      this.CCTexto = "Consumidor Final"; 
+      this.c_Tipo_Mov ="RM"
+      this.cdr.detectChanges();
+    }
+
+   
+  }
+
 
 
 
@@ -692,17 +920,122 @@ loadImages(): void {
 
   openConfirmDialog() {
 
+  if(this.registerForm.get('c_ValorB')?.value == "C/F" ){
+    this.VPersona = false;
+  }
 
+    if(this.CCliente == true)
+    {
+
+      const nombresCompletos = this.registerForm.get('c_Nombres')?.value;
+      const nombresSeparados = nombresCompletos.split(' ');
+      
+      const Primer_Nombre = nombresSeparados[0] || ''; 
+      const Segundo_Nombre = nombresSeparados[1] || ''; 
+      const Tercer_Nombre = nombresSeparados[2] || ''; 
+
+      const apellidosCompletos = this.registerForm.get('c_Apellidos')?.value;
+      const apellidosSeparados = apellidosCompletos.split(' ');
+      
+      let Primer_Apellido = '';
+      let Segundo_Apellido = '';
+      let Apellido_Casada = '';
+      
+      for (let i = 0; i < apellidosSeparados.length; i++) {
+        const palabra = apellidosSeparados[i];
+        if (palabra.toLowerCase() === 'de' && i < apellidosSeparados.length - 1) {
+          Apellido_Casada = apellidosSeparados.slice(i).join(' ');
+          break;
+        } else {
+          if (i === 0) {
+            Primer_Apellido = palabra;
+          } else if (i === 1) {
+            Segundo_Apellido = palabra;
+          } else {
+            if (Apellido_Casada) {
+              Apellido_Casada += ' ' + palabra;
+            } else {
+              Apellido_Casada = palabra;
+            }
+          }
+        }
+      }
+      
+
+
+      const C_NIT = this.registerForm.get('c_NIT')?.value;
+      const C_Direccion = this.registerForm.get('c_Direccion')?.value;
+      const C_Numero_Telefono = this.registerForm.get('c_Numero_Telefono')?.value;
+      const C_Id_Departamento = this.registerForm.get('c_Id_Departamento')?.value;
+      const C_Id_Municipio = this.registerForm.get('c_Id_Municipio')?.value;
+      const C_Id_Genero = this.registerForm.get('c_Id_Genero')?.value;
+      const Fecha_Nacimiento = this.registerForm.get('Fecha_Nacimiento')?.value;
+      const C_Img_Base = '0';
+this.CS.setCliente
+(
+  2,
+"RM",
+"1",
+this.Id_Sucursal,
+C_Id_Genero,
+C_Id_Municipio,
+Primer_Nombre,
+Segundo_Nombre,
+Tercer_Nombre,
+Primer_Apellido,
+Segundo_Apellido,
+Apellido_Casada,
+"",
+C_NIT,
+C_Direccion,
+C_Numero_Telefono,
+"",
+"",
+C_Img_Base,
+"",
+Fecha_Nacimiento,
+this.Id_Usuario
+
+).subscribe((data: any) => {
+  if(data.ok == true){
+   
+    this.snackBar.open("Cliente registrado con éxito", "Cerrar", {
+      duration: 5000,
+      panelClass: ["green-snackbar"],
+    });
+    this.CCliente = false;
+    this.CCTexto = "Consumidor Final"; 
+    this.c_Tipo_Mov ="RM"
+    console.log(data.c_Id_Persona)
+    console.log(data)
+    this.registerForm.patchValue({
+      c_Id_Persona: data.c_Id_Persona,
+      c_Tipo_Cuenta: "Cliente sin Cuenta",
+
+    });
+    this.VPersona = true;
+  }else{
+    this.VPersona = false;
+    this.snackBar.open("Error al registrar el cliente", "Cerrar", {
+      duration: 5000,
+      panelClass: ["red-snackbar"],
+    });
+  }
+});
+
+
+
+    }
     
     const nombresControl = this.registerForm.get('campo') as FormGroup;
     
     nombresControl.get('c_Precio_Venta')?.enable();
 
-    //console.log(nombresControl.value);
+
 
     this.Texto = "Verificando";
     this.valido = false;
-//console.log(this.registerForm.get('campo')?.value);
+
     if(this.contactId != null){
       this.titulo = "¿Estás seguro que deseas actualizar el servicio?";
       this.razon = "Razon por la cual se actualiza el registro";
@@ -751,6 +1084,7 @@ var res = 0;
           this.IVATotal = this.sumaTotal * 0.12;
           this.SubTotalFinal = this.sumaTotal - this.IVATotal;
           const saldo = this.registerForm.get('c_Saldo')?.value;
+         // const MontoMax = this.registerForm.get('c_MontoMax')?.value;
       
           if(this.sumaTotal > saldo && this.toggleChecked == true){
             this.snackBar.open("El saldo es insuficiente", "Cerrar", {
@@ -781,6 +1115,7 @@ var res = 0;
            const c_Id_Persona = this.registerForm.get('c_Id_Persona')?.value || 0;
 
            const productos: Producto[] = this.registerForm.get('campo')?.value as Producto[];
+
            this.body = {
             "c_Id_Estado": "1",
             "c_Id_Servicio": "",
@@ -825,15 +1160,11 @@ var res = 0;
            };
 
            Productos.forEach((producto, index) => {
-           
             this.BodyFactura.c_Id_Servicio += producto.c_Id_Servicio + (index < Productos.length - 1 ? ";" : "");
             this.BodyFactura.c_Nombre_Producto += producto.c_Nombre_Producto + (index < Productos .length - 1 ? ";" : "");
             this.BodyFactura.c_Cantidad += producto.c_Cantidad + (index < Productos.length - 1 ? ";" : "");
             this.BodyFactura.c_Precio += producto.c_Precio_Venta + (index < Productos.length - 1 ? ";" : "");
           });
-
-
-
 
           const Product: Producto[] = this.registerForm.get('campo')?.value as Producto[];
 
@@ -845,7 +1176,6 @@ var res = 0;
           const iva: string[] = [];
           const subTotal: string[] = [];
           const total: string[] = [];
-          
           // Itera a través de los productos y agrega sus valores a los arreglos
           Product.forEach((producto) => {
             Id_Servicio.push(producto.c_Id_Servicio.toString());
@@ -856,7 +1186,6 @@ var res = 0;
             subTotal.push(producto.c_SubTotal.toString());
             total.push(producto.c_Total.toString());
           });
-          
           const c_Id_Servicio = Id_Servicio.join(';');
           const c_Cantidad = cantidades.join(';');
           const c_Precio = precios.join(';');
@@ -885,31 +1214,21 @@ var res = 0;
 
            if(this.VPersona === true)
            {
+
+
             this.transferenciaService.VerificarPersona(this.VPersona)
             const idp = this.registerForm.get('c_Id_Persona')?.value
             this.Id_Sucursal
            const idS = this.registerForm.get('c_Id_Serie')?.value
            this.transferenciaService.RecibirFacturaCliente(idS,this.Id_Sucursal,idp)
-  
-         
- 
- 
            }else{
             this.transferenciaService.VerificarPersona(this.VPersona)
             const idp = this.registerForm.get('c_Id_Persona')?.value
             this.Id_Sucursal
            const idS = this.registerForm.get('c_Id_Serie')?.value
-           
            this.transferenciaService.RecibirFacturaCF(idS,this.Id_Sucursal)
-        
 
            }
-          
-
-
-
-
-         
            this.transferenciaService.validarFactura = true;
            this.transferenciaService.RecibirBody(this.body)
           this.dialogRef.close();
@@ -919,76 +1238,8 @@ var res = 0;
           }
         
 
-        }else{
-          this.valido = false;
-                const  C_Tipo_Mov = this.c_Tipo_Mov;
-                 const c_Id_Servicio = this.form.get("c_Id_Servicio").value;
-                 const C_Nombre_Producto = this.form.get("c_Nombre_Producto").value;
-                 const C_Id_Marca = this.form.get("c_Id_Marca").value;
-                 const C_Id_Sucursal = this.form.get("c_Id_Sucursal").value;
-                 const C_Id_Categoria = this.form.get("c_Id_Categoria").value;
-                const C_Stock_Disponible = this.form.get("c_Stock_Disponible").value;
-                const C_Precio_Compra = this.form.get("c_Precio_Compra").value;
-                  const C_Precio_Venta = this.form.get("c_Precio_Venta").value;
-                  const C_Cantidad = this.form.get("c_Cantidad").value;
-                 const C_Img_Base = this.form.get("c_Img_Base").value;
-                 const C_Descripcion = result
-                 const C_Usuario_Modificacion = this.form.get("c_Usuario_CoM").value;
-
-                 this.ProductoService.putProducto(
-                    C_Tipo_Mov,
-                    c_Id_Servicio,
-                    C_Nombre_Producto,
-                    C_Id_Marca,
-                    C_Id_Sucursal,
-                    C_Id_Categoria,
-                    C_Stock_Disponible,
-                    C_Precio_Compra,
-                    C_Precio_Venta,
-                    C_Cantidad,
-                    C_Img_Base,
-                    C_Descripcion,
-                    C_Usuario_Modificacion
-                   ).subscribe(
-                   (response) => {
-                     if (response.ok) {
-                      this.valido = true;
-                       //this.lm.obtenerTablaData();
-                       this.dialogRef.close();
-                       location.reload();
-                       this.snackBar.open(response.transaccion_Mensaje, "Cerrar", {
-                         duration: 5000,
-                         panelClass: ["success-snackbar"], 
-                       });
-             
-                     } else {
-                      this.valido = true;
-                       this.snackBar.open("Codigo de Error: "+response.transaccion_Estado+" "+ "Mensje: "+response.transaccion_Mensaje, "Cerrar", {
-                         duration: 10000,
-                         panelClass: ["red-snackbar"]
-                       });
-                     }
-                   },
-                   (error) => {
-               
-                     this.snackBar.open("Error Inesperado", "Cerrar", {
-                       duration: 15000,
-                       panelClass: ["error-snackbar"], 
-                     });
-             
-                   }
-                 );
-        
-        
-        
-        
-                }
+        }
       }
-    
-
-
-
-     
       }
     );
 

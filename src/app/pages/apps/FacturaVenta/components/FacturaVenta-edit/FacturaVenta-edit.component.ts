@@ -84,11 +84,19 @@ export interface Sucursal {
   flag: string;
 }
 
-export interface Marca {
+
+export interface Departamento {
   name: string;
   Id: string;
   flag: string;
 }
+
+export interface Municipio {
+  name: string;
+  Id: string;
+  flag: string;
+}
+
 
 @Component({
   selector: 'vex-contacts-edit',
@@ -134,7 +142,7 @@ largo: string = "25rem";
   isFormActive: boolean = true;
   originalPrecioValue: string | null = null;
   filteredSucursal$: Observable<Sucursal[]>;
-  filteredMarca$: Observable<Marca[]>;
+ 
   camposExtras: FormGroup[] = [];
   urlsImagenes: string[] = [] ;
   SucCtrl = new FormControl();
@@ -158,6 +166,18 @@ IVATotal : any;
 SubTotalFinal : any;
 VPersona : boolean = false;
 BodyFactura : any;
+CCliente = false
+VCliente = false;
+CCTexto: string = "Consumidor Final";
+generos: any[];
+DeptoCtrl = new FormControl();
+MunCtrl = new FormControl();
+
+filteredDepartamento$: Observable<Departamento[]>;
+filteredMunicipio$: Observable<Municipio[]>;
+
+maxDate: Date; 
+minDate: Date;
   get isEdit(): boolean {
 
     return !!this.contactId;
@@ -193,7 +213,12 @@ BodyFactura : any;
            
              ) { 
 
-              console.log(this.contactId);
+              this.maxDate = new Date();
+              this.minDate = new Date();
+              this.minDate.setFullYear(this.minDate.getFullYear() - 100);
+              this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
+
+
               const token = localStorage.getItem("token"); 
 
               const decodedToken: any = jwt_decode(token);
@@ -241,15 +266,66 @@ BodyFactura : any;
             }
           
             registerForm = this.FormBuilder.group({
+              c_Nombre_Producto: ["",Validators.compose([
+                Validators.required,
+                Validators.minLength(1),
+                Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
+              ])],
+
+              c_Nombres: ["",Validators.compose([
+                Validators.required,
+                Validators.minLength(1),
+                Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
+              ])],
+
+              c_Apellidos: ["",Validators.compose([
+                Validators.required,
+                Validators.minLength(1),
+                Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
+              ])],
+              c_Id_Departamento:[,Validators.required],
+              c_Id_Municipio:[,Validators.required],
+              c_Id_Genero:[,Validators.required],
+              Fecha_Nacimiento:["", [Validators.required, this.ageRangeValidator.bind(this)]],
+              c_NIT: ["", Validators.compose([
+                Validators.minLength(8),
+                Validators.maxLength(12),
+                Validators.pattern(/^[\d-]*$/)
+              ]),
+              ],
+              c_Direccion: ["",Validators.compose([
+                Validators.required,
+                Validators.minLength(1),
+                Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\d,.-]*$/)
+              ])],
+              c_Numero_Telefono: ["", Validators.compose([
+                Validators.required,
+                Validators.minLength(8),
+                Validators.maxLength(8),
+                Validators.pattern(/^[0-9]*$/)
+              ]),],
               c_Id_Serie:[],
               c_Id_Producto: [],
               c_Cantidad: [],
               c_Saldo: [],
               c_Tipo_Cuenta: [],
               c_Id_Persona : [],
-              
+              c_ValorB: [],
+              c_Monto: [],
               campo: this.FormBuilder.array([])
             });
+
+
+            ageRangeValidator(control) {
+              const selectedDate = new Date(control.value);
+              if (selectedDate >= this.minDate && selectedDate <= this.maxDate) {
+                return null; // La fecha está dentro del rango
+              } else {
+                return { ageRange: true }; // La fecha está fuera del rango
+              }
+            }
+
+
 
             agregarCampo(){
            
@@ -297,7 +373,7 @@ BodyFactura : any;
                       }
 
                     });
-                      console.log(this.IdProducto);
+                    
                      if(this.IdProducto != newValue)
                      {
                   
@@ -350,7 +426,6 @@ BodyFactura : any;
             Campo(){
               if(this.vc <= 0){
                 this.vc =1;
-                console.log(this.vc);
                 const FormGroup  = this.FormBuilder.group({
                   c_Img_Base: this.imagenPorDefectoURL,
                   c_Nombre_Producto: "Producto",
@@ -388,8 +463,6 @@ BodyFactura : any;
               this.Servicio.removeAt(indice);
               this.urlsImagenes.splice(indice, 1);
               if(this.vc !=2){
-               console.log(this.verificarTotal()) 
-                console.log(this.vc);
                 this.arrayIndiceProductos.splice(indice, 1);
               }
               this.form.get('c_Img_Base')?.setValue('');
@@ -414,11 +487,6 @@ BodyFactura : any;
 
   ngOnInit() {
 
-
-  
-
-    
-
     this.registerForm.get('c_Tipo_Cuenta')?.reset();
     this.registerForm.get('c_Tipo_Cuenta')?.disable();
 
@@ -426,12 +494,59 @@ BodyFactura : any;
     this.registerForm.get('c_Id_Serie')?.disable();
 
 
-    this.filteredFacturacion$ = this.FacturacionCtrl.valueChanges.pipe(
+
+    this.registerForm
+    .get("c_Cantidad")
+    .valueChanges.subscribe((newValue) => {
+
+      if(newValue >0){
+        
+        this.registerForm.get('c_Id_Producto')?.reset();
+        this.registerForm.get('c_Id_Producto')?.enable();
+      }else{
+       
+        this.registerForm.get('c_Id_Producto')?.reset();
+        this.registerForm.get('c_Id_Producto')?.disable();  
+       
+      }
+
+    });
+
+
+
+
+
+
+
+
+
+
+    this.filteredDepartamento$ = this.DeptoCtrl.valueChanges.pipe(
       startWith(""),
-      switchMap((states) => this.CS.getPersonaFacturacion(states)),
-      map((States) =>  States.slice())
+      switchMap((states) => this.catalogoService.getDepartamentos(states)),
+      map((States) => States.slice())
     );
 
+
+    this.registerForm
+      .get("c_Id_Departamento")
+      .valueChanges.subscribe((newValue) => {
+        this.filteredMunicipio$ =
+          this.catalogoService.getMunicipioXDepartamentos(newValue, "");
+      });
+
+
+
+      this.filteredFacturacion$ = this.FacturacionCtrl.valueChanges.pipe(
+        startWith(""),
+        switchMap((states) => this.CS.getPersonaFacturacionByParametro(states)),
+        map((States) =>  States.slice())
+      );
+
+    this.catalogoService.getGenero("").subscribe((response: any) => {
+      this.generos = response.response;
+    });
+  
 
     this.filteredProductos$ = this.ProductosCtrl.valueChanges.pipe(
       startWith(""),
@@ -452,12 +567,25 @@ BodyFactura : any;
     });
 
    
+    this.registerForm
+    .get("c_ValorB")
+    .valueChanges.subscribe((newValue) => {
 
+      if(newValue != undefined && newValue != 33){
+       
+        this.VPersona = true;
+        this.BuscarParametros(newValue);
+      }else{
+      
+        this.VPersona = false;
+      }
+      
+     
+    });
 
     
     this.SerieFacturaService.getSerieFacturaBySL(this.Id_Sucursal).subscribe((response: any) => {
-      this.Serie = response.response;
-      
+    this.Serie = response.response;
       if (this.Serie.length > 0) {
         this.registerForm.patchValue({
          c_Id_Serie: this.Serie[0].c_Id_Serie,
@@ -466,7 +594,7 @@ BodyFactura : any;
       }
     });
 
-    this.ProductoService.getProductoById(this.contactId).subscribe()
+   
 
 
 
@@ -500,9 +628,11 @@ if(this.contactId != null){
         const row = tabla.insertRow();
         row.insertCell(0).textContent = item.c_Id_Producto;
         row.insertCell(1).textContent = item.c_Nombre_Producto; // Agrega la propiedad 'c_Descripcion' si está disponible en tus datos
-        row.insertCell(2).textContent = item.c_Precio;
-        row.insertCell(3).textContent = item.c_Cantidad;
+        row.insertCell(2).textContent = item.c_Cantidad; // Agrega la propiedad 'c_Descripcion' si está disponible en tus datos
+        row.insertCell(3).textContent = item.c_Precio;
         row.insertCell(4).textContent = item.c_SubTotal;
+        row.insertCell(5).textContent = item.c_IVA;
+        row.insertCell(6).textContent = item.c_Total;
         // Puedes agregar más columnas según sea necesario
       });
     } else {
@@ -526,51 +656,34 @@ if(this.contactId != null){
     );
 
 
-    this.filteredMarca$ = this.MarcaCtrl.valueChanges.pipe(
+
+  }
+
+
+
+  BuscarParametros(Valor: string ) {
+   
+    this.filteredFacturacion$ = this.FacturacionCtrl.valueChanges.pipe(
       startWith(""),
-      switchMap((Sl) => this.catalogoService.getMarca(Sl)
-      ),
-      map((Sl) => Sl.slice())
-    );
-
-
-
-
-
- 
-
-
-  }
-
-  verificarTotal(){
-   
-   
-  
-  }
-
-
-
-  BuscarProducto(id: number ) {
-   
-
-    this.CS.getPersonaFacturacionById(id).subscribe(
-      (data: any) => {
-
-      },
-      (error) => {
-        console.error('Error fetching employee data:', error);
-      }
+      switchMap((states) => this.CS.getPersonaFacturacionByParametro(Valor)),
+      map((States) =>  States.slice())
     );
   }
 
 
-
-  BuscarCliente(id: number ) {
+  BuscarCliente(id: any ) {
    
+    if(id == 33){
+      this.VCliente = true;
+     
+     }else{
+       this.VCliente = false;
+     }
+
 
     this.CS.getPersonaFacturacionById(id).subscribe(
       (data: any) => {
-        if(data.ok == true){
+        if(data.ok == true && id != 33){
           this.Texto = "Verificar Saldo";
           this.cuentaExists = false;
           this.toggleChecked = true;
@@ -580,6 +693,8 @@ if(this.contactId != null){
           this.registerForm.patchValue({
             c_Saldo: data.response.c_Saldo,
             c_Tipo_Cuenta: "Cliente con Cuenta",
+            c_Id_Persona: data.response.c_Id_Persona,
+            c_Monto: data.response.c_MontoMax,
   
           });
         }else{
@@ -611,12 +726,14 @@ if(this.contactId != null){
       this.toggleChecked = true;
       this.Texto = "Verificar Saldo";
       this.buttonText = 'Pagar con Saldo';
+      this.CCTexto = "Registrar Cliente";
       this.c_Tipo_Mov ="Y"
       
     } else if (!event.checked  ) {
       this.toggleChecked = false;
       this.buttonText = 'Pagar en Efectivo';
       this.Texto = "Registrar Factura";
+      this.CCTexto = "Consumidor Final"; 
       this.c_Tipo_Mov ="RM"
 
     }
@@ -625,6 +742,24 @@ if(this.contactId != null){
   }
 
 
+  
+  Toggle(event: any): void {
+    if (event.checked ) {
+      this.cdr.detectChanges();
+      this.CCliente = true;
+      this.CCTexto = "Registrar Cliente";
+      this.c_Tipo_Mov ="RM"
+
+      
+    } else if (!event.checked  ) {
+      this.CCliente = false;
+      this.CCTexto = "Consumidor Final"; 
+      this.c_Tipo_Mov ="RM"
+      this.cdr.detectChanges();
+    }
+
+   
+  }
 
 onFileSelecteds(event: Event): void {
   const input = event.target as HTMLInputElement;
@@ -698,7 +833,112 @@ loadImages(): void {
 
   openConfirmDialog() {
 
-
+    if(this.registerForm.get('c_ValorB')?.value == "C/F" ){
+      this.VPersona = false;
+    }
+  
+      if(this.CCliente == true)
+      {
+  
+        const nombresCompletos = this.registerForm.get('c_Nombres')?.value;
+        const nombresSeparados = nombresCompletos.split(' ');
+        
+        const Primer_Nombre = nombresSeparados[0] || ''; 
+        const Segundo_Nombre = nombresSeparados[1] || ''; 
+        const Tercer_Nombre = nombresSeparados[2] || ''; 
+  
+        const apellidosCompletos = this.registerForm.get('c_Apellidos')?.value;
+        const apellidosSeparados = apellidosCompletos.split(' ');
+        
+        let Primer_Apellido = '';
+        let Segundo_Apellido = '';
+        let Apellido_Casada = '';
+        
+        for (let i = 0; i < apellidosSeparados.length; i++) {
+          const palabra = apellidosSeparados[i];
+          if (palabra.toLowerCase() === 'de' && i < apellidosSeparados.length - 1) {
+            Apellido_Casada = apellidosSeparados.slice(i).join(' ');
+            break;
+          } else {
+            if (i === 0) {
+              Primer_Apellido = palabra;
+            } else if (i === 1) {
+              Segundo_Apellido = palabra;
+            } else {
+              if (Apellido_Casada) {
+                Apellido_Casada += ' ' + palabra;
+              } else {
+                Apellido_Casada = palabra;
+              }
+            }
+          }
+        }
+        
+  
+  
+        const C_NIT = this.registerForm.get('c_NIT')?.value;
+        const C_Direccion = this.registerForm.get('c_Direccion')?.value;
+        const C_Numero_Telefono = this.registerForm.get('c_Numero_Telefono')?.value;
+        const C_Id_Departamento = this.registerForm.get('c_Id_Departamento')?.value;
+        const C_Id_Municipio = this.registerForm.get('c_Id_Municipio')?.value;
+        const C_Id_Genero = this.registerForm.get('c_Id_Genero')?.value;
+        const Fecha_Nacimiento = this.registerForm.get('Fecha_Nacimiento')?.value;
+        const C_Img_Base = '0';
+  this.CS.setCliente
+  (
+    2,
+  "RM",
+  "1",
+  this.Id_Sucursal,
+  C_Id_Genero,
+  C_Id_Municipio,
+  Primer_Nombre,
+  Segundo_Nombre,
+  Tercer_Nombre,
+  Primer_Apellido,
+  Segundo_Apellido,
+  Apellido_Casada,
+  "",
+  C_NIT,
+  C_Direccion,
+  C_Numero_Telefono,
+  "",
+  "",
+  C_Img_Base,
+  "",
+  Fecha_Nacimiento,
+  this.Id_Usuario
+  
+  ).subscribe((data: any) => {
+    if(data.ok == true){
+     
+      this.snackBar.open("Cliente registrado con éxito", "Cerrar", {
+        duration: 5000,
+        panelClass: ["green-snackbar"],
+      });
+      this.CCliente = false;
+      this.CCTexto = "Consumidor Final"; 
+      this.c_Tipo_Mov ="RM"
+      console.log(data.c_Id_Persona)
+      console.log(data)
+      this.registerForm.patchValue({
+        c_Id_Persona: data.c_Id_Persona,
+        c_Tipo_Cuenta: "Cliente sin Cuenta",
+  
+      });
+      this.VPersona = true;
+    }else{
+      this.VPersona = false;
+      this.snackBar.open("Error al registrar el cliente", "Cerrar", {
+        duration: 5000,
+        panelClass: ["red-snackbar"],
+      });
+    }
+  });
+  
+  
+  
+      }
     
     const nombresControl = this.registerForm.get('campo') as FormGroup;
     
@@ -926,70 +1166,7 @@ var res = 0;
           }
         
 
-        }else{
-          this.valido = false;
-                const  C_Tipo_Mov = this.c_Tipo_Mov;
-                 const C_Id_Producto = this.form.get("c_Id_Producto").value;
-                 const C_Nombre_Producto = this.form.get("c_Nombre_Producto").value;
-                 const C_Id_Marca = this.form.get("c_Id_Marca").value;
-                 const C_Id_Sucursal = this.form.get("c_Id_Sucursal").value;
-                 const C_Id_Categoria = this.form.get("c_Id_Categoria").value;
-                const C_Stock_Disponible = this.form.get("c_Stock_Disponible").value;
-                const C_Precio_Compra = this.form.get("c_Precio_Compra").value;
-                  const C_Precio_Venta = this.form.get("c_Precio_Venta").value;
-                  const C_Cantidad = this.form.get("c_Cantidad").value;
-                 const C_Img_Base = this.form.get("c_Img_Base").value;
-                 const C_Descripcion = result
-                 const C_Usuario_Modificacion = this.form.get("c_Usuario_CoM").value;
-
-                 this.ProductoService.putProducto(
-                    C_Tipo_Mov,
-                    C_Id_Producto,
-                    C_Nombre_Producto,
-                    C_Id_Marca,
-                    C_Id_Sucursal,
-                    C_Id_Categoria,
-                    C_Stock_Disponible,
-                    C_Precio_Compra,
-                    C_Precio_Venta,
-                    C_Cantidad,
-                    C_Img_Base,
-                    C_Descripcion,
-                    C_Usuario_Modificacion
-                   ).subscribe(
-                   (response) => {
-                     if (response.ok) {
-                      this.valido = true;
-                       //this.lm.obtenerTablaData();
-                       this.dialogRef.close();
-                       location.reload();
-                       this.snackBar.open(response.transaccion_Mensaje, "Cerrar", {
-                         duration: 5000,
-                         panelClass: ["success-snackbar"], 
-                       });
-             
-                     } else {
-                      this.valido = true;
-                       this.snackBar.open("Codigo de Error: "+response.transaccion_Estado+" "+ "Mensje: "+response.transaccion_Mensaje, "Cerrar", {
-                         duration: 10000,
-                         panelClass: ["red-snackbar"]
-                       });
-                     }
-                   },
-                   (error) => {
-               
-                     this.snackBar.open("Error Inesperado", "Cerrar", {
-                       duration: 15000,
-                       panelClass: ["error-snackbar"], 
-                     });
-             
-                   }
-                 );
-        
-        
-        
-        
-                }
+        }
       }
     
 

@@ -358,30 +358,25 @@ this.configureMenu();
               children: [
                 {
                   type: 'link',
-                  label: 'Reporte de Empleados',
-                  route: '/apps/persona/grid',
+                  label: 'Reporte de Facturas Dia',
+                  route: '/apps/ReporteFacturaDia/table',
                 },
                  {
                   type: 'link',
-                  label: 'Reporte de Clientes',
-                  route: '/apps/persona/grid',
+                  label: 'Reporte de Facturas Semana',
+                  route: '/apps/ReporteFacturaSemana/table',
                 },
                 {
                  type: 'link',
-                 label: 'Reporte de Proveedores',
-                 route: '/apps/persona/grid',
+                 label: 'Reporte de Facturas Mes',
+                 route: '/apps/ReporteFacturaMes/table',
                },
                {
                 type: 'link',
-                label: 'Reporte de Facturas',
-                route: '/apps/persona/table',
-               }
-               ,
-               {
-                type: 'link',
-                label: 'Reporte de Inventario',
-                route: '/apps/persona/table',
-               }
+                label: 'Reporte de Facturas Año',
+                route: '/apps/ReporteFacturaAnio/table',
+              }
+               
               ]
             }
             ,
@@ -427,7 +422,7 @@ this.configureMenu();
                 {
                   type: 'link',
                   label: 'Factura Servicios',
-                  route: '/apps/contacts/table',
+                  route: '/apps/FacturaServicios/table',
                 },
                 {
                   type: 'link',
@@ -437,7 +432,7 @@ this.configureMenu();
                 {
                   type: 'link',
                   label: 'Depositos',
-                  route: '/apps/contacts/table',
+                  route: '/pages/Depositos&Retiros',
                 }
               ]
             },
@@ -456,13 +451,8 @@ this.configureMenu();
                 },
                 {
                   type: 'link',
-                  label: 'Reporte de Productos',
+                  label: 'Productos',
                   route: '/apps/producto/table',
-                },
-                {
-                  type: 'link',
-                  label: 'Reporte de Facturas',
-                  route: '/apps/factura/table',
                 }
                
               ]
@@ -474,24 +464,19 @@ this.configureMenu();
               children: [
                 {
                   type: 'link',
-                  label: 'Reporte de Empleados',
-                  route: '/apps/persona/grid',
+                  label: 'Reporte de Facturas Dia',
+                  route: '/apps/ReporteFacturaDia/table',
                 },
                  {
                   type: 'link',
-                  label: 'Reporte de Clientes',
-                  route: '/apps/persona/grid',
+                  label: 'Reporte de Facturas Semana',
+                  route: '/apps/ReporteFacturaSemana/table',
                 },
                 {
                  type: 'link',
-                 label: 'Reporte de Proveedores',
-                 route: '/apps/persona/grid',
+                 label: 'Reporte de Facturas Mes',
+                 route: '/apps/ReporteFacturaMes/table',
                },
-               {
-                type: 'link',
-                label: 'Reporte de Facturas',
-                route: '/apps/persona/table',
-              }
   
               ]
             }

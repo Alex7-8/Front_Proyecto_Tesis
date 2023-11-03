@@ -78,31 +78,10 @@ const routes: VexRoutes = [
         path: 'apps',
         children: [
           
-          {
-            path: 'chat',
-            loadChildren: () => import('./pages/apps/chat/chat.module').then(m => m.ChatModule),
-            data: {
-              toolbarShadowEnabled: true
-            }
-          },
+         
         
-          {
-            path: 'mail',
-            loadChildren: () => import('./pages/apps/mail/mail.module').then(m => m.MailModule),
-            data: {
-              toolbarShadowEnabled: true,
-              scrollDisabled: true
-            }
-          },
           
-          {
-            path: 'social',
-            loadChildren: () => import('./pages/apps/social/social.module').then(m => m.SocialModule)
-          },
-          {
-            path: 'contacts',
-            loadChildren: () => import('./pages/apps/contacts/contacts.module').then(m => m.ContactsModule)
-          },
+         
           {
             path: 'empleado',
             loadChildren: () => import('./pages/apps/empleado/listar_empleado.module').then(m => m.ListarEmpleadoModule),
@@ -142,10 +121,7 @@ const routes: VexRoutes = [
             path: 'categoria',
             loadChildren: () => import('./pages/apps/categoria/categoria.module').then(m => m.CategoriaModule)
           },
-          {
-            path: 'factura',
-            loadChildren: () => import('./pages/apps/Factura/Factura.module').then(m => m.FacturaModule)
-          },
+     
           {
             path: 'SerieFactura',
             loadChildren: () => import('./pages/apps/SerieFactura/SerieFactura.module').then(m => m.SerieFacturaModule)
@@ -190,29 +166,8 @@ const routes: VexRoutes = [
             path: 'venta',
             loadChildren: () => import('./pages/apps/venta/venta.module').then(m => m.VentaModule)
           },
-          {
-            path: 'calendar',
-            loadChildren: () => import('./pages/apps/calendar/calendar.module').then(m => m.CalendarModule),
-            data: {
-              toolbarShadowEnabled: true
-            }
-          },
-          {
-            path: 'aio-table',
-            loadChildren: () => import('./pages/apps/aio-table/aio-table.module').then(m => m.AioTableModule),
-          },
-          {
-            path: 'help-center',
-            loadChildren: () => import('./pages/apps/help-center/help-center.module').then(m => m.HelpCenterModule),
-          },
-          {
-            path: 'scrumboard',
-            loadChildren: () => import('./pages/apps/scrumboard/scrumboard.module').then(m => m.ScrumboardModule),
-          },
-          {
-            path: 'editor',
-            loadChildren: () => import('./pages/apps/editor/editor.module').then(m => m.EditorModule),
-          },
+          
+          
         ]
       },
       {
@@ -234,10 +189,6 @@ const routes: VexRoutes = [
           {
             path: 'faq',
             loadChildren: () => import('./pages/pages/faq/faq.module').then(m => m.FaqModule)
-          },
-          {
-            path: 'guides',
-            loadChildren: () => import('./pages/pages/guides/guides.module').then(m => m.GuidesModule)
           },
           {
             path: 'invoice',
